@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EMBA 課程個案解析</title>
+  
+  <!-- Web Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Phosphor Icons -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', '"Noto Sans TC"', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              200: '#bbf7d0',
+              500: '#22c55e',
+              600: '#16a34a',
+              700: '#15803d',
+              800: '#166534',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #FAFAF8;
+    }
+    .soft-card {
+      background-color: #FFFFFF;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .soft-card:hover {
+      border-color: #bbf7d0;
+      box-shadow: 0 8px 24px -4px rgba(22, 163, 74, 0.08);
+      transform: translateY(-1.5px);
+    }
+  </style>
+</head>
+<body class="text-slate-800 font-sans antialiased min-h-screen pb-20 selection:bg-brand-100 selection:text-brand-800 flex flex-col justify-between">
+
+  <!-- Header -->
+  <header class="border-b border-slate-200/80 bg-white/95 backdrop-blur-md sticky top-0 z-40">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      
+      <!-- Brand Title -->
+      <a href="./" class="flex items-center gap-2.5 group">
+        <div class="w-8 h-8 rounded-lg bg-slate-900 text-white flex items-center justify-center font-bold text-xs group-hover:bg-brand-600 transition-colors">
+          EMBA
+        </div>
+        <div>
+          <span class="font-bold text-base sm:text-lg text-slate-900 tracking-tight block leading-tight">課程個案解析</span>
+          <span class="text-[10px] text-slate-400 font-medium tracking-wider uppercase block">Case Studies Index</span>
+        </div>
+      </a>
+
+      <!-- Actions -->
+      <div class="flex items-center gap-2">
+        <button onclick="downloadJsonTemplate()" title="下載 cases.json 規格範本" class="text-xs text-slate-600 hover:text-brand-700 bg-slate-100/80 hover:bg-brand-50 px-3 py-1.5 rounded-lg border border-slate-200/60 font-medium transition flex items-center gap-1.5">
+          <i class="ph-bold ph-download-simple"></i>
+          <span class="hidden sm:inline">下載範本</span>
+        </button>
+
+        <button onclick="loadCasesData(true)" title="強制重新抓取資料" class="text-xs text-slate-500 hover:text-slate-900 p-2 rounded-lg hover:bg-slate-100 transition">
+          <i id="refreshIcon" class="ph-bold ph-arrows-clockwise text-sm"></i>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 pt-8 w-full flex-1">
+
+    <!-- GitHub Pages Setup Tip & Error Box (Hidden by default) -->
+    <div id="statusNotice" class="hidden mb-6 p-4 rounded-xl border text-xs">
+      <div class="flex items-start justify-between gap-3">
+        <div class="flex items-start gap-2.5">
+          <i id="statusNoticeIcon" class="ph-fill ph-info text-base mt-0.5 shrink-0"></i>
+          <div>
+            <div id="statusNoticeTitle" class="font-bold mb-0.5">提示訊息</div>
+            <div id="statusNoticeMsg" class="leading-relaxed opacity-90"></div>
+          </div>
+        </div>
+        <button onclick="document.getElementById('statusNotice').classList.add('hidden')" class="text-slate-400 hover:text-slate-700">
+          <i class="ph-bold ph-x text-sm"></i>
+        </button>
+      </div>
+      
+      <!-- Optional fallback selector if opened locally via file:// -->
+      <div id="fileUploadHelper" class="hidden mt-3 pt-3 border-t border-slate-200/60 flex items-center gap-2">
+        <span class="text-slate-600">本機測試模式：</span>
+        <label for="localFileInput" class="cursor-pointer text-brand-700 font-semibold hover:underline">
+          手動選取 cases.json
+        </label>
+        <input type="file" id="localFileInput" accept=".json" class="hidden" onchange="handleManualFile(event)">
+      </div>
+    </div>
+
+    <!-- Search & Display Controls -->
+    <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 mb-6">
+      
+      <!-- Search Input -->
+      <div class="relative flex-1">
+        <i class="ph-bold ph-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+        <input 
+          type="text" 
+          id="searchBox" 
+          oninput="handleSearch()" 
+          placeholder="搜尋課程、個案名稱或教授..." 
+          class="w-full pl-9 pr-9 py-2.5 text-sm bg-white border border-slate-200 rounded-xl placeholder:text-slate-400 focus:outline-none focus:border-brand-600 focus:ring-2 focus:ring-brand-100 transition shadow-2xs"
+        >
+        <button id="clearBtn" onclick="clearSearch()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+          <i class="ph-bold ph-x-circle text-sm"></i>
+        </button>
+      </div>
+
+      <!-- Count & View Mode Toggle -->
+      <div class="flex items-center justify-between sm:justify-end gap-3 text-xs text-slate-500">
+        <div>
+          共 <span id="caseCount" class="font-bold text-slate-900 font-mono text-sm">0</span> 筆個案
+        </div>
+
+        <div class="flex items-center bg-slate-200/60 p-0.5 rounded-lg">
+          <button id="btnListView" onclick="setViewMode('list')" class="px-2.5 py-1 rounded-md font-medium text-slate-800 bg-white shadow-2xs transition flex items-center gap-1.5">
+            <i class="ph-bold ph-squares-four text-xs"></i>
+            <span>卡片</span>
+          </button>
+          <button id="btnTableView" onclick="setViewMode('table')" class="px-2.5 py-1 rounded-md font-medium text-slate-500 hover:text-slate-800 transition flex items-center gap-1.5">
+            <i class="ph-bold ph-table text-xs"></i>
+            <span>表格</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Loading Skeleton Indicator -->
+    <div id="loadingView" class="py-12 flex flex-col items-center justify-center text-slate-400">
+      <i class="ph-bold ph-circle-notch animate-spin text-2xl text-brand-600 mb-2"></i>
+      <span class="text-xs">讀取個案資料中...</span>
+    </div>
+
+    <!-- Container 1: Cards View -->
+    <div id="cardsContainer" class="hidden space-y-3">
+      <!-- Generated via JS -->
+    </div>
+
+    <!-- Container 2: Table View -->
+    <div id="tableContainer" class="hidden overflow-x-auto bg-white border border-slate-200/90 rounded-2xl shadow-2xs">
+      <table class="w-full text-left text-sm whitespace-normal">
+        <thead class="bg-slate-50 border-b border-slate-200/80 text-[11px] uppercase tracking-wider text-slate-500 font-semibold">
+          <tr>
+            <th class="py-3 px-4 w-36">課程名稱</th>
+            <th class="py-3 px-4 min-w-[200px]">個案名稱</th>
+            <th class="py-3 px-4 w-28 whitespace-nowrap">課程日期</th>
+            <th class="py-3 px-4 w-24 whitespace-nowrap">教授姓名</th>
+            <th class="py-3 px-4 text-right w-20 whitespace-nowrap">解析網頁</th>
+          </tr>
+        </thead>
+        <tbody id="tableRows" class="divide-y divide-slate-100 text-slate-700">
+          <!-- Generated via JS -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Empty State -->
+    <div id="emptyContainer" class="hidden text-center py-16 bg-white border border-dashed border-slate-200 rounded-2xl p-6">
+      <div class="w-12 h-12 rounded-full bg-slate-50 text-slate-400 flex items-center justify-center mx-auto mb-3">
+        <i class="ph-bold ph-magnifying-glass text-xl"></i>
+      </div>
+      <p class="text-sm font-medium text-slate-700">無符合條件的個案</p>
+      <p class="text-xs text-slate-400 mt-1">請嘗試其他關鍵字或清空搜尋字串</p>
+      <button onclick="clearSearch()" class="mt-4 text-xs font-semibold text-brand-700 bg-brand-50 hover:bg-brand-100 px-3 py-1.5 rounded-lg transition">
+        清空搜尋
+      </button>
+    </div>
+
+  </main>
+
+  <!-- Minimal Footer -->
+  <footer class="max-w-4xl mx-auto px-4 sm:px-6 mt-16 text-center text-xs text-slate-400">
+    <div class="border-t border-slate-200/80 pt-6 flex flex-col sm:flex-row items-center justify-between gap-2">
+      <div>EMBA 專屬個案解析知識庫</div>
+      <div class="text-[11px] text-slate-400 flex items-center gap-1">
+        <span>託管於</span>
+        <span class="font-medium text-slate-600">GitHub Pages</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Script Logic -->
+  <script>
+    // GitHub Pages safe data holder
+    let caseList = [];
+    let activeView = 'list';
+
+    // Default sample data used as fallback if cases.json doesn't exist yet
+    const FALLBACK_DATA = [
+      {
+        "courseName": "策略管理專案",
+        "caseTitle": "台積電之全球先進製造佈局賽局",
+        "courseDate": "2026-03-12",
+        "professor": "陳講座教授",
+        "targetUrl": "./cases/tsmc-strategy.html",
+        "summary": "探討半導體地緣戰略下美歐日多角化建廠的營運與資本支出挑戰。"
+      },
+      {
+        "courseName": "數位轉型與商模創新",
+        "caseTitle": "微軟由雲端轉型至生成式 AI 生態系的敏捷變革",
+        "courseDate": "2026-03-26",
+        "professor": "林教授",
+        "targetUrl": "./cases/microsoft-ai.html",
+        "summary": "分析組織敏捷轉型與企業文化重塑策略。"
+      },
+      {
+        "courseName": "跨國併購與財務分析",
+        "caseTitle": "科技巨擘跨國收購反壟斷監管合約攻防",
+        "courseDate": "2026-04-09",
+        "professor": "黃教授",
+        "targetUrl": "./cases/tech-antitrust.html"
+      },
+      {
+        "courseName": "永續經營與 ESG 創新",
+        "caseTitle": "Patagonia 的地球股東模式與品牌溢價實踐",
+        "courseDate": "2026-04-23",
+        "professor": "張特聘教授",
+        "targetUrl": "./cases/patagonia-esg.html",
+        "summary": "解析非上市企業如何將 ESG 理念融入商業定價與忠誠度回饋。"
+      }
+    ];
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadCasesData(false);
+    });
+
+    /**
+     * Fetch ./cases.json with no-cache & timestamp query string
+     * to prevent GitHub Pages / Cloudflare edge caching after git push.
+     */
+    async function loadCasesData(forceRefresh) {
+      const refreshIcon = document.getElementById('refreshIcon');
+      refreshIcon.classList.add('animate-spin');
+      
+      const loadingView = document.getElementById('loadingView');
+      loadingView.classList.remove('hidden');
+
+      // Relative path: perfect for GitHub Pages project repo (e.g., user.github.io/repo/)
+      const endpoint = './cases.json?t=' + (forceRefresh ? Date.now() : Math.floor(Date.now() / 60000));
+
+      try {
+        const res = await fetch(endpoint, {
+          cache: 'no-cache',
+          headers: {
+            'Accept': 'application/json'
+          }
+        });
+
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}`);
+        }
+
+        const data = await res.json();
+        const items = Array.isArray(data) ? data : (data.cases || data.data);
+
+        if (!Array.isArray(items)) {
+          throw new Error('JSON 格式有誤：最外層必須是陣列或包含 cases 陣列');
+        }
+
+        caseList = items;
+        hideNotice();
+      } catch (err) {
+        console.warn('載入 ./cases.json 失敗，改用示範資料:', err.message);
+        caseList = FALLBACK_DATA;
+        
+        // Show informative banner for GitHub Pages repo owner
+        if (window.location.protocol === 'file:') {
+          showNotice(
+            '本機檔案開啟限制（file://）',
+            '瀏覽器安全限制（CORS）阻擋了本地 fetch。請使用 VS Code Live Server，或點擊下方直接選取檔案。',
+            'warning',
+            true
+          );
+        } else {
+          showNotice(
+            '未找到 ./cases.json 檔案',
+            '已顯示示範內容。請將 <code>cases.json</code> 放置在 GitHub Repository 的根目錄（與 index.html 同層）並推送到分支。',
+            'info',
+            false
+          );
+        }
+      } finally {
+        setTimeout(() => {
+          refreshIcon.classList.remove('animate-spin');
+          loadingView.classList.add('hidden');
+          renderData();
+        }, 200);
+      }
+    }
+
+    /**
+     * Render filtered cases based on search keyword
+     */
+    function renderData() {
+      const query = (document.getElementById('searchBox').value || '').trim().toLowerCase();
+      const clearBtn = document.getElementById('clearBtn');
+      
+      if (query) {
+        clearBtn.classList.remove('hidden');
+      } else {
+        clearBtn.classList.add('hidden');
+      }
+
+      const filtered = caseList.filter(item => {
+        if (!query) return true;
+        const cName = (item.courseName || '').toLowerCase();
+        const tTitle = (item.caseTitle || '').toLowerCase();
+        const prof = (item.professor || '').toLowerCase();
+        return cName.includes(query) || tTitle.includes(query) || prof.includes(query);
+      });
+
+      document.getElementById('caseCount').textContent = filtered.length;
+
+      const emptyContainer = document.getElementById('emptyContainer');
+      const cardsContainer = document.getElementById('cardsContainer');
+      const tableContainer = document.getElementById('tableContainer');
+
+      if (filtered.length === 0) {
+        emptyContainer.classList.remove('hidden');
+        cardsContainer.classList.add('hidden');
+        tableContainer.classList.add('hidden');
+        return;
+      }
+
+      emptyContainer.classList.add('hidden');
+
+      // 1. Build Cards View
+      cardsContainer.innerHTML = filtered.map(item => {
+        const targetUrl = item.targetUrl ? escapeHtml(item.targetUrl) : '#';
+        const hasSummary = item.summary && item.summary.trim().length > 0;
+
+        return `
+          <div class="soft-card border border-slate-200/80 rounded-2xl p-4 sm:p-5">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+              <span class="text-xs font-semibold text-brand-800 bg-brand-50 px-2.5 py-1 rounded-md border border-brand-100">
+                ${escapeHtml(item.courseName || '未指定課程')}
+              </span>
+              <div class="flex items-center gap-3 text-xs text-slate-400">
+                ${item.courseDate ? `<span class="flex items-center gap-1"><i class="ph ph-calendar-blank"></i>${escapeHtml(item.courseDate)}</span>` : ''}
+                ${item.professor ? `<span class="flex items-center gap-1"><i class="ph ph-user"></i>${escapeHtml(item.professor)}</span>` : ''}
+              </div>
+            </div>
+
+            <div class="flex items-start sm:items-center justify-between gap-4 mt-2">
+              <div class="flex-1">
+                <a href="${targetUrl}" class="font-bold text-slate-900 hover:text-brand-700 transition text-base block group">
+                  ${escapeHtml(item.caseTitle || '未命名個案')}
+                </a>
+                ${hasSummary ? `<p class="mt-1.5 text-xs text-slate-500 leading-relaxed">${escapeHtml(item.summary)}</p>` : ''}
+              </div>
+
+              <a href="${targetUrl}" class="shrink-0 text-slate-400 hover:text-brand-700 p-2 rounded-lg hover:bg-brand-50 transition" title="前往個案頁面">
+                <i class="ph-bold ph-arrow-up-right text-base"></i>
+              </a>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // 2. Build Table View
+      const tbody = document.getElementById('tableRows');
+      tbody.innerHTML = filtered.map(item => {
+        const targetUrl = item.targetUrl ? escapeHtml(item.targetUrl) : '#';
+        return `
+          <tr class="hover:bg-slate-50/70 transition">
+            <td class="py-3.5 px-4 font-semibold text-xs text-brand-800">${escapeHtml(item.courseName || '-')}</td>
+            <td class="py-3.5 px-4 font-medium text-slate-900">
+              <a href="${targetUrl}" class="hover:text-brand-700 hover:underline">
+                ${escapeHtml(item.caseTitle || '-')}
+              </a>
+              ${item.summary ? `<div class="text-[11px] text-slate-400 mt-0.5 line-clamp-1">${escapeHtml(item.summary)}</div>` : ''}
+            </td>
+            <td class="py-3.5 px-4 text-xs text-slate-500 whitespace-nowrap">${escapeHtml(item.courseDate || '-')}</td>
+            <td class="py-3.5 px-4 text-xs text-slate-600 whitespace-nowrap">${escapeHtml(item.professor || '-')}</td>
+            <td class="py-3.5 px-4 text-right whitespace-nowrap">
+              <a href="${targetUrl}" class="inline-flex items-center gap-1 text-xs font-semibold text-brand-700 hover:text-brand-900">
+                <span>前往</span>
+                <i class="ph-bold ph-arrow-up-right text-xs"></i>
+              </a>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      // Toggle views visibility based on activeView
+      if (activeView === 'list') {
+        cardsContainer.classList.remove('hidden');
+        tableContainer.classList.add('hidden');
+      } else {
+        cardsContainer.classList.add('hidden');
+        tableContainer.classList.remove('hidden');
+      }
+    }
+
+    // View switcher
+    function setViewMode(mode) {
+      activeView = mode;
+      const btnList = document.getElementById('btnListView');
+      const btnTable = document.getElementById('btnTableView');
+
+      if (mode === 'list') {
+        btnList.className = 'px-2.5 py-1 rounded-md font-medium text-slate-800 bg-white shadow-2xs transition flex items-center gap-1.5';
+        btnTable.className = 'px-2.5 py-1 rounded-md font-medium text-slate-500 hover:text-slate-800 transition flex items-center gap-1.5';
+      } else {
+        btnList.className = 'px-2.5 py-1 rounded-md font-medium text-slate-500 hover:text-slate-800 transition flex items-center gap-1.5';
+        btnTable.className = 'px-2.5 py-1 rounded-md font-medium text-slate-800 bg-white shadow-2xs transition flex items-center gap-1.5';
+      }
+
+      renderData();
+    }
+
+    function handleSearch() {
+      renderData();
+    }
+
+    function clearSearch() {
+      const input = document.getElementById('searchBox');
+      input.value = '';
+      input.focus();
+      renderData();
+    }
+
+    // Local file picker fallback (useful for testing on desktop without a server)
+    function handleManualFile(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const parsed = JSON.parse(e.target.result);
+          const list = Array.isArray(parsed) ? parsed : (parsed.cases || parsed.data);
+          if (!Array.isArray(list)) throw new Error('陣列格式無效');
+          caseList = list;
+          hideNotice();
+          renderData();
+        } catch (err) {
+          alert('JSON 解析失敗，請確認檔案格式是否正確。');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    // Notice Box Utility
+    function showNotice(title, msg, type = 'info', allowLocalUpload = false) {
+      const box = document.getElementById('statusNotice');
+      const icon = document.getElementById('statusNoticeIcon');
+      const titleEl = document.getElementById('statusNoticeTitle');
+      const msgEl = document.getElementById('statusNoticeMsg');
+      const helper = document.getElementById('fileUploadHelper');
+
+      titleEl.innerHTML = title;
+      msgEl.innerHTML = msg;
+
+      if (type === 'warning') {
+        box.className = 'mb-6 p-4 rounded-xl border bg-amber-50/80 border-amber-200 text-amber-900 text-xs';
+        icon.className = 'ph-fill ph-warning text-amber-600 text-base mt-0.5 shrink-0';
+      } else {
+        box.className = 'mb-6 p-4 rounded-xl border bg-blue-50/80 border-blue-200 text-blue-900 text-xs';
+        icon.className = 'ph-fill ph-info text-blue-600 text-base mt-0.5 shrink-0';
+      }
+
+      if (allowLocalUpload) {
+        helper.classList.remove('hidden');
+      } else {
+        helper.classList.add('hidden');
+      }
+
+      box.classList.remove('hidden');
+    }
+
+    function hideNotice() {
+      document.getElementById('statusNotice').classList.add('hidden');
+    }
+
+    // Download clean cases.json template for GitHub repo
+    function downloadJsonTemplate() {
+      const template = [
+        {
+          "courseName": "策略管理專案",
+          "caseTitle": "台積電之全球先進製造佈局賽局",
+          "courseDate": "2026-03-12",
+          "professor": "陳講座教授",
+          "targetUrl": "./cases/tsmc-strategy.html",
+          "summary": "探討半導體地緣戰略下美歐日多角化建廠的營運與資本支出挑戰。"
+        },
+        {
+          "courseName": "數位轉型與商模創新",
+          "caseTitle": "微軟由雲端轉型至生成式 AI 生態系的敏捷變革",
+          "courseDate": "2026-03-26",
+          "professor": "林教授",
+          "targetUrl": "./cases/microsoft-ai.html",
+          "summary": "分析組織敏捷轉型與企業文化重塑策略。"
+        }
+      ];
+
+      const blob = new Blob([JSON.stringify(template, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'cases.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    // HTML escape helper
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+  </script>
+</body>
+</html>
