@@ -355,6 +355,7 @@
       cardsContainer.innerHTML = filtered.map(item => {
         const targetUrl = item.targetUrl ? escapeHtml(item.targetUrl) : '#';
         const hasSummary = item.summary && item.summary.trim().length > 0;
+        const isExternal = item.targetUrl && item.targetUrl !== '#';
 
         return `
           <div class="soft-card border border-slate-200/80 rounded-2xl p-4 sm:p-5">
@@ -370,14 +371,16 @@
 
             <div class="flex items-start sm:items-center justify-between gap-4 mt-2">
               <div class="flex-1">
-                <a href="${targetUrl}" class="font-bold text-slate-900 hover:text-brand-700 transition text-base block group">
-                  ${escapeHtml(item.caseTitle || '未命名個案')}
+                <a href="${targetUrl}" ${isExternal ? 'target="_blank" rel="noopener noreferrer"' : ''} class="font-bold text-slate-900 hover:text-brand-700 transition text-base inline-flex items-center gap-1.5 group">
+                  <span>${escapeHtml(item.caseTitle || '未命名個案')}</span>
+                  <i class="ph-bold ph-arrow-square-out text-sm text-slate-400 group-hover:text-brand-700 transition"></i>
                 </a>
                 ${hasSummary ? `<p class="mt-1.5 text-xs text-slate-500 leading-relaxed">${escapeHtml(item.summary)}</p>` : ''}
               </div>
 
-              <a href="${targetUrl}" class="shrink-0 text-slate-400 hover:text-brand-700 p-2 rounded-lg hover:bg-brand-50 transition" title="前往個案頁面">
-                <i class="ph-bold ph-arrow-up-right text-base"></i>
+              <a href="${targetUrl}" ${isExternal ? 'target="_blank" rel="noopener noreferrer"' : ''} class="shrink-0 text-slate-500 hover:text-brand-700 hover:bg-brand-50 p-2 rounded-lg border border-transparent hover:border-brand-200 text-xs font-medium flex items-center gap-1 transition" title="於新視窗開啟個案解析">
+                <span class="hidden sm:inline">開啟解析</span>
+                <i class="ph-bold ph-arrow-square-out text-base"></i>
               </a>
             </div>
           </div>
@@ -388,21 +391,24 @@
       const tbody = document.getElementById('tableRows');
       tbody.innerHTML = filtered.map(item => {
         const targetUrl = item.targetUrl ? escapeHtml(item.targetUrl) : '#';
+        const isExternal = item.targetUrl && item.targetUrl !== '#';
+
         return `
           <tr class="hover:bg-slate-50/70 transition">
             <td class="py-3.5 px-4 font-semibold text-xs text-brand-800">${escapeHtml(item.courseName || '-')}</td>
             <td class="py-3.5 px-4 font-medium text-slate-900">
-              <a href="${targetUrl}" class="hover:text-brand-700 hover:underline">
-                ${escapeHtml(item.caseTitle || '-')}
+              <a href="${targetUrl}" ${isExternal ? 'target="_blank" rel="noopener noreferrer"' : ''} class="hover:text-brand-700 hover:underline inline-flex items-center gap-1 group">
+                <span>${escapeHtml(item.caseTitle || '-')}</span>
+                <i class="ph ph-arrow-square-out text-xs text-slate-400 group-hover:text-brand-700"></i>
               </a>
               ${item.summary ? `<div class="text-[11px] text-slate-400 mt-0.5 line-clamp-1">${escapeHtml(item.summary)}</div>` : ''}
             </td>
             <td class="py-3.5 px-4 text-xs text-slate-500 whitespace-nowrap">${escapeHtml(item.courseDate || '-')}</td>
             <td class="py-3.5 px-4 text-xs text-slate-600 whitespace-nowrap">${escapeHtml(item.professor || '-')}</td>
             <td class="py-3.5 px-4 text-right whitespace-nowrap">
-              <a href="${targetUrl}" class="inline-flex items-center gap-1 text-xs font-semibold text-brand-700 hover:text-brand-900">
-                <span>前往</span>
-                <i class="ph-bold ph-arrow-up-right text-xs"></i>
+              <a href="${targetUrl}" ${isExternal ? 'target="_blank" rel="noopener noreferrer"' : ''} class="inline-flex items-center gap-1 text-xs font-semibold text-brand-700 hover:text-brand-900">
+                <span>開啟</span>
+                <i class="ph-bold ph-arrow-square-out text-xs"></i>
               </a>
             </td>
           </tr>
