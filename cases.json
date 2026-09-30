@@ -15,4 +15,36 @@
     "targetUrl": "./Merge/week2.html",
     "summary": "併購如何驅動公司成長?併購可能涉及的法律規範面臨壓力下的併購 ? 策略與併購決策規劃"
   }
+  {
+    "courseName": "併購策略與實務",
+    "caseTitle": "斯汽車公司併購勞斯萊斯汽車製造公司商標爭議個案",
+    "courseDate": "2026-10-24",
+    "professor": "馮震宇",
+    "targetUrl": "./Merge/week3-1.html",
+    "summary": "併購交易架構之建構 與實地查核（Due Diligence）"
+  }
+  {
+    "courseName": "併購策略與實務",
+    "caseTitle": "Apple 的iPad 商標之併購",
+    "courseDate": "2026-10-24",
+    "professor": "馮震宇",
+    "targetUrl": "./Merge/week3-2.html",
+    "summary": "併購交易架構之建構與實地查核（Due Diligence）"
+  }
+  {
+    "courseName": "併購策略與實務",
+    "caseTitle": "Silver Sales Company (Ivey case 909M95)",
+    "courseDate": "2026-11-02",
+    "professor": "馮震宇",
+    "targetUrl": "./Merge/week4.html",
+    "summary": "如何處理併購中所面臨的智財問題"
+  }
+  {
+    "courseName": "併購策略與實務",
+    "caseTitle": "中國砂輪(A)",
+    "courseDate": "2026-11-07",
+    "professor": "黃國峯",
+    "targetUrl": "./Merge/week5.html",
+    "summary": "何時併購合理？成功和失敗的併購有哪些不同特徵？"
+  }
 ]
