@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Silver Sales Company 個案深度互動解析系統</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            brand: {
+              silver: '#0284c7', // Sky Blue
+              ring: '#4f46e5',   // Indigo
+              accent: '#ea580c', // Orange/Amber
+              rose: '#e11d48'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #f8fafc; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 6px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    .tab-btn.active {
+      background-color: #eef2ff;
+      border-color: #6366f1;
+      color: #3730a3;
+      box-shadow: 0 1px 2px 0 rgba(99, 102, 241, 0.1);
+    }
+    .table-scroll-container {
+      max-height: 68vh;
+      overflow-y: auto;
+      overflow-x: auto;
+      position: relative;
+    }
+    .sticky-thead th {
+      position: sticky;
+      top: 0;
+      background-color: #f1f5f9;
+      z-index: 30;
+      box-shadow: inset 0 -2px 0 #cbd5e1, 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col antialiased selection:bg-indigo-500 selection:text-white">
+
+  <!-- Header Section -->
+  <header class="border-b border-slate-200 bg-white sticky top-0 z-50 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+      <div class="flex items-center space-x-4">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-sky-600 via-indigo-600 to-amber-500 flex items-center justify-center shadow-md font-black text-2xl text-white tracking-wider">
+          SSC
+        </div>
+        <div>
+          <div class="flex items-center gap-3">
+            <h1 class="text-2xl font-extrabold tracking-tight text-slate-900">Silver Sales Company 個案深度互動解析系統</h1>
+            <span class="text-sm px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 font-semibold border border-indigo-200">Ivey 9B09M095</span>
+          </div>
+          <p class="text-base text-slate-600 mt-1">創辦人的汗水權益（Sweat Equity）、控股母廠綁定、代理人衝突與個人退場僵局（Exit Dilemma）</p>
+        </div>
+      </div>
+
+      <!-- Quick Metrics Pills -->
+      <div class="flex items-center gap-3 flex-wrap text-sm">
+        <div class="px-4 py-2 rounded-xl bg-sky-50 border border-sky-200 flex items-center gap-2.5 shadow-sm">
+          <span class="w-2.5 h-2.5 rounded-full bg-sky-500 animate-pulse"></span>
+          <span class="text-slate-600 font-medium">Frank Ring 控股:</span>
+          <span class="font-bold text-sky-700 text-base">62% (絕對控制)</span>
+        </div>
+        <div class="px-4 py-2 rounded-xl bg-amber-50 border border-amber-200 flex items-center gap-2.5 shadow-sm">
+          <span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span>
+          <span class="text-slate-600 font-medium">Grant Silver 股權:</span>
+          <span class="font-bold text-amber-700 text-base">31% (汗水權益)</span>
+        </div>
+        <div class="px-4 py-2 rounded-xl bg-rose-50 border border-rose-200 flex items-center gap-2.5 shadow-sm">
+          <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+          <span class="text-slate-600 font-medium">2003.04 現金缺口:</span>
+          <span class="font-bold text-rose-700 text-base">約 $10 萬美元</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex space-x-3 border-t border-slate-200 overflow-x-auto py-2.5 text-base">
+      <button onclick="switchTab('timeline')" id="btn-timeline" class="tab-btn active px-5 py-2.5 rounded-xl font-semibold text-slate-700 hover:text-slate-900 transition flex items-center gap-2.5 border border-transparent">
+        <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        全景脈絡時間軸
+      </button>
+      <button onclick="switchTab('ecosystem')" id="btn-ecosystem" class="tab-btn px-5 py-2.5 rounded-xl font-semibold text-slate-700 hover:text-slate-900 transition flex items-center gap-2.5 border border-transparent">
+        <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+        陣營與人物關係網絡
+      </button>
+      <button onclick="switchTab('events')" id="btn-events" class="tab-btn px-5 py-2.5 rounded-xl font-semibold text-slate-700 hover:text-slate-900 transition flex items-center gap-2.5 border border-transparent">
+        <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+        關鍵事件檢索表
+      </button>
+      <button onclick="switchTab('insights')" id="btn-insights" class="tab-btn px-5 py-2.5 rounded-xl font-semibold text-slate-700 hover:text-slate-900 transition flex items-center gap-2.5 border border-transparent">
+        <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+        個案核心困境與退場分析
+      </button>
+      <button onclick="switchTab('translation')" id="btn-translation" class="tab-btn px-5 py-2.5 rounded-xl font-semibold text-slate-700 hover:text-slate-900 transition flex items-center gap-2.5 border border-transparent">
+        <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path></svg>
+        英翻中：個案完整翻譯
+      </button>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- ==================== TAB 1: 全景時間軸 ==================== -->
+    <div id="tab-timeline" class="space-y-8">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-5 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <div>
+          <h2 class="text-xl font-bold text-slate-900 flex items-center gap-3">
+            <span>📅 全景脈絡時間軸</span>
+            <span class="text-sm font-normal text-slate-500">（1982～2003 年歷史關鍵轉折，標註 🔥【重要！】之核心事件）</span>
+          </h2>
+          <p class="text-base text-slate-600 mt-1">追蹤母廠創始、合資成立專屬授權公司、嚴重品管危機到英國買方登場的完整歷程。</p>
+        </div>
+        <div class="flex flex-wrap gap-2" id="timeline-filters">
+          <button onclick="filterTimeline('all')" class="timeline-f-btn active px-4 py-2 rounded-lg text-sm font-semibold bg-indigo-600 text-white border border-indigo-600 transition shadow-sm">全部事件 (9)</button>
+          <button onclick="filterTimeline('important')" class="timeline-f-btn px-4 py-2 rounded-lg text-sm font-semibold bg-rose-50 text-rose-700 border border-rose-300 hover:bg-rose-100 transition">🔥 僅看【重要！】事件</button>
+          <button onclick="filterTimeline('stage1')" class="timeline-f-btn px-4 py-2 rounded-lg text-sm font-semibold bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">1982-96 技術創始</button>
+          <button onclick="filterTimeline('stage2')" class="timeline-f-btn px-4 py-2 rounded-lg text-sm font-semibold bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">1996-00 擴張與危機</button>
+          <button onclick="filterTimeline('stage3')" class="timeline-f-btn px-4 py-2 rounded-lg text-sm font-semibold bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">2001-03 困局與生機</button>
+        </div>
+      </div>
+
+      <div class="relative pl-8 sm:pl-10 space-y-7 before:absolute before:left-4 sm:before:left-5 before:top-4 before:bottom-4 before:w-1 before:bg-slate-200" id="timeline-list">
+
+        <!-- Item 1: 1982 -->
+        <div class="timeline-item relative group" data-stage="stage1" data-important="false">
+          <div class="absolute -left-8 sm:-left-10 top-2 w-8 h-8 rounded-full bg-white border-2 border-slate-400 flex items-center justify-center text-xs text-slate-600 font-bold shadow-sm">1</div>
+          <div class="bg-white hover:bg-slate-50 transition border border-slate-200 rounded-2xl p-6 shadow-sm">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+              <span class="text-sm font-bold text-sky-700 font-mono tracking-wider">1982 年</span>
+              <span class="text-xs px-3 py-1 rounded-full bg-slate-100 text-slate-700 font-semibold">母廠創立 · 技術起源</span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900">Frank Ring 與 Ken Dunlap 創辦 Ring Manufacturing</h3>
+            <p class="text-base text-slate-700 mt-2 leading-relaxed">
+              <strong>關鍵主體：</strong>Frank Ring、Ken Dunlap、NASA、Exxon、Ring Manufacturing。<br>
+              <strong>事件情節：</strong>在 Frank Ring 家中起家，研發出首款聲學多普勒剖面儀（Acoustic Profiler），並獲得 NASA 與 Exxon 的初期資助完成技術商業化。母廠主要專注於海洋、河流等自然開放水域的聲學流速量測儀器。
+            </p>
+          </div>
+        </div>
+
+        <!-- Item 2: 1996.02 -->
+        <div class="timeline-item relative group" data-stage="stage1" data-important="true">
+          <div class="absolute -left-8 sm:-left-10 top-2 w-8 h-8 rounded-full bg-white border-2 border-indigo-600 flex items-center justify-center text-xs text-indigo-700 font-bold shadow-sm">2</div>
+          <div class="bg-white hover:bg-slate-50 transition border-2 border-indigo-300 rounded-2xl p-6 shadow-sm">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+              <div class="flex items-center gap-2">
+                <span class="text-sm font-bold text-indigo-700 font-mono tracking-wider">1996 年</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-rose-600 text-white font-extrabold text-xs shadow-sm">🔥【重要！】公司設立與架構鎖定</span>
+              </div>
+              <span class="text-xs px-3 py-1 rounded-full bg-indigo-50 text-indigo-800 border border-indigo-200 font-semibold">永久專屬授權 · 控股綁定</span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900">成立 Silver Sales Company (SSC)，授予人造渠道專屬永久銷售權</h3>
+            <p class="text-base text-slate-700 mt-2 leading-relaxed">
+              <strong>關鍵主體：</strong>Grant Silver、Frank Ring、Mark Miller、Ring Manufacturing、Silver Sales Company。<br>
+              <strong>事件情節：</strong>Mark Miller 發現聲學技術可應用於人造渠道與管道；Ring 與 Silver 共同創辦 SSC。Ring 佔股 62%（絕對控股），Silver 佔 31%，Miller 佔 3.5%，前員工佔 3.5%。合約賦予 SSC 在「人造渠道（fabricated channels）」領域享有 Ring 技術與產品的<strong>永久專屬銷售授權</strong>，奠定了 SSC 日後營運的命脈。
+            </p>
+          </div>
+        </div>
+
+        <!-- Item 3: 1998-1999 -->
+        <div class="timeline-item relative group" data-stage="stage2" data-important="false">
+          <div class="absolute -left-8 sm:-left-10 top-2 w-8 h-8 rounded-full bg-white border-2 border-slate-400 flex items-center justify-center text-xs text-slate-600 font-bold shadow-sm">3</div>
+          <div class="bg-white hover:bg-slate-50 transition border border-slate-200 rounded-2xl p-6 shadow-sm">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+              <span class="text-sm font-bold text-slate-600 font-mono tracking-wider">1998 ～ 1999 年</span>
+              <span class="text-xs px-3 py-1 rounded-full bg-slate-100 text-slate-700 font-semibold">雙軌業務 · 拓建銷售網絡</span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900">業務雙軌成形：高精度流量計銷售與水管狀況評估服務</h3>
+            <p class="text-base text-slate-700 mt-2 leading-relaxed">
+              <strong>關鍵主體：</strong>Grant Silver、土木工程顧問機構、水務局。<br>
+              <strong>事件情節：</strong>Grant Silver 發揮其註冊土木工程師與承包商人脈，建立「高精準流量計（±2% 誤差）」與「管線狀況檢測服務（CCTV、潛水員檢測）」兩大事業線。產品被政府工程顧問大量指名採用，SSC 陸續在全美 6 處設立辦事處。
+            </p>
+          </div>
+        </div>
+
+        <!-- Item 4: 2000 -->
+        <div class="timeline-item relative group" data-stage="stage2" data-important="true">
+          <div class="absolute -left-8 sm:-left-10 top-2 w-8 h-8 rounded-full bg-white border-2 border-rose-500 flex items-center justify-center text-xs text-rose-600 font-bold shadow-sm">4</div>
+          <div class="bg-white hover:bg-slate-50 transition border-2 border-rose-300 rounded-2xl p-6 shadow-sm">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+              <div class="flex items-center gap-2">
+                <span class="text-sm font-bold text-rose-600 font-mono tracking-wider">2000 年</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-rose-600 text-white font-extrabold text-xs shadow-sm">🔥【重要！】重大品質危機</span>
+              </div>
+              <span class="text-xs px-3 py-1 rounded-full bg-rose-50 text-rose-800 border border-rose-200 font-semibold">母廠瑕疵 · 轉移定價矛盾</span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900">流量計爆發近 25% 滲漏與電子失效危機，單一故障重創 SSC 1 萬美元</h3>
+            <p class="text-base text-slate-700 mt-2 leading-relaxed">
+              <strong>關鍵主體：</strong>Ring 產線、Mark Miller、Grant Silver、SSC 技術服務團隊。<br>
+              <strong>事件情節：</strong>Ring 製造的流量計在客戶管道中發生高達 25% 的滲漏與電路故障。每次故障需 SSC 派員搶修，單次成本高達 10,000 美元並抽調現場人力。儘管 Ring 以加成 40% 毛利的轉移定價售予 SSC，卻無法提供穩定品質，暴露了生產高度依賴母廠的脆弱性。
+            </p>
+          </div>
+        </div>
+
+        <!-- Item 5: 2001 -->
+        <div class="timeline-item relative group" data-stage="stage3" data-important="true">
+          <div class="absolute -left-8 sm:-left-10 top-2 w-8 h-8 rounded-full bg-white border-2 border-amber-500 flex items-center justify-center text-xs text-amber-600 font-bold shadow-sm">5</div>
+          <div class="bg-white hover:bg-slate-50 transition border-2 border-amber-300 rounded-2xl p-6 shadow-sm">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+              <div class="flex items-center gap-2">
+                <span class="text-sm font-bold text-amber-600 font-mono tracking-wider">2001 年（兩年前）</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-rose-600 text-white font-extrabold text-xs shadow-sm">🔥【重要！】退場策略覺醒</span>
+              </div>
+              <span class="text-xs px-3 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200 font-semibold">墨西哥泳池深思 · 汗水權益變現困局</span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900">Grant Silver 於墨西哥渡假村反思個人退場機制（Exit Strategy）</h3>
+            <p class="text-base text-slate-700 mt-2 leading-relaxed">
+              <strong>關鍵主體：</strong>Grant Silver。<br>
+              <strong>事件情節：</strong>Silver 坐在度假村泳池旁陷入沉思：「我如何才能將多年注入的汗水權益（Sweat Equity）變現？能否將白手起家的心血換成真金白銀？」他深刻意識到，因為 Frank Ring 擁有 62% 絕對控制權，且排斥出售、合併或改變股權，自己恐將永遠淪為「高薪打工仔」而無法套現。
+            </p>
+          </div>
+        </div>
+
+        <!-- Item 6: 2002.07 -->
+        <div class="timeline-item relative group" data-stage="stage3" data-important="false">
+          <div class="absolute -left-8 sm:-left-10 top-2 w-8 h-8 rounded-full bg-white border-2 border-slate-400 flex items-center justify-center text-xs text-slate-600 font-bold shadow-sm">6</div>
+          <div class="bg-white hover:bg-slate-50 transition border border-slate-200 rounded-2xl p-6 shadow-sm">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+              <span class="text-sm font-bold text-slate-600 font-mono tracking-wider">2002 年 07 月</span>
+              <span class="text-xs px-3 py-1 rounded-full bg-slate-100 text-slate-700 font-semibold">財務代理衝突 · 悲觀預測爭議</span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900">CFO Jake Demetrius 編制財務預測，兩位總裁發生嚴重爭吵</h3>
+            <p class="text-base text-slate-700 mt-2 leading-relaxed">
+              <strong>關鍵主體：</strong>Jake Demetrius (兼任 CFO)、Grant Silver、Frank Ring。<br>
+              <strong>事件情節：</strong>兼任兩家公司 CFO 的 Demetrius 編制 SSC 預測表，預測 2003 年營收僅 480 萬美元；Silver 則依據業務管線強烈主張能達 600 萬美元。隨後 Silver 更發現現金流試算表存在多處重大錯誤，向 Frank Ring 抗議時，Ring 卻推諉卸責並刻意將話題轉移至工程技術，加劇信任危機。
+            </p>
+          </div>
+        </div>
+
+        <!-- Item 7: 2002 全年結算 -->
+        <div class="timeline-item relative group" data-stage="stage3" data-important="false">
+          <div class="absolute -left-8 sm:-left-10 top-2 w-8 h-8 rounded-full bg-white border-2 border-slate-400 flex items-center justify-center text-xs text-slate-600 font-bold shadow-sm">7</div>
+          <div class="bg-white hover:bg-slate-50 transition border border-slate-200 rounded-2xl p-6 shadow-sm">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+              <span class="text-sm font-bold text-slate-600 font-mono tracking-wider">2002 年底</span>
+              <span class="text-xs px-3 py-1 rounded-full bg-slate-100 text-slate-700 font-semibold">營運體量 · 雙方規模對比</span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900">Ring 母廠營收達 2,500 萬美元，SSC 營收衝上 400 萬美元</h3>
+            <p class="text-base text-slate-700 mt-2 leading-relaxed">
+              <strong>關鍵主體：</strong>Ring Manufacturing (135人)、Silver Sales Company (30餘人)。<br>
+              <strong>事件情節：</strong>Ring 母廠取得 ISO-9001 認證，擁 3 萬平方英尺廠房；SSC 員工擴充至 30 多人，業務拓展至英、法、日、韓及加拿大代表處。SSC 在抗景氣循環的水務市場表現強勁，但長期銷售週期導致資金回流速度緩慢。
+            </p>
+          </div>
+        </div>
+
+        <!-- Item 8: 2003.03 -->
+        <div class="timeline-item relative group" data-stage="stage3" data-important="true">
+          <div class="absolute -left-8 sm:-left-10 top-2 w-8 h-8 rounded-full bg-white border-2 border-rose-600 flex items-center justify-center text-xs text-rose-600 font-bold shadow-sm">8</div>
+          <div class="bg-white hover:bg-slate-50 transition border-2 border-rose-300 rounded-2xl p-6 shadow-sm">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+              <div class="flex items-center gap-2">
+                <span class="text-sm font-bold text-rose-600 font-mono tracking-wider">2003 年 03 月</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-rose-600 text-white font-extrabold text-xs shadow-sm">🔥【重要！】現金缺口與信貸拒絕</span>
+              </div>
+              <span class="text-xs px-3 py-1 rounded-full bg-rose-50 text-rose-800 border border-rose-200 font-semibold">流動性危機 · 成長陷阱</span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900">SSC 預估 4 月面臨 10 萬美元現金短缺，CFO Demetrius 事前拒絕申請銀行信貸</h3>
+            <p class="text-base text-slate-700 mt-2 leading-relaxed">
+              <strong>關鍵主體：</strong>Grant Silver、Jake Demetrius。<br>
+              <strong>事件情節：</strong>由於流量計漫長的銷售與驗收收款週期（3 個月至 1 年），業務成長越快，營運資金需求越迫切。Silver 早已預見並要求提早向銀行申請信用額度（Line of Credit），卻遭到 Demetrius 斷然拒絕，導致 SSC 4 月份面臨 10 萬美元的立即性現金斷流危機。
+            </p>
+          </div>
+        </div>
+
+        <!-- Item 9: 2003.Early -->
+        <div class="timeline-item relative group" data-stage="stage3" data-important="true">
+          <div class="absolute -left-8 sm:-left-10 top-2 w-8 h-8 rounded-full bg-white border-2 border-purple-600 flex items-center justify-center text-xs text-purple-600 font-bold shadow-sm ring-4 ring-purple-100">9</div>
+          <div class="bg-purple-50/70 border-2 border-purple-500 rounded-2xl p-6 shadow-md">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+              <div class="flex items-center gap-2">
+                <span class="text-sm font-bold text-purple-700 font-mono tracking-wider">2003 年初（個案當下）</span>
+                <span class="px-3 py-1 rounded-full bg-purple-600 text-white font-black text-xs shadow-md animate-pulse">🔥【重要！】退場契機：英國買方提議</span>
+              </div>
+              <span class="text-xs px-3 py-1 rounded-full bg-white text-purple-700 border border-purple-300 font-bold">併購要約 · 賽局決策點</span>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900">英國代表 Mandelson 與 Barrier 到訪，正式表達併購/合資意向並具備資金支持</h3>
+            <p class="text-base text-slate-800 mt-2 leading-relaxed font-medium">
+              <strong>關鍵主體：</strong>Andrew Mandelson、Mark Barrier、Grant Silver、Frank Ring、英國潛在投資人。<br>
+              <strong>事件情節：</strong>英國代理商高層訪美，對產品高度讚賞並建立良好私人交情，正式提出透過併購（Acquisition）或合併深化雙方股權關係，並透露已有金主支持。Silver 苦思：「這是否是我退場困局的唯一解方？」然而，面臨 Ring 的 62% 控股、專屬授權合約價值與母廠對控制權的偏執，如何架構交易成為全案核心決策斷點。
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ==================== TAB 2: 陣營與人物關係圖 ==================== -->
+    <div id="tab-ecosystem" class="hidden space-y-8">
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-5">
+        <div>
+          <h2 class="text-xl font-bold text-slate-900 flex items-center gap-3">
+            <span>🕸️ 陣營結構、股權穿透與利益衝突關係網絡</span>
+            <span class="text-sm px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 font-semibold border border-indigo-200">5大核心人物與關鍵主體</span>
+          </h2>
+          <p class="text-base text-slate-600 mt-1">完整呈現母廠絕對控股、兼任 CFO 控制閥門、汗水權益受困與外部英國買方介入之賽局。</p>
+        </div>
+        <div class="flex flex-wrap gap-2 text-sm">
+          <button onclick="setRelationMode('all')" id="rel-btn-all" class="rel-filter-btn active px-4 py-2 rounded-xl font-semibold bg-indigo-600 text-white border border-indigo-600 shadow-sm transition">全景脈絡</button>
+          <button onclick="setRelationMode('equity')" id="rel-btn-equity" class="rel-filter-btn px-4 py-2 rounded-xl font-semibold bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">① 股權與控制權牢籠</button>
+          <button onclick="setRelationMode('conflict')" id="rel-btn-conflict" class="rel-filter-btn px-4 py-2 rounded-xl font-semibold bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">② 雙重 CFO 代理衝突</button>
+          <button onclick="setRelationMode('transfer')" id="rel-btn-transfer" class="rel-filter-btn px-4 py-2 rounded-xl font-semibold bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">③ 移轉定價與品管矛盾</button>
+          <button onclick="setRelationMode('exit')" id="rel-btn-exit" class="rel-filter-btn px-4 py-2 rounded-xl font-semibold bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">④ 英國併購退場通道</button>
+        </div>
+      </div>
+
+      <div id="relation-narrative-bar" class="p-5 rounded-2xl bg-indigo-50/80 border-2 border-indigo-200 text-slate-800 transition-all">
+        <div class="flex items-center gap-3 font-bold text-indigo-900 text-lg mb-1">
+          <span id="rel-narrative-title">🌐 全景陣營關係網絡</span>
+        </div>
+        <p id="rel-narrative-desc" class="text-base text-slate-700 leading-relaxed">
+          清晰劃分「Silver Sales Company 經營團隊（左）」、「衝突樞紐：兼任 CFO 控制閥（中）」與「Ring Manufacturing 母廠控股方 / 外部英國買方（右）」。點選上方按鈕可即時切換高亮路徑。
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+        <!-- Column 1: SSC Operations Camp -->
+        <div id="col-ssc" class="lg:col-span-4 bg-sky-50/40 border-2 border-sky-300 rounded-2xl p-5 space-y-4 transition-all">
+          <div class="flex items-center justify-between border-b border-sky-200 pb-3">
+            <div class="flex items-center gap-2.5">
+              <span class="w-3.5 h-3.5 rounded-full bg-sky-600 ring-4 ring-sky-100"></span>
+              <h3 class="font-extrabold text-sky-900 text-lg">SSC 經營與業務銷售端</h3>
+            </div>
+            <span class="text-xs px-2.5 py-1 rounded-md bg-sky-100 text-sky-800 font-bold">第一線市場 · 30餘人</span>
+          </div>
+
+          <!-- Person: Grant Silver -->
+          <div onclick="showPersonDetail('silver')" class="node-card cursor-pointer bg-white hover:bg-sky-50/50 border-2 border-sky-300 rounded-xl p-4 shadow-sm transition hover:shadow-md" data-roles="silver,all,equity,conflict,transfer,exit">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-bold text-slate-900 text-base">Grant Silver</h4>
+              <span class="text-xs px-2.5 py-0.5 rounded-full bg-sky-100 text-sky-800 font-bold">總裁 / 創辦人 (31%)</span>
+            </div>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              加州註冊土木工程師、特許承包商。以豐富水務人脈帶領 SSC 從零成長至 400 萬美元營收。因持有少數股權（31%）且母廠拒絕改變股權，身陷無法將汗水權益（Sweat Equity）變現的個人退場困境。
+            </p>
+            <div class="mt-2 text-xs font-semibold text-sky-700 pt-2 border-t border-slate-100">
+              📌 核心訴求：尋求合法合理之個人股權變現（Exit Strategy）
+            </div>
+          </div>
+
+          <!-- Person: Mark Miller -->
+          <div onclick="showPersonDetail('miller')" class="node-card cursor-pointer bg-white hover:bg-slate-50 border border-slate-200 rounded-xl p-4 shadow-sm transition" data-roles="miller,all,equity,transfer">
+            <div class="flex items-center justify-between mb-1">
+              <h4 class="font-bold text-slate-900 text-base">Mark Miller (Ph.D.)</h4>
+              <span class="text-xs px-2 py-0.5 rounded bg-slate-100 text-slate-700">副總裁 (3.5%)</span>
+            </div>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              加州大學流體力學物理博士。原任職於 Ring，首倡將海洋聲學技術轉化應用於人造渠道管網。主導 SSC 技術端，並與 Ring 產線工程師協商解決漏水與電路瑕疵。
+            </p>
+          </div>
+
+          <!-- Asset: Exclusive Perpetual License -->
+          <div class="node-card bg-white border-2 border-dashed border-sky-300 rounded-xl p-4" data-roles="all,equity,exit">
+            <div class="flex items-center gap-2 mb-1.5">
+              <span class="text-base">📜</span>
+              <h4 class="font-bold text-sky-900 text-sm">關鍵無形資產：人造渠道永久專屬授權</h4>
+            </div>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              SSC 擁有 Ring Manufacturing 在「人造渠道（fabricated channels）」水流量測技術的<strong>永久專屬銷售權（exclusive license in perpetuity）</strong>。這是 SSC 賴以生存的核心護城河。
+            </p>
+          </div>
+        </div>
+
+        <!-- Column 2: Conflict Hub CFO -->
+        <div id="col-cfo" class="lg:col-span-4 bg-rose-50/40 border-2 border-rose-300 rounded-2xl p-5 space-y-4 transition-all">
+          <div class="flex items-center justify-between border-b border-rose-200 pb-3">
+            <div class="flex items-center gap-2.5">
+              <span class="w-3.5 h-3.5 rounded-full bg-rose-600 ring-4 ring-rose-100 animate-pulse"></span>
+              <h3 class="font-extrabold text-rose-900 text-lg">衝突樞紐：雙重兼任財務控制閥</h3>
+            </div>
+            <span class="text-xs px-2.5 py-1 rounded-md bg-rose-100 text-rose-800 font-bold">代理衝突核心</span>
+          </div>
+
+          <!-- Person: Jake Demetrius -->
+          <div onclick="showPersonDetail('demetrius')" class="node-card cursor-pointer bg-white hover:bg-rose-50/60 border-2 border-rose-400 rounded-xl p-4 shadow-sm transition hover:shadow-md" data-roles="demetrius,all,conflict,transfer">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-bold text-rose-950 text-base">Jake Demetrius</h4>
+              <span class="text-xs px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-800 font-bold">雙重兼任 CFO</span>
+            </div>
+            <p class="text-sm text-slate-700 leading-relaxed">
+              Ring 母廠的財務長，受 Frank Ring 支薪並對其單向負責；卻同時兼任 SSC 的 CFO，全權掌管兩家公司之間的資金調撥、銀行信貸與國稅局交涉。其助理則由 SSC 出資聘僱負責記帳。
+            </p>
+            <div class="mt-2 text-xs font-semibold text-rose-800 bg-rose-50 p-2.5 rounded-lg border border-rose-200 space-y-1">
+              <div>⚠️ <strong>財務代理失職：</strong>拒絕為 SSC 提前申請銀行信貸，引爆 4 月 10 萬美元資金缺口。</div>
+              <div>⚠️ <strong>數字造假疑雲：</strong>現金流試算表漏洞百出，刻意壓低預測，引發 Silver 強烈不信任。</div>
+            </div>
+          </div>
+
+          <!-- Transfer Pricing & Margin Squeeze Card -->
+          <div class="node-card bg-white border border-rose-200 rounded-xl p-4" data-roles="all,conflict,transfer">
+            <div class="flex items-center gap-2 mb-1.5">
+              <span class="text-base">💸</span>
+              <h4 class="font-bold text-rose-900 text-sm">內部移轉定價抽取機制</h4>
+            </div>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Ring 依據「製造成本（含分攤人工負擔）」加成<strong>40% 毛利</strong>作為移轉價格（Transfer Price）售予 SSC。母廠在出貨當下即旱澇保收鎖定 40% 毛利，而將長達數月至一年的收款風險與品管維修成本完全甩給 SSC 承擔。
+            </p>
+          </div>
+        </div>
+
+        <!-- Column 3: Ring Parent & UK Acquirers -->
+        <div id="col-ring" class="lg:col-span-4 bg-indigo-50/40 border-2 border-indigo-300 rounded-2xl p-5 space-y-4 transition-all">
+          <div class="flex items-center justify-between border-b border-indigo-200 pb-3">
+            <div class="flex items-center gap-2.5">
+              <span class="w-3.5 h-3.5 rounded-full bg-indigo-600 ring-4 ring-indigo-100"></span>
+              <h3 class="font-extrabold text-indigo-900 text-lg">控股母廠與外部英國買方</h3>
+            </div>
+            <span class="text-xs px-2.5 py-1 rounded-md bg-indigo-100 text-indigo-800 font-bold">智財與資本方</span>
+          </div>
+
+          <!-- Person: Frank Ring -->
+          <div onclick="showPersonDetail('ring')" class="node-card cursor-pointer bg-white hover:bg-indigo-50/50 border-2 border-indigo-300 rounded-xl p-4 shadow-sm transition" data-roles="ring,all,equity,conflict,transfer,exit">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-bold text-slate-900 text-base">Frank Ring</h4>
+              <span class="text-xs px-2.5 py-0.5 rounded-full bg-indigo-100 text-indigo-800 font-bold">Ring 總裁 / 大股東 (62%)</span>
+            </div>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              工程師出身，技術狂熱且注重掌控權。其妻子與兩名兒子皆為 Ring 員工（家族企業色彩濃烈）。視 SSC 為其技術專屬出海口，但對企業併購、釋出控制權或讓 Silver 套現持極端排斥態度。
+            </p>
+          </div>
+
+          <!-- UK Buyers: Mandelson & Barrier -->
+          <div onclick="showPersonDetail('uk_buyers')" class="node-card cursor-pointer bg-white hover:bg-amber-50/50 border-2 border-amber-300 rounded-xl p-4 shadow-sm transition" data-roles="uk_buyers,all,exit">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-bold text-amber-950 text-base">Mandelson & Barrier</h4>
+              <span class="text-xs px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 font-bold">英國代表 / 潛在買方</span>
+            </div>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              英國經銷商代表，對 SSC 產品高度認可，且背後擁有潛在投資人銀彈支持。2003 年初正式向 Silver 提議透過股權併購或合併（Merger & Acquisition）建立深層資本關係，為 Silver 帶來退場生機。
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Dedicated Dynamic Character Detail Modal / Inspector Box -->
+      <div id="person-inspector" class="p-6 rounded-2xl bg-white border-2 border-indigo-300 shadow-md transition-all">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-indigo-100 pb-3 mb-3">
+          <div class="flex items-center gap-3">
+            <span id="insp-badge" class="px-3.5 py-1 rounded-full text-xs font-bold bg-indigo-600 text-white shadow-sm">點選人物查看</span>
+            <h4 id="insp-name" class="text-xl font-bold text-slate-900">點擊上方任意人物卡片或組織單元</h4>
+          </div>
+          <span id="insp-role" class="text-sm font-semibold text-indigo-700">互動式個案人物與利益網絡檔案</span>
+        </div>
+        <p id="insp-desc" class="text-base text-slate-700 leading-relaxed">
+          上方結構圖已將人物與組織拆解為三大模組：經銷經營團隊（Grant Silver）、雙重財務長（Jake Demetrius）與控股母廠及潛在買方（Frank Ring / UK Buyers）。您可點擊上方按鈕追蹤特定因果衝突，或點選任一卡片檢視深度解析。
+        </p>
+      </div>
+    </div>
+
+    <!-- ==================== TAB 3: 關鍵事件檢索表 ==================== -->
+    <div id="tab-events" class="hidden space-y-6">
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div class="relative flex-1">
+          <input type="text" id="event-search" oninput="searchEvents()" placeholder="輸入關鍵字搜尋事件（如：重要、授權、漏水、現金、英國、預測、Demetrius...）" class="w-full bg-slate-50 border border-slate-300 rounded-xl pl-11 pr-4 py-3 text-base text-slate-900 placeholder-slate-400 focus:outline-none focus:border-indigo-600 focus:bg-white transition">
+          <svg class="w-5 h-5 text-slate-400 absolute left-3.5 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+        </div>
+        <div class="flex items-center gap-2 flex-wrap text-sm">
+          <button onclick="filterEventTag('all')" class="ev-tag-btn active px-4 py-2 rounded-lg font-semibold bg-indigo-600 text-white border border-indigo-600 shadow-sm transition">全部事件</button>
+          <button onclick="filterEventTag('重要')" class="ev-tag-btn px-4 py-2 rounded-lg font-semibold bg-rose-50 text-rose-700 border border-rose-300 hover:bg-rose-100 transition">🔥 僅看【重要！】事件</button>
+          <button onclick="filterEventTag('公司治理')" class="ev-tag-btn px-4 py-2 rounded-lg font-semibold bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">公司治理與股權</button>
+          <button onclick="filterEventTag('財務危機')" class="ev-tag-btn px-4 py-2 rounded-lg font-semibold bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">財務與現金流</button>
+          <button onclick="filterEventTag('品管與技術')" class="ev-tag-btn px-4 py-2 rounded-lg font-semibold bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">品管與營運</button>
+        </div>
+      </div>
+
+      <div class="table-scroll-container rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <table class="w-full text-left text-base text-slate-800 border-collapse">
+          <thead class="sticky-thead bg-slate-100 text-slate-700 uppercase font-mono text-sm border-b border-slate-200">
+            <tr>
+              <th class="py-4 px-3 w-14 text-center">序號</th>
+              <th class="py-4 px-3 w-28 text-center">重要度</th>
+              <th class="py-4 px-4 w-32">時間點</th>
+              <th class="py-4 px-4 w-52">事件名稱</th>
+              <th class="py-4 px-4 w-52">核心人物與主體</th>
+              <th class="py-4 px-5 min-w-[280px]">詳細情節與關鍵證據</th>
+              <th class="py-4 px-5 w-56">商業與戰略衝擊</th>
+              <th class="py-4 px-3 w-28 text-center">屬性標籤</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200" id="event-table-body">
+            <!-- Event 1 -->
+            <tr class="hover:bg-slate-50/80 transition" data-tag="公司治理" data-important="false">
+              <td class="py-4 px-3 text-center font-mono text-slate-500 font-bold">01</td>
+              <td class="py-4 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-xs font-medium">一般</span></td>
+              <td class="py-4 px-4 font-mono font-bold text-slate-600">1982 年</td>
+              <td class="py-4 px-4 font-bold text-slate-900">Ring Manufacturing 成立</td>
+              <td class="py-4 px-4 text-slate-700 font-medium">Frank Ring, Ken Dunlap, NASA, Exxon</td>
+              <td class="py-4 px-5 text-slate-600 leading-relaxed">在 Frank Ring 家中起步，首創聲學多普勒剖面技術量測水流，獲得政府機構與企業贊助商業化。</td>
+              <td class="py-4 px-5 text-slate-700 font-medium">奠定水文量測技術專利與製造護城河，成為日後 SSC 技術母體。</td>
+              <td class="py-4 px-3 text-center"><span class="px-2.5 py-1 rounded-full bg-blue-50 text-blue-800 text-xs font-semibold border border-blue-200 whitespace-nowrap">公司治理</span></td>
+            </tr>
+
+            <!-- Event 2 -->
+            <tr class="hover:bg-slate-50/80 transition" data-tag="公司治理" data-important="true">
+              <td class="py-4 px-3 text-center font-mono text-slate-500 font-bold">02</td>
+              <td class="py-4 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-rose-600 text-white text-xs font-bold shadow-sm whitespace-nowrap">🔥【重要！】</span></td>
+              <td class="py-4 px-4 font-mono font-bold text-indigo-700">1996 年</td>
+              <td class="py-4 px-4 font-bold text-slate-900">SSC 成立與永久專屬授權</td>
+              <td class="py-4 px-4 text-slate-700 font-medium">Grant Silver, Frank Ring, Mark Miller</td>
+              <td class="py-4 px-5 text-slate-600 leading-relaxed">登記為加州 C 型企業，Ring 控有 62% 股權，Silver 持股 31%。合約載明 SSC 享有 Ring 技術在人造渠道的「永久專屬銷售授權」。</td>
+              <td class="py-4 px-5 text-slate-700 font-medium">形成控制權結構性失衡：Ring 握有生殺大權，Silver 淪為被動少數股東。</td>
+              <td class="py-4 px-3 text-center"><span class="px-2.5 py-1 rounded-full bg-blue-50 text-blue-800 text-xs font-semibold border border-blue-200 whitespace-nowrap">公司治理</span></td>
+            </tr>
+
+            <!-- Event 3 -->
+            <tr class="hover:bg-slate-50/80 transition" data-tag="品管與技術" data-important="false">
+              <td class="py-4 px-3 text-center font-mono text-slate-500 font-bold">03</td>
+              <td class="py-4 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-xs font-medium">一般</span></td>
+              <td class="py-4 px-4 font-mono font-bold text-slate-600">1996-1999</td>
+              <td class="py-4 px-4 font-bold text-slate-900">雙軌業務模式建立</td>
+              <td class="py-4 px-4 text-slate-700 font-medium">Grant Silver, 各地水務局, 土木顧問</td>
+              <td class="py-4 px-5 text-slate-600 leading-relaxed">建立 ±2% 超高精準度流量計銷售，以及下水道管網 CCTV 檢測與狀況評估服務兩大營收支柱。</td>
+              <td class="py-4 px-5 text-slate-700 font-medium">業務具高度抗景氣循環能力，但流量計長達數月至一年的工程銷售週期加劇資金沉澱。</td>
+              <td class="py-4 px-3 text-center"><span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-800 text-xs font-semibold border border-emerald-200 whitespace-nowrap">品管與技術</span></td>
+            </tr>
+
+            <!-- Event 4 -->
+            <tr class="hover:bg-slate-50/80 transition" data-tag="品管與技術" data-important="true">
+              <td class="py-4 px-3 text-center font-mono text-slate-500 font-bold">04</td>
+              <td class="py-4 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-rose-600 text-white text-xs font-bold shadow-sm whitespace-nowrap">🔥【重要！】</span></td>
+              <td class="py-4 px-4 font-mono font-bold text-rose-600">2000 年</td>
+              <td class="py-4 px-4 font-bold text-slate-900">流量計 25% 滲漏品管危機</td>
+              <td class="py-4 px-4 text-slate-700 font-medium">Ring 產線, Mark Miller, Grant Silver</td>
+              <td class="py-4 px-5 text-slate-600 leading-relaxed">安裝於客戶管道的流量計高達近 25% 出現滲漏或電路故障，單次維修成本高達 10,000 美元並抽調現場工程師。</td>
+              <td class="py-4 px-5 text-slate-700 font-medium">嚴重侵蝕 SSC 獲利與客戶信任，更突顯母廠加價 40% 出貨卻無法控管品質之利益矛盾。</td>
+              <td class="py-4 px-3 text-center"><span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-800 text-xs font-semibold border border-emerald-200 whitespace-nowrap">品管與技術</span></td>
+            </tr>
+
+            <!-- Event 5 -->
+            <tr class="hover:bg-slate-50/80 transition" data-tag="公司治理" data-important="true">
+              <td class="py-4 px-3 text-center font-mono text-slate-500 font-bold">05</td>
+              <td class="py-4 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-rose-600 text-white text-xs font-bold shadow-sm whitespace-nowrap">🔥【重要！】</span></td>
+              <td class="py-4 px-4 font-mono font-bold text-amber-600">2001 年</td>
+              <td class="py-4 px-4 font-bold text-slate-900">墨西哥渡假村退場省思</td>
+              <td class="py-4 px-4 text-slate-700 font-medium">Grant Silver</td>
+              <td class="py-4 px-5 text-slate-600 leading-relaxed">Silver 在泳池旁自問如何將汗水權益（Sweat Equity）變現。意識到 Ring 牢牢把持 62% 股權且拒絕任何釋股，自己將無法分享公司成長實質紅利。</td>
+              <td class="py-4 px-5 text-slate-700 font-medium">確立 Silver 迫切需要個人退場機制（Exit Strategy）之核心思維，為後續談判鋪墊。</td>
+              <td class="py-4 px-3 text-center"><span class="px-2.5 py-1 rounded-full bg-blue-50 text-blue-800 text-xs font-semibold border border-blue-200 whitespace-nowrap">公司治理</span></td>
+            </tr>
+
+            <!-- Event 6 -->
+            <tr class="hover:bg-slate-50/80 transition" data-tag="財務危機" data-important="false">
+              <td class="py-4 px-3 text-center font-mono text-slate-500 font-bold">06</td>
+              <td class="py-4 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-xs font-medium">一般</span></td>
+              <td class="py-4 px-4 font-mono font-bold text-slate-600">2002.07</td>
+              <td class="py-4 px-4 font-bold text-slate-900">財務長編制爭議預測與衝突</td>
+              <td class="py-4 px-4 text-slate-700 font-medium">Jake Demetrius, Grant Silver, Frank Ring</td>
+              <td class="py-4 px-5 text-slate-600 leading-relaxed">Demetrius 編制悲觀預測（2003 年營收 480 萬），Silver 依據訂單堅持為 600 萬。Silver 指出試算表存在重大錯誤，Ring 卻推諉卸責並轉移話題至技術。</td>
+              <td class="py-4 px-5 text-slate-700 font-medium">雙方信任基礎徹底崩解，證實兼任 CFO 無法公正維護 SSC 獨立利益。</td>
+              <td class="py-4 px-3 text-center"><span class="px-2.5 py-1 rounded-full bg-purple-50 text-purple-800 text-xs font-semibold border border-purple-200 whitespace-nowrap">財務危機</span></td>
+            </tr>
+
+            <!-- Event 7 -->
+            <tr class="hover:bg-slate-50/80 transition" data-tag="財務危機" data-important="false">
+              <td class="py-4 px-3 text-center font-mono text-slate-500 font-bold">07</td>
+              <td class="py-4 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-xs font-medium">一般</span></td>
+              <td class="py-4 px-4 font-mono font-bold text-slate-600">2002 年底</td>
+              <td class="py-4 px-4 font-bold text-slate-900">SSC 營收突破 400 萬美元</td>
+              <td class="py-4 px-4 text-slate-700 font-medium">Silver Sales Company</td>
+              <td class="py-4 px-5 text-slate-600 leading-relaxed">SSC 規模擴充至 30 多人，全年營收達 400 萬美元；母廠 Ring 營收達 2,500 萬美元。雙方距離僅兩條街。</td>
+              <td class="py-4 px-5 text-slate-700 font-medium">證明市場對產品的高度需求與商業潛力，但資產負債表顯示股東權益仍呈現負值赤字（Deficit）。</td>
+              <td class="py-4 px-3 text-center"><span class="px-2.5 py-1 rounded-full bg-purple-50 text-purple-800 text-xs font-semibold border border-purple-200 whitespace-nowrap">財務危機</span></td>
+            </tr>
+
+            <!-- Event 8 -->
+            <tr class="hover:bg-slate-50/80 transition" data-tag="財務危機" data-important="true">
+              <td class="py-4 px-3 text-center font-mono text-slate-500 font-bold">08</td>
+              <td class="py-4 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-rose-600 text-white text-xs font-bold shadow-sm whitespace-nowrap">🔥【重要！】</span></td>
+              <td class="py-4 px-4 font-mono font-bold text-rose-600">2003.03</td>
+              <td class="py-4 px-4 font-bold text-slate-900">4 月 10 萬美元現金流斷流危機</td>
+              <td class="py-4 px-4 text-slate-700 font-medium">Grant Silver, Jake Demetrius</td>
+              <td class="py-4 px-5 text-slate-600 leading-relaxed">Silver 估計下個月將產生 10 萬美元現金缺口。Silver 曾提早要求申請銀行信貸額度，但 Demetrius 執意拒絕。</td>
+              <td class="py-4 px-5 text-slate-700 font-medium">陷入「成長性破產」險境：營收成長越快，應收帳款與存貨沉澱越巨，母廠掐住財務咽喉。</td>
+              <td class="py-4 px-3 text-center"><span class="px-2.5 py-1 rounded-full bg-purple-50 text-purple-800 text-xs font-semibold border border-purple-200 whitespace-nowrap">財務危機</span></td>
+            </tr>
+
+            <!-- Event 9 -->
+            <tr class="hover:bg-rose-50/60 transition bg-rose-50/30" data-tag="公司治理" data-important="true">
+              <td class="py-4 px-3 text-center font-mono text-rose-700 font-extrabold">09</td>
+              <td class="py-4 px-3 text-center"><span class="px-2.5 py-1 rounded-full bg-rose-600 text-white text-xs font-black shadow-md whitespace-nowrap animate-pulse">🔥【重要！】</span></td>
+              <td class="py-4 px-4 font-mono text-rose-700 font-extrabold">2003 年初</td>
+              <td class="py-4 px-4 font-extrabold text-slate-900">英國代表提議併購與退場決局</td>
+              <td class="py-4 px-4 text-slate-800 font-semibold">Mandelson, Barrier, Silver, Ring</td>
+              <td class="py-4 px-5 text-slate-800 font-medium leading-relaxed">英國代理商代表表達併購意願且背後有金主資助。Silver 苦思能否藉此出脫 31% 股權變現，抑或推動三方聯盟。</td>
+              <td class="py-4 px-5 text-rose-700 font-bold leading-relaxed">個案核心斷點：如何架構一筆 Ring 願意接受、專屬授權合約不被廢止且能讓 Silver 順利套現的退場交易。</td>
+              <td class="py-4 px-3 text-center"><span class="px-2.5 py-1 rounded-full bg-rose-600 text-white text-xs font-bold shadow-sm whitespace-nowrap">關鍵決策</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ==================== TAB 4: 個案核心困境與退場分析 ==================== -->
+    <div id="tab-insights" class="hidden space-y-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Dilemma 1 -->
+        <div class="bg-white border-2 border-indigo-200 rounded-2xl p-6 shadow-sm">
+          <div class="flex items-center gap-3 mb-4">
+            <span class="px-3 py-1 rounded-full bg-indigo-100 text-indigo-800 font-mono text-sm font-bold border border-indigo-300">困境 01</span>
+            <h3 class="font-extrabold text-slate-900 text-lg">汗水權益（Sweat Equity）的變現牢籠</h3>
+          </div>
+          <p class="text-base text-slate-700 leading-relaxed mb-4">
+            Grant Silver 作為 SSC 總裁，薪資水準雖與一般科技高階主管相當，但他投入了無可計量的個人信譽、專業人脈與心血。然而，因 Frank Ring 持有 62% 絕對控股權且拒絕任何形式的出售或股權重組，Silver 的 31% 股權缺乏流動性（Illiquid），深陷「少數股東折價（Minority Discount）」與母廠綁定之中。
+          </p>
+          <div class="text-sm text-slate-700 bg-slate-50 p-4 rounded-xl border border-slate-200 leading-relaxed">
+            📌 <strong>治理反思</strong>：合資設立專屬銷售公司時，少數創始股東若未在公司章程中預先載明<strong>隨賣權（Tag-along Rights）</strong>、<strong>強制買回條款（Buy-Sell Agreement）</strong>或定期退場評估機制，極易淪為大股東的「高級打工仔」。
+          </div>
+        </div>
+
+        <!-- Dilemma 2 -->
+        <div class="bg-white border-2 border-rose-200 rounded-2xl p-6 shadow-sm">
+          <div class="flex items-center gap-3 mb-4">
+            <span class="px-3 py-1 rounded-full bg-rose-100 text-rose-800 font-mono text-sm font-bold border border-rose-300">困境 02</span>
+            <h3 class="font-extrabold text-slate-900 text-lg">雙重兼任財務長的致命代理衝突</h3>
+          </div>
+          <p class="text-base text-slate-700 leading-relaxed mb-4">
+            Jake Demetrius 身為 Ring 母廠財務長，薪水由 Frank Ring 發放；卻同時兼任 SSC 財務長並掌控現金流與銀行關係。當 SSC 成長急需銀行信用額度時，Demetrius 卻拒絕申請；其提供的現金流模型更屢現重大錯誤，刻意隱瞞經營實況。
+          </p>
+          <div class="text-sm text-slate-700 bg-slate-50 p-4 rounded-xl border border-slate-200 leading-relaxed">
+            📌 <strong>代理理論（Agency Problem）</strong>：兼任 CFO 的忠誠義務完全偏向出資 62% 的母廠大股東，甚至可能透過內部移轉定價與資金調撥，將利潤「合法抽逃」至母廠，剝削附屬公司的少數股東利益。
+          </div>
+        </div>
+
+        <!-- Dilemma 3 -->
+        <div class="bg-white border-2 border-amber-200 rounded-2xl p-6 shadow-sm">
+          <div class="flex items-center gap-3 mb-4">
+            <span class="px-3 py-1 rounded-full bg-amber-100 text-amber-800 font-mono text-sm font-bold border border-amber-300">困境 03</span>
+            <h3 class="font-extrabold text-slate-900 text-lg">移轉定價抽取與成長性破產陷阱</h3>
+          </div>
+          <p class="text-base text-slate-700 leading-relaxed mb-4">
+            Ring 以成本加成 <strong>40% 毛利</strong>的移轉定價售予 SSC，出貨即鎖定利潤；而 SSC 卻要承擔 3 個月至 1 年的漫長驗收收款期與 2000 年高達 25% 的漏水維修損失（每次高達 10,000 美元）。SSC「賣得越多、營運資金墊付越深」，形成典型的「成長性現金斷流（Overtrading）」。
+          </p>
+          <div class="text-sm text-slate-700 bg-slate-50 p-4 rounded-xl border border-slate-200 leading-relaxed">
+            📌 <strong>財務啟示</strong>：高成長製造/工程專利銷售企業若無匹配的供應鏈信用期與短期週轉額度，營業額快速上升反而會引致毀滅性破產。
+          </div>
+        </div>
+
+        <!-- Dilemma 4 -->
+        <div class="bg-white border-2 border-emerald-200 rounded-2xl p-6 shadow-sm">
+          <div class="flex items-center gap-3 mb-4">
+            <span class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 font-mono text-sm font-bold border border-emerald-300">困境 04</span>
+            <h3 class="font-extrabold text-slate-900 text-lg">無形資產依賴：永久授權與母廠專利脫鉤</h3>
+          </div>
+          <p class="text-base text-slate-700 leading-relaxed mb-4">
+            英國買方若只買下 Grant Silver 的 31% 股權，仍將受制於 Frank Ring 的 62% 控股；若想全面併購 SSC，又必須仰賴 Ring 擁有全部智財與製造技術。合約中「永久專屬銷售權」在股權發生惡意變更時是否會引發終止條款，成為交易最大懸念。
+          </p>
+          <div class="text-sm text-slate-700 bg-slate-50 p-4 rounded-xl border border-slate-200 leading-relaxed">
+            📌 <strong>併購架構設計</strong>：英國買方不能單純收購股權，必須設計「管理層收購（MBO）搭配長期獨家供貨協議」或「母子三方換股聯合體」，確保技術供貨不斷供。
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ Section -->
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <h3 class="font-extrabold text-slate-900 text-lg flex items-center gap-2">
+          <span>🎓</span> 史丹佛與 Ivey 個案教學思考題深入剖析
+        </h3>
+        
+        <!-- FAQ 1 -->
+        <div class="border border-slate-200 rounded-xl p-4">
+          <button onclick="toggleFaq('faq1')" class="w-full text-left flex justify-between items-center font-bold text-slate-800 text-base">
+            <span>Q1. Silver Sales Company 到底價值多少？（如何評價這家公司？）</span>
+            <span id="faq1-icon" class="text-indigo-600 text-xl">+</span>
+          </button>
+          <div id="faq1" class="hidden mt-3 text-slate-600 text-sm leading-relaxed border-t border-slate-100 pt-3 space-y-2">
+            <p><strong>帳面價值法（Book Value）：</strong>截至 2001 年底，SSC 股東權益赤字為 -17 萬美元，帳面資產為 146.4 萬美元，淨值為負，傳統資產法無法反映價值。</p>
+            <p><strong>倍數法（Multiples Method）：</strong>2002 年 SSC 營收為 400 萬美元，2003 年預測營收 480 萬～600 萬美元，預估稅前獲利約 13 萬～30 萬美元。若依水務高科技儀器產業市銷率（P/S）1.0x～1.5x 計算，SSC 整體價值約在 <strong>400 萬至 600 萬美元</strong>；若依本益比（P/E）15x～20x，價值約在 <strong>300 萬至 450 萬美元</strong>。</p>
+            <p><strong>核心折價因素：</strong>若技術授權非絕對專屬，或母廠可隨意調高轉移價格（40% 毛利），SSC 實質上只是一家經銷商，需承受 30%～50% 的「關鍵供應商依賴折價」。</p>
+          </div>
+        </div>
+
+        <!-- FAQ 2 -->
+        <div class="border border-slate-200 rounded-xl p-4">
+          <button onclick="toggleFaq('faq2')" class="w-full text-left flex justify-between items-center font-bold text-slate-800 text-base">
+            <span>Q2. Grant Silver 的 31% 股權能賣給英國買方嗎？有何結構性障礙？</span>
+            <span id="faq2-icon" class="text-indigo-600 text-xl">+</span>
+          </button>
+          <div id="faq2" class="hidden mt-3 text-slate-600 text-sm leading-relaxed border-t border-slate-100 pt-3 space-y-2">
+            <p>英國買方（Mandelson & Barrier）絕不會花數百萬美元只購買 31% 的少數無表決控制權股權，因為 Frank Ring 擁有 62%，隨時可以在董事會否決任何營運提案，甚至撤換管理階層。</p>
+            <p><strong>結構性死結：</strong>Silver 的價值在於其個人的水務工程專業與土木承包商人脈；一旦 Silver 套現離去，SSC 的服務收入與政府關係將面臨腰斬風險。英國買方必須同時綁定 Silver 留任（Earn-out 與激勵合約），並設法讓 Frank Ring 同意出讓控制權。</p>
+          </div>
+        </div>
+
+        <!-- FAQ 3 -->
+        <div class="border border-slate-200 rounded-xl p-4">
+          <button onclick="toggleFaq('faq3')" class="w-full text-left flex justify-between items-center font-bold text-slate-800 text-base">
+            <span>Q3. 如何設計一個 Frank Ring 願意接受的交易結構？</span>
+            <span id="faq3-icon" class="text-indigo-600 text-xl">+</span>
+          </button>
+          <div id="faq3" class="hidden mt-3 text-slate-600 text-sm leading-relaxed border-t border-slate-100 pt-3 space-y-2">
+            <p><strong>洞悉 Frank Ring 的心理：</strong>Ring 是典型工程師性格，注重個人掌控力、技術聲譽與家族企業傳承（妻兒皆在母廠），對複雜資本操作不信任但對技術出海口有強烈需求。</p>
+            <p><strong>建議雙贏方案（二階段換股與專屬長期供貨）：</strong></p>
+            <ul class="list-disc list-inside pl-2 space-y-1">
+              <li>英國買方全面出資收購 SSC 100% 股權，給予 Ring 大筆現金回報（讓其母廠充實研發資本）。</li>
+              <li>簽訂長達 10～15 年的<strong>全球獨家製造供貨合約</strong>，承諾維持 Ring 母廠 40% 的代工毛利率，保障其家族企業生計。</li>
+              <li>給予 Silver 部分現金套現（例如先收回 50% 汗水權益），剩餘部分轉換為英國新控股公司股權，並綁定 3～5 年執行長任期（Earn-out 績效機制）。</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== TAB 5: 英翻中：個案完整翻譯 ==================== -->
+    <div id="tab-translation" class="hidden space-y-8">
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-xl font-bold text-slate-900 flex items-center gap-3">
+            <span>📖 英翻中：SILVER SALES COMPANY 個案全文完整翻譯</span>
+            <span class="text-sm px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 font-semibold border border-emerald-200">Ivey 9B09M095 繁體中文全譯本</span>
+          </h2>
+          <p class="text-base text-slate-600 mt-1">包含原案 8 頁全文、產品技術細節、服務結構、財務爭議與 Exhibit 1、Exhibit 2 完整財務報表。</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs px-3 py-1.5 rounded-lg bg-slate-100 text-slate-600 font-mono">原著：Gary Whitney & Stephen Standifird (Ivey Publishing)</span>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-slate-200 p-8 shadow-sm space-y-8 text-base text-slate-700 leading-relaxed">
+
+        <!-- Section 1 -->
+        <section class="space-y-4">
+          <h3 class="text-xl font-extrabold text-slate-900 border-b border-slate-200 pb-2">前言與個人退場困境</h3>
+          <p>
+            Silver Sales Company（席爾弗銷售公司）總裁格蘭特·席爾弗（Grant Silver）回想著最近來自英國的安德魯·曼德森（Andrew Mandelson）和馬克·巴里爾（Mark Barrier）的拜訪，心想：「這是我困境的解答嗎？」他回憶起兩年前坐在墨西哥度假勝地的泳池旁捫心自問：「我如何才能從這家公司拿回我所投入的價值？我白手起家創立這項事業的辛勤汗水，究竟是否有變現的一天？我需要一個合情合理的個人退場策略（Personal Exit Strategy）。」
+          </p>
+          <p>
+            Silver Sales Company 專門銷售用於量測原水與廢水流量的流量計。公司銷售的流量計全部由 Ring Manufacturing（環形製造公司）獨家供應，而 Ring Manufacturing 擁有這些流量計的智慧財產權與製造生產工藝。
+          </p>
+          <p>
+            Silver Sales Company 擁有永久專屬授權（exclusive license in perpetuity），可在所有「人造渠道（fabricated channels）」領域銷售 Ring Manufacturing 的所有技術與產品。
+          </p>
+          <p>
+            席爾弗身為總裁，其薪資雖然與其他科技公司高階主管相當，但他投入了大量的個人心力與汗水權益（Sweat Equity），將 Silver Sales Company 從無到有打造成業界的強勁競爭者。Silver Sales Company 的成功，很大程度上歸功於席爾弗在水資源量測行業的深厚背景與豐沛人脈。席爾弗最擔憂的是，他可能永遠無法享受到自己股權所帶來的增值成果，因為 Ring Manufacturing 的總裁法蘭克·林恩（Frank Ring）掌握了 Silver Sales Company 的絕對控股權。林恩似乎極不願意以任何可能讓席爾弗透過出售、合併或其他所有權變更獲利的方式放棄或出讓控制權。
+          </p>
+        </section>
+
+        <!-- Section 2 -->
+        <section class="space-y-4">
+          <h3 class="text-xl font-extrabold text-slate-900 border-b border-slate-200 pb-2">RING MANUFACTURING（環形製造公司）</h3>
+          <p>
+            林恩是 Ring Manufacturing 的總裁兼創辦人之一，持有該公司的大多數股份。而 Ring Manufacturing 則持有 Silver Sales Company 62% 的股權。林恩是一位工程師，對公司的技術卓越性深感自豪。林恩的妻子和兩個兒子均為公司員工。
+          </p>
+          <p>
+            Ring Manufacturing 2002 年的營收約為 2,500 萬美元。公司聘雇了 135 名科學家、工程師、技術人員以及銷售與支援人員。公司座落於一座佔地 30,000 平方英尺、通過 ISO-9001 認證的現代化廠房中，內部包含先進的工程設計室、實驗室、製造車間與測試區域。林恩對公司 2003 年的前景感到非常樂觀。
+          </p>
+          <p>
+            Ring Manufacturing 開發了聲學多普勒剖面技術（Acoustic Profiling Technology），並將其應用於固定式儀器上，用於量測河流、溪流、河口、明渠以及港灣的水流。該公司其他儀器則安裝在航行中的船隻上，用以量測船速、縱搖與橫搖。此外，公司還擁有一套量測近表層水流的聲學監測系統。2003 年，Ring Manufacturing 的官方網站上共展示了 13 種主要產品。
+          </p>
+          <p>
+            Ring Manufacturing 與 Silver Sales Company 的辦公大樓位於同一個小型商業園區內，兩者相距僅約兩個街區。
+          </p>
+        </section>
+
+        <!-- Section 3 -->
+        <section class="space-y-4">
+          <h3 class="text-xl font-extrabold text-slate-900 border-b border-slate-200 pb-2">SILVER SALES COMPANY（席爾弗銷售公司）</h3>
+          <h4 class="font-bold text-slate-800 text-lg">公司創立</h4>
+          <p>
+            Silver Sales Company 於 1996 年依照加州法律成立為 C 型公司（California C corporation），旨在將 Ring Manufacturing 開發的聲學剖面技術商業化。Ring Manufacturing 開發了第一款能夠捕捉海洋、河流與湖泊中水流速度與方向完整剖面的海洋儀器。馬克·米勒（Mark Miller）在 Ring Manufacturing 任職期間認為，用於量測天然開放水域水流的相同技術，亦可用於量測人造渠道與管道中的流量。Silver Sales Company 正是為了開拓這一市場商機而設立。
+          </p>
+          <p>
+            Silver Sales Company 發展出兩大業務主線：<strong>流量計產品銷售</strong>與<strong>管網狀況評估服務</strong>。儘管最終用戶可能都是市政水務系統，但這兩條業務在某種程度上是相互獨立的；兩者的採購決策者不同、銷售週期不同，公司的日常營運方式也不同。Silver Sales Company 的流量計產品通常由土木工程師在設計由市、郡及其他水務機構建造維護的新建或既有給排水系統時指定採用。第二條業務線則是席爾弗土木工程師背景的延伸。公司為自來水和廢水處理機構提供專案服務，例如臨時流量監測專案（使用自家的流量計）、現場管線檢測，以及狀況評估以確定水務管網系統的腐蝕、滲漏、結構損壞等情況。
+          </p>
+          <p>
+            至 2003 年，Silver Sales Company 已發展至 30 多名員工。公司在洛杉磯、檀香山、達拉斯、塔爾薩、羅德島和肯塔基州設有辦事處，並在加拿大、英國、法國、日本和韓國擁有製造商銷售代表（代理商）。席爾弗認為需要迅速增設更多銷售辦事處，以把握土木工程師和水務機構對其高精度流量計日益增長的認可。Silver Sales Company 2002 年的營收約為 400 萬美元。總裁席爾弗預測 2003 年營收將達到 600 萬美元（參見附表 1 與附表 2）。
+          </p>
+          <p>
+            公司的產品與服務均具有高度抗景氣循環特性，因為無論總體經濟景氣如何波動，廢水的排放流動與管線設施的老化腐蝕都是客觀獨立發生的。
+          </p>
+
+          <h4 class="font-bold text-slate-800 text-lg">產品：高精度聲學流量計</h4>
+          <p>
+            Silver Sales Company 銷售用於量測大型管道和渠道水流的聲學多普勒流量計。該產品的量測精度顯著高於競爭對手的儀表，尤其在嚴苛與極端環境下表現尤為卓越。這些嚴苛環境包括：工程師需要量測清水或廢水，但管內水流呈現湍流、含有大量雜質髒污、流速異常緩慢或極快、逆向流動，或是管道處於非滿管狀態。競爭對手產品的精確度通常在實際流速的 ±10% 左右；而 Silver Sales Company 流量計的精度則高達 <strong>±2%</strong> 以內。市場上幾乎沒有直接同級的競爭對手，儘管有大約 10 家公司銷售精度較低、價格便宜許多的儀表。一套典型的 Silver Sales Company 流量計安裝費用約為 20,000 美元，而競爭對手的低精度儀表售價可能僅為 2,000 至 4,000 美元。
+          </p>
+          <p>
+            流量計的換能器（傳感器）能夠測量管道或渠道多個橫截面的流速。嵌入訊號處理軟體中的專利演算法會在數據採集時進行即時積分，並將其傳輸至製程儀表、個人電腦或其他終端設備。專利的換能器物理設計與信號處理演算法，賦予了該產品壓倒性的精度優勢。
+          </p>
+
+          <h4 class="font-bold text-slate-800 text-lg">工程檢測與評估服務</h4>
+          <p>
+            除銷售由 Ring 製造的流量計外，公司還執行廢水系統評估與流量監測服務。其檢測結果被廣泛應用於工程規劃與設計階段。公司服務包括：閉路電視（CCTV）管道內部檢測、人工進入管道檢測、人孔（沙井）、抽水泵站及其他相關附屬結構檢測、水質取樣，以及流量監測。
+          </p>
+          <p>
+            公司的部分專業服務轉包給外部專業廠商執行，包括潛水員或聲吶管道檢測、管道高壓清洗、管道與人孔腐蝕狀況檢驗、工程測量及土方開挖等。
+          </p>
+          <p>
+            服務通常直接銷售給政府管理機構（例如廢水處理廠），或銷售給為該機構提供服務的工程顧問公司。一旦合約敲定並執行完畢，公司即向客戶開具發票。大多數客戶在 30 至 60 天內付款。承包商的挑選主要取決於過往實績與個人信任關係。公司的服務合約通常是透過議價取得，而非公開競標；買方通常不會強硬砍價，傾向於接受報價（Price Takers）。
+          </p>
+
+          <h4 class="font-bold text-slate-800 text-lg">生產製造與 2000 年品質危機</h4>
+          <p>
+            Ring Manufacturing 在其同一工廠內同時生產自家產品與 Silver Sales Company 的產品。生產過程需要極高水準的精密工藝與裝配經驗，才能將壓電式換能器精確地嵌入流量計的外殼中。此外，製造商必須確保整套流量計能在清水或污水中連續運作數年而無需維護。
+          </p>
+          <p>
+            在 2000 年期間，由 Ring 製造並由 SSC 售出、安裝在客戶管道中的流量計，有<strong>近 25% 開始出現滲漏或電子電路失效故障</strong>。一旦發生這種情況，Silver Sales Company 必須緊急派遣人員前往現場搶修或更換。損壞的設備被送回 Ring 進行維修或更換。產品故障使 SSC 每次維修增加高達 10,000 美元的額外支出，不僅讓客戶深感不滿，更迫使 SSC 的技術服務人員從其他收費專案中抽離。馬克·米勒與 Ring 的工程師共同合作改進設計，取得了一定成效，但到 2003 年仍存在品質隱患。Ring 於 2002 年通過了 ISO-9001 認證。
+          </p>
+          <p>
+            Ring Manufacturing 銷售給 Silver Sales Company 的流量計內部移轉價格，是基於包含負擔人工（Burdened Labor）的製造成本，再加上使 Ring 獲取 <strong>40% 毛利率（Gross Margin）</strong>的加成來計算。負擔人工包括工資加上監督、培訓與行政間接費用的分攤。原本預期隨著出貨量上升與生產學習曲線推進，生產成本將逐步下降，進而降低內部移轉價格。
+          </p>
+
+          <h4 class="font-bold text-slate-800 text-lg">財務管理與代理人衝突</h4>
+          <p>
+            Ring Manufacturing 的財務長（CFO）傑克·德米特里厄斯（Jake Demetrius）同時兼任 Silver Sales Company 的財務長。德米特里厄斯的薪水由 Ring 發放，並直接向林恩彙報。而他的助理則由 Silver Sales Company 出資聘用，負責處理日常簿記會計。
+          </p>
+          <p>
+            德米特里厄斯身兼兩家公司 CFO 的職位，使他完全掌控了兩家公司之間的內部現金調撥，以及 SSC 與銀行、供應商、美國國稅局（IRS）等外部金融機構的關係。
+          </p>
+          <p>
+            席爾弗與德米特里厄斯之間關係極度緊張。例如，在兩位總裁（席爾弗與林恩）的一次正式對話中，席爾弗十分憤怒，因為德米特里厄斯或其助理為 SSC 編制的一份現金流試算表，被席爾弗查出存在多處重大錯誤，嚴重扭曲了公司的真實財務狀況。林恩的反應則是聲稱對此事毫不知情。當席爾弗堅持表示無法與一位帳目令人無法信任的 CFO 共事時，林恩數次刻意將對話焦點從人事管理爭端轉移到技術問題上。
+          </p>
+          <p>
+            流量計產品漫長的銷售週期經常導致公司面臨現金流緊張，因為公司成長越快，所需的營運週轉金就越龐大。至 2003 年 3 月，席爾弗預估公司下個月將出現約 <strong>100,000 美元</strong>的現金缺口。席爾弗早已預見這一問題並提出因應，但德米特里厄斯此前斷然拒絕提前向銀行申請信用貸款額度（Line of Credit）。
+          </p>
+
+          <h4 class="font-bold text-slate-800 text-lg">核心人物背景</h4>
+          <p>
+            <strong>格蘭特·席爾弗（Grant Silver）：</strong>擁有科羅拉多州立大學土木工程理學士學位。他是加州註冊專業工程師，並擁有加州特許總承包工程師執照。在創立 Silver Sales Company 之前，他曾任職於一家競爭對手的流量計製造商。他在土木工程規劃、設計與施工領域擁有豐富歷練，在污水基礎設施狀況評估領域擁有 13 年專業經驗。這一深厚背景為他在水務行業、特別是在工程採購人員心目中樹立了極高的技術權威與公信力。他持有 Silver Sales Company 31% 的股份。
+          </p>
+          <p>
+            <strong>馬克·米勒（Mark Miller）：</strong>副總裁，擁有加州大學物理學博士學位。他是流體力學領域的核心專家。他持有 Silver Sales Company 3.5% 的股份。
+          </p>
+          <p>
+            <strong>法蘭克·林恩（Frank Ring）：</strong>Ring Manufacturing 總裁，持有 Silver Sales Company 62% 的股份。剩餘 3.5% 股份由一名已離職的前員工持有。林恩與肯·鄧拉普（Ken Dunlap）於 1982 年基於他們研發的第一台聲學剖面儀共同創立了 Ring Manufacturing。在典型的高科技新創傳統中，Ring Manufacturing 起初誕生於林恩的家中進行研發。在獲得 NASA 與埃克森美孚（Exxon）的初期資助後完成產品研發，隨後搬入現代商辦大樓。
+          </p>
+        </section>
+
+        <!-- Section 4 -->
+        <section class="space-y-4">
+          <h3 class="text-xl font-extrabold text-slate-900 border-b border-slate-200 pb-2">水流量測行業背景</h3>
+          <p>
+            水資源管理大致可分為兩大範疇：<strong>原水（Raw Water）</strong>與<strong>廢水（Wastewater）</strong>。原水的精確量測對於水費計量與配水管理至關重要，全球乾旱缺水地區對量測精度最為敏感。廢水的精確量測則對於水污染控制與環境保護必不可少。
+          </p>
+          <p>
+            <strong>灌溉與原水：</strong>灌溉與原水計量是由買賣雙方的經濟利益驅動的，特別是在水資源稀缺昂貴的乾旱地區。傳統儀表的精確度普遍落在 ±10% 左右。換言之，一個被收取 1,000,000 加侖水費的機構，實際收到的水量可能低至 900,000 加侖，也可能高達 1,100,000 加侖。如此巨大的誤差往往導致數百萬美元的計費糾紛。
+          </p>
+          <p>
+            <strong>廢水：</strong>廢水的收集、輸送、處理與排放是公共衛生與防治污染的基本需求。若無妥善處理，將破壞飲用水、漁業與水上活動安全。多數已開發城市的廢水管網資產極為龐大，但普遍嚴重老化失修。美國環保署（EPA）估計需要耗資數千億美元來檢測評估現有基礎設施並進行修復與更新；此外，拉斯維加斯、鳳凰城等高速成長城市亦需龐大的新建投資。
+          </p>
+          <p>
+            <strong>流量計的採購流程：</strong>流量計通常是大型建設專案中的一小部分（例如在一個 1,000 萬美元的污水廠專案中，流量計可能僅佔 10 萬美元）。這些專案由水務局委託的土木工程顧問公司負責設計，工程師在設計圖紙中指定流量計規格後，由得標營造商統一採購安裝，最後由政府驗收付款。這個冗長流程使得銷售週期通常長達 3 個月至 1 年以上。
+          </p>
+        </section>
+
+        <!-- Section 5 -->
+        <section class="space-y-4">
+          <h3 class="text-xl font-extrabold text-slate-900 border-b border-slate-200 pb-2">近期發展：英國代表的併購要約與退場抉擇</h3>
+          <p>
+            一家在英國代理 Silver Sales Company 產品的經銷商對其流量計的性能印象深刻，其核心主管與席爾弗、米勒建立了極佳的工作默契，雙方在互訪出差期間曾到彼此家中作客。
+          </p>
+          <p>
+            這家英國公司正式表達了希望加深兩家公司企業合作關係（合併或併購）的強烈意向，並進一步透露已經有一位潛在投資人願意出資支持其併購計劃。席爾弗不禁思索，這是否能幫助他將過去幾年所創造的公司增值變現？但這同時也為他帶來了一連串嚴峻的考驗與疑問：
+          </p>
+          <ul class="list-disc list-inside space-y-2 pl-4 text-slate-700">
+            <li>鑑於 Frank Ring 持有 62% 控股權，且 Ring Manufacturing 擁有全部智財權，英國公司是否會願意單獨收購席爾弗 31% 的股權？</li>
+            <li>Silver Sales Company 擁有永久專屬銷售授權。這層授權關係價值幾何？這種專屬排他性對公司的估值究竟有多關鍵？</li>
+            <li>Silver Sales Company 的真實企業價值到底是多少？</li>
+            <li>如果沒有新的外部資金注入，公司還能支撐成長多久？如果有新資金注入，它能以多快的速度成長？</li>
+            <li>若英國公司願意收購整個 Silver Sales Company，他們該如何架構一項能讓 Frank Ring 點頭接受的交易？Ring 是否會願意將其在 SSC 的股權稀釋至 50% 以下？</li>
+            <li>在新的聯盟或架構下，席爾弗個人的管理職位與未來工作將會如何演變？</li>
+          </ul>
+          <p class="mt-4">
+            當席爾弗反覆思索這些問題時，他不斷提醒自己幾項殘酷的現實：
+          </p>
+          <ul class="list-disc list-inside space-y-1.5 pl-4 text-slate-700">
+            <li>Frank Ring 有時似乎對維持個人絕對控制權比實現最大的經濟價值更感興趣。</li>
+            <li>來自 CFO 德米特里厄斯的財務分析報告並非總是值得信賴。</li>
+            <li>Silver Sales Company 正頻繁遭遇嚴重的現金流短缺擠壓。</li>
+          </ul>
+        </section>
+
+        <!-- Exhibits Section -->
+        <section class="space-y-6 pt-6 border-t-2 border-slate-200">
+          <h3 class="text-xl font-extrabold text-slate-900">附錄財務報表（原案完整呈現）</h3>
+
+          <!-- Exhibit 1 Table -->
+          <div class="space-y-3">
+            <h4 class="font-bold text-slate-800 text-lg">附表 1：SILVER SALES COMPANY 資產負債表（單位：千美元）</h4>
+            <div class="table-scroll-container rounded-xl border border-slate-200 shadow-sm">
+              <table class="w-full text-sm text-left border-collapse">
+                <thead class="bg-slate-100 text-slate-700 font-mono">
+                  <tr>
+                    <th class="py-2.5 px-4">資產項目 (Assets)</th>
+                    <th class="py-2.5 px-3 text-right">1998</th>
+                    <th class="py-2.5 px-3 text-right">1999</th>
+                    <th class="py-2.5 px-3 text-right">2000</th>
+                    <th class="py-2.5 px-3 text-right">2001</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200">
+                  <tr class="bg-slate-50 font-bold"><td colspan="5" class="py-2 px-4 text-slate-800">流動資產 (Current Assets)</td></tr>
+                  <tr><td class="py-2 px-4 pl-8">現金 (Cash)</td><td class="text-right px-3 font-mono">7</td><td class="text-right px-3 font-mono">38</td><td class="text-right px-3 font-mono">26</td><td class="text-right px-3 font-mono">63</td></tr>
+                  <tr><td class="py-2 px-4 pl-8">應收帳款 (Trade receivables)</td><td class="text-right px-3 font-mono">428</td><td class="text-right px-3 font-mono">796</td><td class="text-right px-3 font-mono">792</td><td class="text-right px-3 font-mono">1,022</td></tr>
+                  <tr><td class="py-2 px-4 pl-8">存貨 (Inventory)</td><td class="text-right px-3 font-mono">95</td><td class="text-right px-3 font-mono">53</td><td class="text-right px-3 font-mono">302</td><td class="text-right px-3 font-mono">128</td></tr>
+                  <tr><td class="py-2 px-4 pl-8">遞延所得稅資產</td><td class="text-right px-3 font-mono">-</td><td class="text-right px-3 font-mono">3</td><td class="text-right px-3 font-mono">1</td><td class="text-right px-3 font-mono">9</td></tr>
+                  <tr class="font-bold bg-slate-50"><td class="py-2 px-4">流動資產合計</td><td class="text-right px-3 font-mono">530</td><td class="text-right px-3 font-mono">890</td><td class="text-right px-3 font-mono">1,121</td><td class="text-right px-3 font-mono">1,222</td></tr>
+                  <tr><td class="py-2 px-4">固定資產淨額 (Fixed Assets)</td><td class="text-right px-3 font-mono">340</td><td class="text-right px-3 font-mono">213</td><td class="text-right px-3 font-mono">122</td><td class="text-right px-3 font-mono">216</td></tr>
+                  <tr><td class="py-2 px-4">存出保證金 (Deposits)</td><td class="text-right px-3 font-mono">-</td><td class="text-right px-3 font-mono">-</td><td class="text-right px-3 font-mono">-</td><td class="text-right px-3 font-mono">4</td></tr>
+                  <tr><td class="py-2 px-4">長期遞延所得稅資產</td><td class="text-right px-3 font-mono">-</td><td class="text-right px-3 font-mono">26</td><td class="text-right px-3 font-mono">32</td><td class="text-right px-3 font-mono">22</td></tr>
+                  <tr class="font-black bg-indigo-50 text-indigo-900 border-t-2 border-indigo-200"><td class="py-2.5 px-4">資產總計 (Total Assets)</td><td class="text-right px-3 font-mono">870</td><td class="text-right px-3 font-mono">1,129</td><td class="text-right px-3 font-mono">1,275</td><td class="text-right px-3 font-mono">1,464</td></tr>
+                  
+                  <tr class="bg-slate-50 font-bold"><td colspan="5" class="py-2 px-4 text-slate-800">負債與股東權益 (Liabilities & Equity)</td></tr>
+                  <tr><td class="py-2 px-4 pl-8">一年內到期應付票據</td><td class="text-right px-3 font-mono">269</td><td class="text-right px-3 font-mono">150</td><td class="text-right px-3 font-mono">75</td><td class="text-right px-3 font-mono">76</td></tr>
+                  <tr><td class="py-2 px-4 pl-8">一年內到期融資租賃負債</td><td class="text-right px-3 font-mono">-</td><td class="text-right px-3 font-mono">-</td><td class="text-right px-3 font-mono">-</td><td class="text-right px-3 font-mono">26</td></tr>
+                  <tr><td class="py-2 px-4 pl-8">應付帳款 (Accounts payable)</td><td class="text-right px-3 font-mono">350</td><td class="text-right px-3 font-mono">304</td><td class="text-right px-3 font-mono">397</td><td class="text-right px-3 font-mono">397</td></tr>
+                  <tr><td class="py-2 px-4 pl-8">應計未付費用 (Accrued expenses)</td><td class="text-right px-3 font-mono">51</td><td class="text-right px-3 font-mono">41</td><td class="text-right px-3 font-mono">54</td><td class="text-right px-3 font-mono">178</td></tr>
+                  <tr><td class="py-2 px-4 pl-8">應付所得稅 (Income taxes payable)</td><td class="text-right px-3 font-mono">-</td><td class="text-right px-3 font-mono">7</td><td class="text-right px-3 font-mono">10</td><td class="text-right px-3 font-mono">7</td></tr>
+                  <tr class="font-bold bg-slate-50"><td class="py-2 px-4">流動負債合計</td><td class="text-right px-3 font-mono">670</td><td class="text-right px-3 font-mono">502</td><td class="text-right px-3 font-mono">536</td><td class="text-right px-3 font-mono">684</td></tr>
+                  <tr><td class="py-2 px-4">長期應付票據</td><td class="text-right px-3 font-mono">784</td><td class="text-right px-3 font-mono">835</td><td class="text-right px-3 font-mono">924</td><td class="text-right px-3 font-mono">848</td></tr>
+                  <tr><td class="py-2 px-4">長期融資租賃負債</td><td class="text-right px-3 font-mono">-</td><td class="text-right px-3 font-mono">-</td><td class="text-right px-3 font-mono">-</td><td class="text-right px-3 font-mono">102</td></tr>
+                  <tr class="font-bold"><td class="py-2 px-4">負債總額 (Total Liabilities)</td><td class="text-right px-3 font-mono">1,454</td><td class="text-right px-3 font-mono">1,337</td><td class="text-right px-3 font-mono">1,460</td><td class="text-right px-3 font-mono">1,634</td></tr>
+                  <tr class="font-bold text-rose-700 bg-rose-50/50"><td class="py-2 px-4">股東權益赤字 (Stockholder's Deficit)</td><td class="text-right px-3 font-mono">(584)</td><td class="text-right px-3 font-mono">(208)</td><td class="text-right px-3 font-mono">(185)</td><td class="text-right px-3 font-mono">(170)</td></tr>
+                  <tr class="font-black bg-indigo-50 text-indigo-900 border-t-2 border-indigo-200"><td class="py-2.5 px-4">負債與股東權益總計</td><td class="text-right px-3 font-mono">870</td><td class="text-right px-3 font-mono">1,129</td><td class="text-right px-3 font-mono">1,275</td><td class="text-right px-3 font-mono">1,464</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="text-xs text-slate-500 italic">資料來源：由 Ring Manufacturing 財務長 Jake Demetrius 編制之內部財務文件。</p>
+          </div>
+
+          <!-- Exhibit 2 Table -->
+          <div class="space-y-3">
+            <h4 class="font-bold text-slate-800 text-lg">附表 2：SILVER SALES COMPANY 損益表及財務預測（單位：千美元）</h4>
+            <div class="table-scroll-container rounded-xl border border-slate-200 shadow-sm">
+              <table class="w-full text-sm text-left border-collapse">
+                <thead class="bg-slate-100 text-slate-700 font-mono">
+                  <tr>
+                    <th class="py-2.5 px-4">會計科目</th>
+                    <th class="py-2.5 px-2 text-right">1998 (實)</th>
+                    <th class="py-2.5 px-2 text-right">1999 (實)</th>
+                    <th class="py-2.5 px-2 text-right">2000 (實)</th>
+                    <th class="py-2.5 px-2 text-right">2001 (實)</th>
+                    <th class="py-2.5 px-2 text-right">2002 (實)</th>
+                    <th class="py-2.5 px-2 text-right bg-amber-50">2003 (預)*</th>
+                    <th class="py-2.5 px-2 text-right">2004 (預)</th>
+                    <th class="py-2.5 px-2 text-right">2005 (預)</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200">
+                  <tr class="font-bold"><td class="py-2 px-4 text-slate-900">營業收入 (Sales)</td><td class="text-right px-2 font-mono">1,924</td><td class="text-right px-2 font-mono">2,154</td><td class="text-right px-2 font-mono">2,417</td><td class="text-right px-2 font-mono">3,317</td><td class="text-right px-2 font-mono">4,000</td><td class="text-right px-2 font-mono bg-amber-50 font-bold text-amber-800">4,800*</td><td class="text-right px-2 font-mono">5,600</td><td class="text-right px-2 font-mono">6,800</td></tr>
+                  <tr><td class="py-2 px-4 text-slate-600">營業成本 (COGS)</td><td class="text-right px-2 font-mono">826</td><td class="text-right px-2 font-mono">1,354</td><td class="text-right px-2 font-mono">1,580</td><td class="text-right px-2 font-mono">2,177</td><td class="text-right px-2 font-mono">2,400</td><td class="text-right px-2 font-mono bg-amber-50">3,200</td><td class="text-right px-2 font-mono">3,700</td><td class="text-right px-2 font-mono">4,400</td></tr>
+                  <tr class="font-bold bg-slate-50"><td class="py-2 px-4 text-slate-800">毛利 (Gross Profit)</td><td class="text-right px-2 font-mono">1,098</td><td class="text-right px-2 font-mono">800</td><td class="text-right px-2 font-mono">837</td><td class="text-right px-2 font-mono">1,140</td><td class="text-right px-2 font-mono">1,600</td><td class="text-right px-2 font-mono bg-amber-50">1,600</td><td class="text-right px-2 font-mono">1,900</td><td class="text-right px-2 font-mono">2,400</td></tr>
+                  <tr><td class="py-2 px-4 text-slate-600">營業費用 (SG&A)</td><td class="text-right px-2 font-mono">1,229</td><td class="text-right px-2 font-mono">398</td><td class="text-right px-2 font-mono">692</td><td class="text-right px-2 font-mono">1,047</td><td class="text-right px-2 font-mono">1,300</td><td class="text-right px-2 font-mono bg-amber-50">1,400</td><td class="text-right px-2 font-mono">1,400</td><td class="text-right px-2 font-mono">1,400</td></tr>
+                  <tr class="font-bold"><td class="py-2 px-4 text-slate-800">營業利益 (Operating Income)</td><td class="text-right px-2 font-mono text-rose-700">(131)</td><td class="text-right px-2 font-mono">402</td><td class="text-right px-2 font-mono">145</td><td class="text-right px-2 font-mono">93</td><td class="text-right px-2 font-mono">300</td><td class="text-right px-2 font-mono bg-amber-50">200</td><td class="text-right px-2 font-mono">500</td><td class="text-right px-2 font-mono">1,000</td></tr>
+                  <tr><td class="py-2 px-4 text-slate-600">利息費用 (Interest)</td><td class="text-right px-2 font-mono">78</td><td class="text-right px-2 font-mono">69</td><td class="text-right px-2 font-mono">93</td><td class="text-right px-2 font-mono">69</td><td class="text-right px-2 font-mono">70</td><td class="text-right px-2 font-mono bg-amber-50">68</td><td class="text-right px-2 font-mono">66</td><td class="text-right px-2 font-mono">60</td></tr>
+                  <tr class="font-black bg-indigo-50 text-indigo-900 border-t-2 border-indigo-200"><td class="py-2.5 px-4">稅前淨利 (Income before Tax)</td><td class="text-right px-2 font-mono text-rose-700">(209)</td><td class="text-right px-2 font-mono">333</td><td class="text-right px-2 font-mono">52</td><td class="text-right px-2 font-mono">24</td><td class="text-right px-2 font-mono">230</td><td class="text-right px-2 font-mono bg-amber-50 font-bold">132</td><td class="text-right px-2 font-mono font-bold">434</td><td class="text-right px-2 font-mono font-bold">940</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="text-xs text-slate-500 italic leading-relaxed">
+              * 附註：總裁 Grant Silver 預測 2003 年營收將達到 600 萬美元，他極度不認同 CFO Demetrius 所做的 480 萬美元保守預測。<br>
+              資料來源：財務預測由 Ring Manufacturing CFO Jake Demetrius 於 2002 年 7 月編制。部分數據已經過修改以保護商業機密。
+            </p>
+          </div>
+        </section>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="border-t border-slate-200 bg-white py-5 mt-10 text-center text-sm text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <span class="font-medium">Richard Ivey School of Business · Case 9B09M095 互動教學解析系統</span>
+      <span class="text-xs text-slate-400">個案研討：國際併購、創始人退出機制與少數股權治理</span>
+    </div>
+  </footer>
+
+  <script>
+    const personData = {
+      silver: {
+        name: "Grant Silver (總裁 / 創始人)",
+        badge: "SSC 核心靈魂 · 持股 31%",
+        role: "加州註冊土木工程師 · 13年水務管網專家",
+        desc: "將 SSC 從零打造成 400 萬美元年營收的靈魂人物。由於大股東 Frank Ring 掌控 62% 股權且拒絕任何稀釋或出讓，Silver 始終無法將投入的巨大「汗水權益（Sweat Equity）」合法變現，面臨嚴重的個人退場困境（Exit Strategy）。"
+      },
+      ring: {
+        name: "Frank Ring (Ring 總裁 / 大股東)",
+        badge: "技術母廠掌控者 · 控股 62%",
+        role: "聲學多普勒技術發明人 · 家族企業領導者",
+        desc: "極度自負的工程師性格，注重個人掌控力。妻兒皆在母廠工作。視 SSC 為其技術在人造渠道的專屬出海口，享受 40% 轉移定價毛利，但對外部股權重組、併購或讓 Silver 變現退場持極度抗拒態度。"
+      },
+      demetrius: {
+        name: "Jake Demetrius (兼任 CFO)",
+        badge: "雙重代理衝突焦點 · 財務控制閥",
+        role: "Ring CFO 兼任 SSC CFO",
+        desc: "薪資由 Frank Ring 支付並對其單向負責。全權掌控兩公司間資金調撥與銀行關係。拒絕為 SSC 申請急需的銀行信貸額度，導致 2003 年 4 月爆發 10 萬美元現金流危機，且其編制的財務預測充斥重大錯誤，引發嚴重信任危機。"
+      },
+      miller: {
+        name: "Mark Miller, Ph.D. (副總裁)",
+        badge: "核心物理學家 · 持股 3.5%",
+        role: "流體力學專家 · 技術轉移關鍵橋樑",
+        desc: "最早發掘將海洋聲學技術轉化應用於人造渠道管網的科學家。主導 SSC 與 Ring 產線工程師之間的技術協調，努力克服 2000 年發生的 25% 滲漏與電子電路故障等品質問題。"
+      },
+      uk_buyers: {
+        name: "Andrew Mandelson & Mark Barrier",
+        badge: "英國代理商代表 · 潛在收購方",
+        role: "海外通路夥伴 · 獲潛在投資人資金支持",
+        desc: "高度認可 SSC 流量計在歐洲市場的潛力，與 Silver 和 Miller 私交甚篤。於 2003 年初正式提出併購或合併（M&A）要約，為 Silver 帶來了個人退場的重大契機，但也引發了複雜的交易架構考驗。"
+      }
+    };
+
+    function showPersonDetail(key) {
+      const data = personData[key];
+      if (!data) return;
+      document.getElementById('insp-name').innerText = data.name;
+      document.getElementById('insp-badge').innerText = data.badge;
+      document.getElementById('insp-role').innerText = data.role;
+      document.getElementById('insp-desc').innerText = data.desc;
+
+      const inspector = document.getElementById('person-inspector');
+      inspector.classList.remove('bg-white', 'border-indigo-300');
+      inspector.classList.add('bg-amber-50', 'border-amber-300');
+      setTimeout(() => {
+        inspector.classList.remove('bg-amber-50', 'border-amber-300');
+        inspector.classList.add('bg-white', 'border-indigo-300');
+      }, 400);
+    }
+
+    function switchTab(tabId) {
+      const tabs = ['timeline', 'ecosystem', 'events', 'insights', 'translation'];
+      tabs.forEach(t => {
+        const el = document.getElementById('tab-' + t);
+        const btn = document.getElementById('btn-' + t);
+        if (t === tabId) {
+          if (el) el.classList.remove('hidden');
+          if (btn) btn.classList.add('active');
+        } else {
+          if (el) el.classList.add('hidden');
+          if (btn) btn.classList.remove('active');
+        }
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function filterTimeline(stage, btnElement) {
+      const targetBtn = btnElement || (window.event ? window.event.currentTarget || window.event.target : null);
+      if (targetBtn) {
+        document.querySelectorAll('.timeline-f-btn').forEach(b => {
+          b.classList.remove('active', 'bg-indigo-600', 'text-white', 'border-indigo-600');
+          b.classList.add('bg-white', 'text-slate-700', 'border-slate-300');
+        });
+        targetBtn.classList.add('active', 'bg-indigo-600', 'text-white', 'border-indigo-600');
+        targetBtn.classList.remove('bg-white', 'text-slate-700', 'border-slate-300');
+      }
+
+      const items = document.querySelectorAll('.timeline-item');
+      items.forEach(item => {
+        const itemStage = item.getAttribute('data-stage');
+        const isImportant = item.getAttribute('data-important') === 'true';
+        if (stage === 'all') {
+          item.style.display = 'block';
+        } else if (stage === 'important') {
+          item.style.display = isImportant ? 'block' : 'none';
+        } else if (itemStage === stage) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+
+    function searchEvents() {
+      const query = document.getElementById('event-search').value.toLowerCase();
+      const rows = document.querySelectorAll('#event-table-body tr');
+      rows.forEach(row => {
+        const text = row.innerText.toLowerCase();
+        row.style.display = text.includes(query) ? '' : 'none';
+      });
+    }
+
+    function filterEventTag(tag, btnElement) {
+      const targetBtn = btnElement || (window.event ? window.event.currentTarget || window.event.target : null);
+      if (targetBtn) {
+        document.querySelectorAll('.ev-tag-btn').forEach(b => {
+          b.classList.remove('active', 'bg-indigo-600', 'text-white', 'border-indigo-600');
+          b.classList.add('bg-white', 'text-slate-700', 'border-slate-300');
+        });
+        targetBtn.classList.add('active', 'bg-indigo-600', 'text-white', 'border-indigo-600');
+        targetBtn.classList.remove('bg-white', 'text-slate-700', 'border-slate-300');
+      }
+
+      const rows = document.querySelectorAll('#event-table-body tr');
+      rows.forEach(row => {
+        const rowTag = row.getAttribute('data-tag');
+        const isImportant = row.getAttribute('data-important') === 'true';
+        if (tag === 'all') {
+          row.style.display = '';
+        } else if (tag === '重要') {
+          row.style.display = isImportant ? '' : 'none';
+        } else if (rowTag === tag) {
+          row.style.display = '';
+        } else {
+          row.style.display = 'none';
+        }
+      });
+    }
+
+    function toggleFaq(id) {
+      const el = document.getElementById(id);
+      const icon = document.getElementById(id + '-icon');
+      if (el.classList.contains('hidden')) {
+        el.classList.remove('hidden');
+        icon.innerText = '−';
+      } else {
+        el.classList.add('hidden');
+        icon.innerText = '+';
+      }
+    }
+
+    const relationNarratives = {
+      all: {
+        title: "🌐 全景陣營關係網絡（結構重排版）",
+        desc: "呈現經銷經營團隊（Grant Silver）、雙重財務長（Jake Demetrius）與控股母廠及潛在買方（Frank Ring / UK Buyers）三方關係網絡。"
+      },
+      equity: {
+        title: "① 股權與控制權牢籠：31% 汗水權益 vs 62% 絕對掌控",
+        desc: "Grant Silver 傾注全部個人聲譽將業務拓展至 400 萬美元規模，但因 Frank Ring 掌握 62% 控制權且抗拒外部資本，Silver 股權流動性受困，形成嚴重的少數股東折價。"
+      },
+      conflict: {
+        title: "② 雙重 CFO 代理衝突：一人兼兩職與資金扼喉",
+        desc: "Jake Demetrius 薪水由 Ring 發放，卻兼任 SSC CFO 掌控資金調撥。拒絕申請信貸額度直接造成 2003 年 4 月的 10 萬美元現金短缺危機，且財務預測漏洞百出。"
+      },
+      transfer: {
+        title: "③ 移轉定價與品管矛盾：母廠包賺 40% vs 25% 滲漏代價",
+        desc: "Ring 藉由 40% 毛利的內部移轉定價旱澇保收，卻將長達一年的收款期與 2000 年爆發的 25% 漏水搶修成本（單次 1 萬美元）完全轉嫁給 SSC。"
+      },
+      exit: {
+        title: "④ 英國併購退場通道：潛在收購要約與授權合約死結",
+        desc: "英國經銷商代表獲金主支持提出併購要約，成為 Silver 退場的潛在契機。但面臨 Ring 不願出讓控制權與永久專屬授權合約可能變動的雙重風險。"
+      }
+    };
+
+    function setRelationMode(mode) {
+      document.querySelectorAll('.rel-filter-btn').forEach(btn => {
+        btn.classList.remove('active', 'bg-indigo-600', 'text-white', 'border-indigo-600');
+        btn.classList.add('bg-white', 'text-slate-700', 'border-slate-300');
+      });
+      const activeBtn = document.getElementById('rel-btn-' + mode);
+      if (activeBtn) {
+        activeBtn.classList.add('active', 'bg-indigo-600', 'text-white', 'border-indigo-600');
+        activeBtn.classList.remove('bg-white', 'text-slate-700', 'border-slate-300');
+      }
+
+      const narrative = relationNarratives[mode] || relationNarratives.all;
+      document.getElementById('rel-narrative-title').innerText = narrative.title;
+      document.getElementById('rel-narrative-desc').innerText = narrative.desc;
+
+      const cards = document.querySelectorAll('.node-card');
+      cards.forEach(card => {
+        const roles = card.getAttribute('data-roles') || '';
+        if (mode === 'all' || roles.includes(mode)) {
+          card.classList.remove('opacity-30', 'grayscale', 'scale-95');
+          card.classList.add('opacity-100', 'scale-100');
+        } else {
+          card.classList.add('opacity-30', 'grayscale', 'scale-95');
+          card.classList.remove('opacity-100', 'scale-100');
+        }
+      });
+    }
+  </script>
+</body>
+</html>
