@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>捷普綠點併購案 - 人物關係圖與內線交易圖譜 (Noto Sans TC)</title>
+    <!-- Google Fonts: Noto Sans TC 繁體中文全套字重 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Noto Sans TC"', 'sans-serif'],
+                        noto: ['"Noto Sans TC"', 'sans-serif']
+                    },
+                    colors: {
+                        brand: {
+                            blue: '#1d4ed8',
+                            green: '#047857',
+                            red: '#b91c1c',
+                            amber: '#b45309'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * {
+            font-family: 'Noto Sans TC', sans-serif !important;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white !important; color: black !important; padding: 0 !important; }
+            .print-break { page-break-inside: avoid; }
+        }
+        /* 關係動線動態虛線特效 */
+        .animated-flow-red {
+            stroke-dasharray: 6 6;
+            animation: dashMoveRed 1.8s linear infinite;
+        }
+        .animated-flow-blue {
+            stroke-dasharray: 6 6;
+            animation: dashMoveBlue 2s linear infinite;
+        }
+        @keyframes dashMoveRed {
+            to { stroke-dashoffset: -24; }
+        }
+        @keyframes dashMoveBlue {
+            to { stroke-dashoffset: -24; }
+        }
+        .node-card {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .node-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen p-4 md:p-8 antialiased selection:bg-rose-100 selection:text-rose-900 leading-relaxed">
+
+    <!-- 頂部頁頭 -->
+    <header class="max-w-7xl mx-auto mb-8 bg-white border border-slate-200 rounded-2xl p-6 md:p-8 shadow-sm">
+        <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+            <div>
+                <div class="flex flex-wrap items-center gap-3 mb-2">
+                    <span class="px-3.5 py-1 rounded-full text-sm font-bold bg-rose-50 text-rose-700 border border-rose-200 shadow-sm">
+                        最高法院 104 年度臺上字第 3877 號判決確定期定
+                    </span>
+                    <span class="px-3.5 py-1 rounded-full text-sm font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-sm">
+                        繁體中文版面 • Noto Sans TC 專屬字型
+                    </span>
+                </div>
+                <h1 class="text-3xl md:text-4xl font-black tracking-tight text-slate-900 flex flex-wrap items-center gap-3 mt-1">
+                    <span>捷普併購綠點案</span>
+                    <span class="text-slate-500 text-xl md:text-2xl font-semibold">| 人物關係與內線交易全景圖譜</span>
+                </h1>
+                <p class="text-base md:text-lg text-slate-600 mt-2 font-medium">
+                    呈現普訊集團（WK Group）、綠點高新科技（TGP）、美商捷普（Jabil）三方網絡、獨董洩密管道與 4.72 億元犯罪金流動線
+                </p>
+            </div>
+
+            <!-- 視圖控制切換按鈕 -->
+            <div class="flex flex-wrap items-center gap-3 no-print">
+                <div class="bg-slate-100 p-1.5 rounded-xl border border-slate-200 flex text-sm shadow-inner">
+                    <button id="viewAllBtn" onclick="switchView('all')" class="px-4 py-2 rounded-lg font-bold transition bg-blue-600 text-white shadow-sm">
+                        全景關係圖
+                    </button>
+                    <button id="viewCrimeBtn" onclick="switchView('crime')" class="px-4 py-2 rounded-lg font-bold text-slate-600 hover:text-slate-900 transition">
+                        內線洩密動線
+                    </button>
+                    <button id="viewMABtn" onclick="switchView('ma')" class="px-4 py-2 rounded-lg font-bold text-slate-600 hover:text-slate-900 transition">
+                        併購談判路徑
+                    </button>
+                </div>
+                <button onclick="window.print()" class="px-4 py-2 bg-white hover:bg-slate-100 border border-slate-300 rounded-xl text-sm font-bold text-slate-700 flex items-center gap-2 shadow-sm transition">
+                    <svg class="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                    列印 / 匯出 PDF
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto space-y-8">
+
+        <!-- 法律判決關鍵明確時點橫幅 -->
+        <section class="bg-gradient-to-r from-rose-50 via-white to-amber-50 border-l-8 border-rose-600 rounded-2xl p-6 shadow-sm border border-rose-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div class="flex items-start gap-4">
+                <div class="p-3 bg-rose-100 text-rose-700 rounded-xl shrink-0 mt-0.5 shadow-sm">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                </div>
+                <div>
+                    <h3 class="font-extrabold text-rose-900 text-lg md:text-xl">
+                        法院認定重大消息明確成立時點：民國 95 年 9 月 12 日（雙方簽署 Non-binding LOI）
+                    </h3>
+                    <p class="text-base text-slate-700 mt-1">
+                        法院裁判要旨：雖形式上載明無法律拘束力（Non-binding），但雙方已就<strong class="text-rose-900 bg-rose-100/70 px-1.5 py-0.5 rounded font-bold">「百分之百現金收購、溢價率18%~38%（94~110元）、實地查核二週與專屬排他期至10/31」</strong>達成共識，已具備重大消息在一定期間內必然發生之高度可能性！
+                    </p>
+                </div>
+            </div>
+            <div class="text-sm md:text-base font-mono font-bold text-rose-800 bg-white px-4 py-2.5 rounded-xl border border-rose-300 shadow-sm shrink-0">
+                違法買進股票期：95.09.13 ～ 95.10.30
+            </div>
+        </section>
+
+        <!-- 核心關係圖視覺拓撲網絡 (圖表看板) -->
+        <section class="bg-white border-2 border-slate-200 rounded-3xl p-6 md:p-8 shadow-sm">
+            <div class="flex flex-wrap items-center justify-between pb-6 border-b border-slate-200 gap-4 mb-6">
+                <div>
+                    <span class="text-xs md:text-sm font-bold tracking-wider text-slate-500 uppercase">Interactive Network Map</span>
+                    <h2 class="text-2xl md:text-3xl font-black text-slate-900 mt-0.5">三方陣營角色關係與情報傳遞網絡圖</h2>
+                </div>
+                <div class="flex flex-wrap items-center gap-4 text-sm font-semibold">
+                    <div class="flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-full bg-rose-600"></span>
+                        <span class="text-slate-700">普訊內線交易陣營</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-full bg-emerald-600"></span>
+                        <span class="text-slate-700">綠點被併購標的</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-full bg-indigo-600"></span>
+                        <span class="text-slate-700">美商捷普收購方</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-full bg-amber-500"></span>
+                        <span class="text-slate-700">財務與法律顧問</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 主關係網格：三大板塊並列 -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 relative">
+
+                <!-- 1. 普訊集團陣營 (WK Group) -->
+                <div id="cardGroupWK" class="lg:col-span-4 bg-gradient-to-b from-rose-50/40 to-white border-2 border-rose-300 rounded-2xl p-5 shadow-sm node-card flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between pb-3 border-b border-rose-200 mb-4">
+                            <div class="flex items-center gap-2.5">
+                                <span class="w-4 h-4 rounded-full bg-rose-600 ring-4 ring-rose-100"></span>
+                                <h3 class="text-xl font-black text-slate-900">普訊集團 (WK Group)</h3>
+                            </div>
+                            <span class="text-xs px-2.5 py-1 bg-rose-100 text-rose-800 font-bold rounded-full border border-rose-300">內線交易主體</span>
+                        </div>
+
+                        <div class="space-y-4">
+                            <!-- 柯文昌 -->
+                            <div class="bg-white border-2 border-rose-400 rounded-xl p-4 shadow-sm relative">
+                                <div class="flex justify-between items-start">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-12 h-12 rounded-full bg-rose-600 text-white font-black text-lg flex items-center justify-center shadow-sm">
+                                            柯
+                                        </div>
+                                        <div>
+                                            <div class="flex items-center gap-2">
+                                                <h4 class="text-lg font-black text-slate-900">柯文昌</h4>
+                                                <span class="text-xs bg-rose-100 text-rose-800 px-2 py-0.5 rounded font-bold border border-rose-200">負責人</span>
+                                            </div>
+                                            <p class="text-xs md:text-sm text-slate-500">普訊創投創辦人 / 實質掌控 9 家實體</p>
+                                        </div>
+                                    </div>
+                                    <span class="text-xs font-black text-rose-700 bg-rose-50 px-2.5 py-1 rounded-md border border-rose-200">
+                                        處 9 年 • 併科 1 億
+                                    </span>
+                                </div>
+                                <div class="mt-3 p-2.5 bg-rose-50/60 rounded-lg text-xs md:text-sm text-rose-950 font-medium border border-rose-200">
+                                    <strong>決策核心：</strong>接獲何正卿情報後，拍板以旗下 5 家創投與 3 家 BVI 專戶掃進綠點 22,415 張股票。
+                                </div>
+                            </div>
+
+                            <!-- 何正卿（雙重身分） -->
+                            <div class="bg-amber-50/80 border-2 border-amber-400 rounded-xl p-4 shadow-sm relative overflow-hidden">
+                                <div class="absolute -right-7 -top-7 w-20 h-20 bg-amber-200 rounded-full opacity-30"></div>
+                                <div class="flex justify-between items-start">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-12 h-12 rounded-full bg-amber-600 text-white font-black text-lg flex items-center justify-center shadow-sm">
+                                            何
+                                        </div>
+                                        <div>
+                                            <div class="flex items-center gap-2">
+                                                <h4 class="text-lg font-black text-slate-900">何正卿</h4>
+                                                <span class="text-xs bg-amber-200 text-amber-900 px-2 py-0.5 rounded font-black border border-amber-300">關鍵雙重身分</span>
+                                            </div>
+                                            <p class="text-xs md:text-sm text-amber-900 font-semibold">普訊總經理 兼 <strong>綠點獨立董事</strong></p>
+                                        </div>
+                                    </div>
+                                    <span class="text-xs font-black text-amber-900 bg-amber-100 px-2.5 py-1 rounded-md border border-amber-300">
+                                        處 8 年徒刑
+                                    </span>
+                                </div>
+                                <div class="mt-3 p-2.5 bg-white rounded-lg text-xs md:text-sm text-slate-800 font-medium border border-amber-200">
+                                    <strong class="text-rose-700">⚠️ 內線洩密樞紐：</strong>基於法定內部人身分（證交法§157-1第1、4款），獲悉併購與價格區間後轉知柯文昌。
+                                </div>
+                            </div>
+
+                            <!-- 王榮哲 -->
+                            <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+                                <div class="flex justify-between items-start">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-11 h-11 rounded-full bg-slate-700 text-white font-bold text-base flex items-center justify-center shadow-sm">
+                                            王
+                                        </div>
+                                        <div>
+                                            <div class="flex items-center gap-2">
+                                                <h4 class="text-base md:text-lg font-black text-slate-900">王榮哲</h4>
+                                                <span class="text-xs bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-bold border border-slate-300">交易部經理</span>
+                                            </div>
+                                            <p class="text-xs md:text-sm text-slate-500">承柯文昌指令下單 / 代出席 8/28 董事會</p>
+                                        </div>
+                                    </div>
+                                    <span class="text-xs font-bold text-slate-700 bg-slate-100 px-2.5 py-1 rounded border border-slate-300">
+                                        處 4 年徒刑
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 交易載體與帳戶群 -->
+                        <div class="mt-4 p-3 bg-white rounded-xl border border-rose-200">
+                            <div class="text-xs md:text-sm font-bold text-slate-700 mb-2 flex items-center justify-between">
+                                <span>下單載體（5家創投 + 3家BVI外資）：</span>
+                                <span class="text-rose-600 font-extrabold">22,415 張</span>
+                            </div>
+                            <div class="flex flex-wrap gap-1.5 text-xs font-semibold">
+                                <span class="px-2 py-0.5 bg-slate-100 rounded border border-slate-300 text-slate-700">普訊創投</span>
+                                <span class="px-2 py-0.5 bg-slate-100 rounded border border-slate-300 text-slate-700">普訊伍</span>
+                                <span class="px-2 py-0.5 bg-slate-100 rounded border border-slate-300 text-slate-700">普訊陸</span>
+                                <span class="px-2 py-0.5 bg-slate-100 rounded border border-slate-300 text-slate-700">普訊捌</span>
+                                <span class="px-2 py-0.5 bg-slate-100 rounded border border-slate-300 text-slate-700">普實創投</span>
+                                <span class="px-2 py-0.5 bg-rose-50 text-rose-800 rounded border border-rose-300">達訊一 (BVI)</span>
+                                <span class="px-2 py-0.5 bg-rose-50 text-rose-800 rounded border border-rose-300">達訊二 (BVI)</span>
+                                <span class="px-2 py-0.5 bg-rose-50 text-rose-800 rounded border border-rose-300">達訊三 (BVI)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. 綠點高新科技陣營 (TGP) -->
+                <div id="cardGroupTGP" class="lg:col-span-4 bg-gradient-to-b from-emerald-50/40 to-white border-2 border-emerald-300 rounded-2xl p-5 shadow-sm node-card flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between pb-3 border-b border-emerald-200 mb-4">
+                            <div class="flex items-center gap-2.5">
+                                <span class="w-4 h-4 rounded-full bg-emerald-600 ring-4 ring-emerald-100"></span>
+                                <h3 class="text-xl font-black text-slate-900">綠點高新科技 (TGP)</h3>
+                            </div>
+                            <span class="text-xs px-2.5 py-1 bg-emerald-100 text-emerald-800 font-bold rounded-full border border-emerald-300">標的公司 (被收購方)</span>
+                        </div>
+
+                        <div class="space-y-4">
+                            <!-- 李毓洲 -->
+                            <div class="bg-white border border-emerald-200 rounded-xl p-4 shadow-sm">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-12 h-12 rounded-full bg-emerald-600 text-white font-black text-lg flex items-center justify-center shadow-sm">
+                                        李
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <h4 class="text-lg font-black text-slate-900">李毓洲</h4>
+                                            <span class="text-xs bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold border border-emerald-200">董事長</span>
+                                        </div>
+                                        <p class="text-xs md:text-sm text-slate-500">掌握 20%~26% 股權 / 赴舊金山簽署 SPA</p>
+                                    </div>
+                                </div>
+                                <p class="mt-2.5 text-xs md:text-sm text-slate-600">
+                                    考量手機機殼產業競爭與客戶訂單互補性，主張策略合作，帶領主要大股東共同拍板以每股 109 元轉讓。
+                                </p>
+                            </div>
+
+                            <!-- 江懷海 -->
+                            <div class="bg-emerald-50/90 border-2 border-emerald-400 rounded-xl p-4 shadow-sm relative">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-12 h-12 rounded-full bg-emerald-700 text-white font-black text-lg flex items-center justify-center shadow-sm">
+                                        江
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <h4 class="text-lg font-black text-emerald-950">江懷海</h4>
+                                            <span class="text-xs bg-emerald-200 text-emerald-900 px-2 py-0.5 rounded font-bold border border-emerald-300">總經理兼董事</span>
+                                        </div>
+                                        <p class="text-xs md:text-sm text-emerald-900 font-medium">談判主導人 / 簽署 LOI</p>
+                                    </div>
+                                </div>
+                                <div class="mt-2.5 p-2 bg-white rounded-lg text-xs md:text-sm text-slate-800 font-medium border border-emerald-200">
+                                    <strong>關鍵行動：</strong>於 <span class="text-rose-700 font-black">95年9月12日</span> 代表綠點正式簽署並回傳「無拘束力意向書（LOI）」，確立實地查核與排他期。
+                                </div>
+                            </div>
+
+                            <!-- 綠點高階主管群 -->
+                            <div class="bg-white border border-slate-200 rounded-xl p-3 shadow-sm">
+                                <div class="text-xs md:text-sm font-bold text-slate-700 mb-2">綠點核心高管與董事：</div>
+                                <div class="grid grid-cols-2 gap-2 text-xs md:text-sm">
+                                    <div class="p-2 bg-slate-50 rounded-lg border border-slate-200">
+                                        <span class="font-bold text-slate-900 block">李聰龍</span>
+                                        <span class="text-slate-500 text-xs">財務長兼處長</span>
+                                    </div>
+                                    <div class="p-2 bg-slate-50 rounded-lg border border-slate-200">
+                                        <span class="font-bold text-slate-900 block">陳泰源</span>
+                                        <span class="text-slate-500 text-xs">技術顧問 (提漸進整合)</span>
+                                    </div>
+                                    <div class="p-2 bg-slate-50 rounded-lg border border-slate-200">
+                                        <span class="font-bold text-slate-900 block">嚴功瀛</span>
+                                        <span class="text-slate-500 text-xs">副總經理 (主要大股東)</span>
+                                    </div>
+                                    <div class="p-2 bg-slate-50 rounded-lg border border-slate-200">
+                                        <span class="font-bold text-slate-900 block">胡明智</span>
+                                        <span class="text-slate-500 text-xs">獨立董事 (外資代表)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 p-3 bg-emerald-100/70 rounded-xl border border-emerald-300 text-xs md:text-sm text-emerald-950 font-bold">
+                            每股 109 元現金達成 100% 收購，溢價率高達 36.76%，換算淨值比 3.13 倍。
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. 美商捷普公司陣營 (Jabil Circuit) -->
+                <div id="cardGroupJabil" class="lg:col-span-4 bg-gradient-to-b from-indigo-50/40 to-white border-2 border-indigo-300 rounded-2xl p-5 shadow-sm node-card flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between pb-3 border-b border-indigo-200 mb-4">
+                            <div class="flex items-center gap-2.5">
+                                <span class="w-4 h-4 rounded-full bg-indigo-600 ring-4 ring-indigo-100"></span>
+                                <h3 class="text-xl font-black text-slate-900">美商捷普 (Jabil Circuit)</h3>
+                            </div>
+                            <span class="text-xs px-2.5 py-1 bg-indigo-100 text-indigo-800 font-bold rounded-full border border-indigo-300">跨國收購方 (NYSE上市)</span>
+                        </div>
+
+                        <div class="space-y-4">
+                            <!-- Tim Main -->
+                            <div class="bg-white border border-indigo-200 rounded-xl p-4 shadow-sm">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-12 h-12 rounded-full bg-indigo-600 text-white font-black text-lg flex items-center justify-center shadow-sm">
+                                        TM
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <h4 class="text-lg font-black text-slate-900">Tim Main</h4>
+                                            <span class="text-xs bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded font-bold border border-indigo-200">總裁兼執行長 (CEO)</span>
+                                        </div>
+                                        <p class="text-xs md:text-sm text-slate-500">拍板 100% 現金收購架構與併購戰略</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Donald J. Myers -->
+                            <div class="bg-indigo-50/90 border-2 border-indigo-400 rounded-xl p-4 shadow-sm">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-12 h-12 rounded-full bg-indigo-700 text-white font-black text-lg flex items-center justify-center shadow-sm">
+                                        DM
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <h4 class="text-lg font-black text-indigo-950">Donald J. Myers</h4>
+                                            <span class="text-xs bg-indigo-200 text-indigo-900 px-2 py-0.5 rounded font-bold border border-indigo-300">併購副總裁</span>
+                                        </div>
+                                        <p class="text-xs md:text-sm text-indigo-900 font-medium">起草意向書 / 實地查核與契約主持</p>
+                                    </div>
+                                </div>
+                                <p class="mt-2 text-xs md:text-sm text-slate-700 font-medium">
+                                    主導 95年8月初始意向書、9月11日修正版意向書及舊金山合併契約實質談判。
+                                </p>
+                            </div>
+
+                            <!-- Mike Ward -->
+                            <div class="bg-white border border-slate-200 rounded-xl p-3 shadow-sm">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-full bg-slate-600 text-white font-bold text-sm flex items-center justify-center shadow-sm">
+                                        MW
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <h4 class="text-base font-bold text-slate-900">Mike Ward</h4>
+                                            <span class="text-xs bg-slate-100 text-slate-700 px-2 py-0.5 rounded border border-slate-300">Nokia 全球主管</span>
+                                        </div>
+                                        <p class="text-xs text-slate-500">親自考察綠點天津與台灣廠，確認垂直整合價值</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 臺灣捷普科技 (落地 SPV) -->
+                        <div class="mt-4 p-3 bg-white rounded-xl border border-indigo-200 shadow-sm">
+                            <div class="text-xs md:text-sm font-black text-indigo-900 mb-1">臺灣捷普科技股份有限公司 (SPV)</div>
+                            <p class="text-xs md:text-sm text-slate-600">
+                                捷普開曼子公司 100% 獨資在台設立，負責執行每股 109 元公開收購，並作為反向三角吸收合併之存續公司。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- 專業中介智囊機構：花旗環球與理律法律事務所 -->
+            <div class="mt-8 pt-6 border-t border-slate-200">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="w-3.5 h-3.5 rounded-full bg-amber-500"></span>
+                    <h3 class="text-lg md:text-xl font-black text-slate-900">專業中介與併購顧問團隊</h3>
+                    <span class="text-sm text-slate-500 font-medium">（交易架構規劃、牽線搭橋與法律合規）</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex items-start gap-3">
+                        <div class="w-10 h-10 rounded-full bg-amber-600 text-white font-bold text-sm flex items-center justify-center shrink-0">
+                            花旗
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-slate-900 text-base">花旗環球財務顧問（Citi Investment Banking）</h4>
+                            <p class="text-xs md:text-sm text-slate-600 mt-1">
+                                <strong class="text-slate-800">李明山</strong>（台灣投資銀行董事，受何正卿引薦江懷海）偕同美方顧問團隊（Alexa Leon-Prado、Rahul Shukla、Nadeem Jeddy），全程協助捷普與綠點併購案之財務評價模型與協商。
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex items-start gap-3">
+                        <div class="w-10 h-10 rounded-full bg-sky-700 text-white font-bold text-sm flex items-center justify-center shrink-0">
+                            理律
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-slate-900 text-base">理律法律事務所（Lee and Li Attorneys-at-Law）</h4>
+                            <p class="text-xs md:text-sm text-slate-600 mt-1">
+                                <strong class="text-slate-800">葉雪暉律師、范鮫律師</strong> 代表綠點審閱無拘束力意向書（LOI）、規劃實地查核（Data Room）規範，並赴舊金山親自敲定股權買賣協議（SPA）之重大法律要件。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- 資訊洩密與犯罪動線步驟圖 -->
+        <section class="bg-white border border-slate-200 rounded-2xl p-6 md:p-8 shadow-sm">
+            <h3 class="text-xl md:text-2xl font-black text-slate-900 mb-2 flex items-center gap-2.5">
+                <svg class="w-6 h-6 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                內線交易情報流向與犯罪傳遞鏈（證券交易法第 157 條之 1 實證解析）
+            </h3>
+            <p class="text-sm md:text-base text-slate-500 mb-6 font-medium">
+                綠點董事會機密消息如何透過法定內部人流向外部掌控者，進而下單收購並獲取 4.72 億元暴利
+            </p>
+
+            <div class="bg-slate-50 p-5 md:p-8 rounded-2xl border border-slate-200 overflow-x-auto">
+                <div class="min-w-[900px] space-y-6">
+                    <!-- Step 1 -->
+                    <div class="flex items-center gap-4">
+                        <div class="w-48 shrink-0 bg-emerald-100 border border-emerald-300 p-4 rounded-xl text-center shadow-sm">
+                            <span class="text-xs text-emerald-800 font-bold block">消息起源地</span>
+                            <span class="text-lg font-black text-slate-900">綠點臨時董事會</span>
+                            <span class="text-xs text-slate-600 block mt-1">95.08.28 / 09.06 通過LOI</span>
+                        </div>
+                        <div class="flex-1 flex items-center justify-center relative">
+                            <div class="h-1 bg-gradient-to-r from-emerald-500 via-amber-500 to-rose-500 w-full rounded"></div>
+                            <span class="absolute bg-white px-3 py-1 rounded-full text-xs font-bold text-amber-900 border border-amber-300 shadow-sm">
+                                何正卿獨董身分與會知悉（內部人身分）
+                            </span>
+                        </div>
+                        <div class="w-48 shrink-0 bg-amber-100 border border-amber-300 p-4 rounded-xl text-center shadow-sm">
+                            <span class="text-xs text-amber-800 font-bold block">洩密傳遞中繼</span>
+                            <span class="text-lg font-black text-slate-900">何正卿 (獨董)</span>
+                            <span class="text-xs text-amber-900 block mt-1">兼普訊總經理</span>
+                        </div>
+                        <div class="flex-1 flex items-center justify-center relative">
+                            <div class="h-1 bg-rose-400 w-full rounded"></div>
+                            <span class="absolute bg-white px-3 py-1 rounded-full text-xs font-bold text-rose-800 border border-rose-300 shadow-sm">
+                                告知未公開重大收購消息
+                            </span>
+                        </div>
+                        <div class="w-48 shrink-0 bg-rose-100 border border-rose-300 p-4 rounded-xl text-center shadow-sm">
+                            <span class="text-xs text-rose-800 font-bold block">指揮決策核心</span>
+                            <span class="text-lg font-black text-slate-900">柯文昌 (負責人)</span>
+                            <span class="text-xs text-rose-900 block mt-1">刑法§31共同正犯</span>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="flex items-center gap-4 pl-12">
+                        <div class="w-36 text-right text-sm font-extrabold text-rose-700 shrink-0">
+                            指示下單指令 ➔
+                        </div>
+                        <div class="flex-1 bg-white border border-rose-200 rounded-xl p-4 flex items-center justify-around shadow-sm text-center">
+                            <div>
+                                <span class="text-xs text-slate-500 block">轉達執行指令</span>
+                                <span class="text-base font-bold text-slate-900">王榮哲 (交易部經理)</span>
+                            </div>
+                            <span class="text-slate-300 text-xl font-light">➔</span>
+                            <div>
+                                <span class="text-xs text-slate-500 block">不知情下單主管</span>
+                                <span class="text-base font-bold text-slate-800">蕭亦惠 經理</span>
+                            </div>
+                            <span class="text-slate-300 text-xl font-light">➔</span>
+                            <div>
+                                <span class="text-xs text-slate-500 block">不知情各券商營業員</span>
+                                <span class="text-base font-bold text-slate-800">9 家國內券商</span>
+                            </div>
+                            <span class="text-slate-300 text-xl font-light">➔</span>
+                            <div class="bg-rose-50 px-4 py-2 rounded-lg border border-rose-200">
+                                <span class="text-xs text-rose-700 font-bold block">市場大肆掃貨</span>
+                                <span class="text-base font-black text-rose-800">綠點股票 22,415 張</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="flex items-center gap-4 pl-12">
+                        <div class="w-36 text-right text-sm font-extrabold text-indigo-700 shrink-0">
+                            收購應賣套現 ➔
+                        </div>
+                        <div class="flex-1 bg-white border border-indigo-200 rounded-xl p-4 flex items-center justify-between shadow-sm">
+                            <div>
+                                <span class="text-xs text-slate-500 block">95.11.24 捷普每股 109 元公開收購啟動</span>
+                                <span class="text-base font-bold text-indigo-950">普訊 5 家創投與 3 家海外 BVI 外資專戶全數應賣交割</span>
+                            </div>
+                            <div class="bg-rose-50 border border-rose-300 px-5 py-2.5 rounded-xl text-right">
+                                <span class="text-xs text-rose-700 font-bold block">法定計算不法所得淨額</span>
+                                <span class="text-xl font-black text-rose-700 font-mono">NT$ 472,847,065 元</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 關鍵時間軸 -->
+        <section class="bg-white border border-slate-200 rounded-2xl p-6 md:p-8 shadow-sm">
+            <h3 class="text-xl md:text-2xl font-black text-slate-900 mb-6 flex items-center gap-3">
+                <svg class="w-6 h-6 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                本案重大歷程時程表（Chronology）
+            </h3>
+
+            <div class="relative border-l-2 border-slate-200 ml-4 md:ml-8 space-y-8">
+                <!-- 94.10 - 95.7 -->
+                <div class="relative pl-8">
+                    <span class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-slate-400 border-2 border-white ring-2 ring-slate-300"></span>
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-1">
+                        <span class="text-sm md:text-base font-mono font-bold text-slate-600">94年10月 ～ 95年7月</span>
+                        <span class="text-xs bg-slate-100 text-slate-700 font-bold px-3 py-0.5 rounded-full border border-slate-200 self-start">初步媒合接觸</span>
+                    </div>
+                    <p class="text-sm md:text-base text-slate-700 leading-relaxed font-medium">
+                        江懷海經何正卿引薦李明山（花旗）前往捷普佛州總部，捷普高層參訪綠點天津廠與台灣廠，建立溝通渠道。
+                    </p>
+                </div>
+
+                <!-- 95.8.25 - 8.28 -->
+                <div class="relative pl-8">
+                    <span class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-slate-500 border-2 border-white ring-2 ring-slate-400"></span>
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-1">
+                        <span class="text-sm md:text-base font-mono font-bold text-slate-600">95年8月25日 ～ 8月28日</span>
+                        <span class="text-xs bg-slate-100 text-slate-700 font-bold px-3 py-0.5 rounded-full border border-slate-200 self-start">捷普提出初始要向</span>
+                    </div>
+                    <p class="text-sm md:text-base text-slate-700 leading-relaxed font-medium">
+                        捷普提出以 6.25 億至 7 億美元 100% 收購。綠點 8/28 董事會後討論，董監事無人反對賣，王榮哲向柯文昌口頭報告。
+                    </p>
+                </div>
+
+                <!-- 95.9.12 -->
+                <div class="relative pl-8">
+                    <span class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-rose-600 ring-4 ring-rose-200"></span>
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-1">
+                        <span class="text-sm md:text-base font-mono font-black text-rose-700">95年9月12日 (最高法院定讞時點)</span>
+                        <span class="text-xs bg-rose-100 text-rose-800 px-3 py-0.5 rounded-full border border-rose-300 font-black self-start">重大消息明確成立！</span>
+                    </div>
+                    <div class="mt-2 bg-rose-50 border border-rose-200 p-4 rounded-xl text-sm md:text-base text-slate-800 leading-relaxed font-medium">
+                        <strong class="text-rose-900 font-bold">簽署無拘束力意向書（Non-binding LOI）：</strong>江懷海簽署並回傳。雙方就全數現金收購、溢價率18%~38%（94~110元）、專屬排他期達成共識。法定內線交易禁買期自此生效。
+                    </div>
+                </div>
+
+                <!-- 95.9.13 - 10.30 -->
+                <div class="relative pl-8">
+                    <span class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-amber-500 border-2 border-white ring-2 ring-amber-300"></span>
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-1">
+                        <span class="text-sm md:text-base font-mono font-bold text-amber-700">95年9月13日 ～ 10月30日</span>
+                        <span class="text-xs bg-amber-100 text-amber-800 px-3 py-0.5 rounded-full border border-amber-200 font-bold self-start">違法買進股票期</span>
+                    </div>
+                    <p class="text-sm md:text-base text-slate-700 leading-relaxed font-medium">
+                        柯文昌指示王榮哲、蕭亦惠透過 5 家創投與 3 家 BVI 專戶，大舉買入 22,415 張綠點股票，完成低價卡位布局。
+                    </p>
+                </div>
+
+                <!-- 95.11.8 -->
+                <div class="relative pl-8">
+                    <span class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-indigo-500 border-2 border-white ring-2 ring-indigo-300"></span>
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-1">
+                        <span class="text-sm md:text-base font-mono font-bold text-indigo-700">95年11月6日 ～ 11月8日</span>
+                        <span class="text-xs bg-indigo-100 text-indigo-800 px-3 py-0.5 rounded-full border border-indigo-200 font-bold self-start">舊金山合約敲定</span>
+                    </div>
+                    <p class="text-sm md:text-base text-slate-700 leading-relaxed font-medium">
+                        李毓洲、江懷海等人赴美敲定每股 109 元現金，並簽署股權買賣協議（SPA），確立後續公開收購與兩階段吸收合併。
+                    </p>
+                </div>
+
+                <!-- 95.11.22 -->
+                <div class="relative pl-8">
+                    <span class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-emerald-600 border-2 border-white ring-2 ring-emerald-300"></span>
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-1">
+                        <span class="text-sm md:text-base font-mono font-bold text-emerald-700">95年11月22日 ～ 11月23日</span>
+                        <span class="text-xs bg-emerald-100 text-emerald-800 px-3 py-0.5 rounded-full border border-emerald-200 font-bold self-start">重大消息正式公開</span>
+                    </div>
+                    <p class="text-sm md:text-base text-slate-700 leading-relaxed font-medium">
+                        綠點與臺灣捷普董事會通過公開收購與合併案，於證券交易所召開記者會並於公開資訊觀測站公告，消息正式對外公開。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        function switchView(viewType) {
+            const btnAll = document.getElementById('viewAllBtn');
+            const btnCrime = document.getElementById('viewCrimeBtn');
+            const btnMA = document.getElementById('viewMABtn');
+
+            const cardWK = document.getElementById('cardGroupWK');
+            const cardTGP = document.getElementById('cardGroupTGP');
+            const cardJabil = document.getElementById('cardGroupJabil');
+
+            // 恢復所有按鈕默認外觀
+            [btnAll, btnCrime, btnMA].forEach(btn => {
+                btn.className = "px-4 py-2 rounded-lg font-bold text-slate-600 hover:text-slate-900 transition";
+            });
+
+            if (viewType === 'all') {
+                btnAll.className = "px-4 py-2 rounded-lg font-bold transition bg-blue-600 text-white shadow-sm";
+                cardWK.style.opacity = '1';
+                cardTGP.style.opacity = '1';
+                cardJabil.style.opacity = '1';
+                cardWK.classList.remove('ring-4', 'ring-rose-400');
+                cardTGP.classList.remove('ring-4', 'ring-emerald-400');
+            } else if (viewType === 'crime') {
+                btnCrime.className = "px-4 py-2 rounded-lg font-bold transition bg-rose-600 text-white shadow-sm";
+                cardWK.style.opacity = '1';
+                cardTGP.style.opacity = '0.9';
+                cardJabil.style.opacity = '0.35';
+                cardWK.classList.add('ring-4', 'ring-rose-400');
+                cardTGP.classList.remove('ring-4', 'ring-emerald-400');
+            } else if (viewType === 'ma') {
+                btnMA.className = "px-4 py-2 rounded-lg font-bold transition bg-emerald-600 text-white shadow-sm";
+                cardWK.style.opacity = '0.35';
+                cardTGP.style.opacity = '1';
+                cardJabil.style.opacity = '1';
+                cardWK.classList.remove('ring-4', 'ring-rose-400');
+                cardTGP.classList.add('ring-4', 'ring-emerald-400');
+            }
+        }
+    </script>
+</body>
+</html>
