@@ -54,6 +54,20 @@
     .timeline-item:last-child .timeline-dot::after {
       display: none;
     }
+    /* 確保表格垂直滾動時，表頭完美凍結在頂部且不透光 */
+    .table-scroll-container {
+      max-height: 68vh;
+      overflow-y: auto;
+      overflow-x: auto;
+      position: relative;
+    }
+    .sticky-thead th {
+      position: sticky;
+      top: 0;
+      background-color: #f1f5f9;
+      z-index: 30;
+      box-shadow: inset 0 -2px 0 #cbd5e1, 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
   </style>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col antialiased selection:bg-indigo-500 selection:text-white">
@@ -127,12 +141,13 @@
         <div>
           <h2 class="text-xl font-bold text-slate-900 flex items-center gap-3">
             <span>📅 全景脈絡時間軸</span>
-            <span class="text-sm font-normal text-slate-500">（1988～1996 年四大歷史轉折期）</span>
+            <span class="text-sm font-normal text-slate-500">（1988～1996 年歷史關鍵轉折，標註 🔥【重要！】之核心事件）</span>
           </h2>
-          <p class="text-base text-slate-600 mt-1">點擊階段篩選歷史關鍵節點，檢視具體證據與法律轉折。</p>
+          <p class="text-base text-slate-600 mt-1">點擊階段篩選歷史關鍵節點，檢視具體證據、涉案人物、所屬機構與法律轉折。</p>
         </div>
         <div class="flex flex-wrap gap-2" id="timeline-filters">
-          <button onclick="filterTimeline('all')" class="timeline-f-btn active px-4 py-2 rounded-lg text-sm font-semibold bg-indigo-600 text-white border border-indigo-600 transition shadow-sm">全部 (16)</button>
+          <button onclick="filterTimeline('all')" class="timeline-f-btn active px-4 py-2 rounded-lg text-sm font-semibold bg-indigo-600 text-white border border-indigo-600 transition shadow-sm">全部事件 (20)</button>
+          <button onclick="filterTimeline('important')" class="timeline-f-btn px-4 py-2 rounded-lg text-sm font-semibold bg-rose-50 text-rose-700 border border-rose-300 hover:bg-rose-100 transition">🔥 僅看【重要！】事件</button>
           <button onclick="filterTimeline('stage1')" class="timeline-f-btn px-4 py-2 rounded-lg text-sm font-semibold bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">1988-93 奠基分裂</button>
           <button onclick="filterTimeline('stage2')" class="timeline-f-btn px-4 py-2 rounded-lg text-sm font-semibold bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">1994 主將倒戈</button>
           <button onclick="filterTimeline('stage3')" class="timeline-f-btn px-4 py-2 rounded-lg text-sm font-semibold bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">1995 竊密破綻與上市</button>
@@ -144,273 +159,403 @@
       <div class="relative pl-8 sm:pl-10 space-y-7 before:absolute before:left-4 sm:before:left-5 before:top-4 before:bottom-4 before:w-1 before:bg-slate-200" id="timeline-list">
 
         <!-- Item 1: 1988 -->
-        <div class="timeline-item relative group" data-stage="stage1">
+        <div class="timeline-item relative group" data-stage="stage1" data-important="true">
           <div class="absolute -left-8 sm:-left-10 top-2 w-8 h-8 rounded-full bg-white border-2 border-sky-600 flex items-center justify-center text-xs text-sky-700 font-bold shadow-sm">
             1
           </div>
-          <div class="bg-white hover:bg-slate-50 transition border border-slate-200 hover:border-sky-400 rounded-2xl p-6 shadow-sm">
+          <div class="bg-white hover:bg-slate-50 transition border-2 border-sky-300 rounded-2xl p-6 shadow-sm">
             <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-              <span class="text-sm font-bold text-sky-700 font-mono tracking-wider">1988 年</span>
+              <div class="flex items-center gap-2">
+                <span class="text-sm font-bold text-sky-700 font-mono tracking-wider">1988 年</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-rose-600 text-white font-extrabold text-xs shadow-sm">🔥【重要！】產業技術奠基</span>
+              </div>
               <span class="text-xs px-3 py-1 rounded-full bg-sky-50 text-sky-800 border border-sky-200 font-semibold">合併奠基 · 核心技術確立</span>
             </div>
             <h3 class="text-lg font-bold text-slate-900">SDA 與 ECAD 合併成立 Cadence，收購 Tangent Software</h3>
             <p class="text-base text-slate-700 mt-2 leading-relaxed">
-              SDA Systems 與對手 ECAD 合併成立 Cadence（益華電腦），並透過併購詹姆斯·所羅門（James Solomon）創立的 Tangent 取得實體佈局與繞線核心專利引擎，確立產業技術護城河。
+              <strong>關鍵主體：</strong>Cadence（SDA Systems + ECAD, Inc.）、Tangent Software、所羅門（James Solomon）、科斯特洛（Joe Costello）。<br>
+              <strong>事件情節：</strong>SDA 與對手 ECAD 合併為 Cadence，並收購所羅門創辦的 Tangent，取得實體佈局與繞線（Place-and-Route）核心演算法引擎（QPlace、FRoute 基石），確立日後 EDA 產業壟斷護城河。
             </p>
           </div>
         </div>
 
-        <!-- Item 2: 1991.02-03 -->
-        <div class="timeline-item relative group" data-stage="stage1">
-          <div class="absolute -left-8 sm:-left-10 top-2 w-8 h-8 rounded-full bg-white border-2 border-orange-500 flex items-center justify-center text-xs text-orange-600 font-bold shadow-sm">
+        <!-- Item 2: 1990.03 -->
+        <div class="timeline-item relative group" data-stage="stage1" data-important="false">
+          <div class="absolute -left-8 sm:-left-10 top-2 w-8 h-8 rounded-full bg-white border-2 border-slate-400 flex items-center justify-center text-xs text-slate-600 font-bold shadow-sm">
             2
           </div>
-          <div class="bg-white hover:bg-slate-50 transition border border-slate-200 hover:border-orange-400 rounded-2xl p-6 shadow-sm">
+          <div class="bg-white hover:bg-slate-50 transition border border-slate-200 rounded-2xl p-6 shadow-sm">
             <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-              <span class="text-sm font-bold text-orange-600 font-mono tracking-wider">1991 年 02～03 月</span>
-              <span class="text-xs px-3 py-1 rounded-full bg-orange-50 text-orange-800 border border-orange-200 font-semibold">技術分裂 · ArcSys 誕生</span>
+              <span class="text-sm font-bold text-sky-700 font-mono tracking-wider">1990 年 03 月</span>
+              <span class="text-xs px-3 py-1 rounded-full bg-slate-100 text-slate-700 font-semibold">資本市場 · 龍頭公開發行</span>
             </div>
-            <h3 class="text-lg font-bold text-slate-900">四名工程師集體離職並創立 ArcSys，拒簽保密重申協議</h3>
+            <h3 class="text-lg font-bold text-slate-900">Cadence 成功公開上市 (IPO)，市值近 10 億美元</h3>
             <p class="text-base text-slate-700 mt-2 leading-relaxed">
-              卓允中、蔡木炎、吳自立、廖裕成四人出走。ArcSys 於 2 月 28 日正式註冊成立，甚至早於四人正式離職手續完成日。所有人在離職面談中均拒絕簽署重申保密義務的標準合約。
+              <strong>關鍵主體：</strong>Cadence、科斯特洛。<br>
+              <strong>事件情節：</strong>走過 1987 年十月股災後成功掛牌上市，募得充沛市場資金，奠定後續併購與研發擴張實力。
             </p>
           </div>
         </div>
 
-        <!-- Item 3: 1992 -->
-        <div class="timeline-item relative group" data-stage="stage1">
-          <div class="absolute -left-8 sm:-left-10 top-2 w-8 h-8 rounded-full bg-white border-2 border-rose-500 flex items-center justify-center text-xs text-rose-600 font-bold shadow-sm">
+        <!-- Item 3: 1991.02-03 -->
+        <div class="timeline-item relative group" data-stage="stage1" data-important="true">
+          <div class="absolute -left-8 sm:-left-10 top-2 w-8 h-8 rounded-full bg-white border-2 border-orange-500 flex items-center justify-center text-xs text-orange-600 font-bold shadow-sm">
             3
           </div>
-          <div class="bg-white hover:bg-slate-50 transition border border-slate-200 hover:border-rose-400 rounded-2xl p-6 shadow-sm">
+          <div class="bg-white hover:bg-slate-50 transition border-2 border-orange-300 rounded-2xl p-6 shadow-sm">
             <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-              <span class="text-sm font-bold text-rose-600 font-mono tracking-wider">1992 年底</span>
-              <span class="text-xs px-3 py-1 rounded-full bg-rose-50 text-rose-800 border border-rose-200 font-semibold">鐵血反擊 · AK-47 計畫</span>
+              <div class="flex items-center gap-2">
+                <span class="text-sm font-bold text-orange-600 font-mono tracking-wider">1991 年 02～03 月</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-rose-600 text-white font-extrabold text-xs shadow-sm">🔥【重要！】出走與技術分裂</span>
+              </div>
+              <span class="text-xs px-3 py-1 rounded-full bg-orange-50 text-orange-800 border border-orange-200 font-semibold">技術分裂 · ArcSys 誕生</span>
             </div>
-            <h3 class="text-lg font-bold text-slate-900">徐建國在 Cadence 發動「AK-47」計畫，揚言 47 週幹掉 ArcSys</h3>
+            <h3 class="text-lg font-bold text-slate-900">四名工程師集體離職並創立 ArcSys，拒簽離職保密協議</h3>
             <p class="text-base text-slate-700 mt-2 leading-relaxed">
-              徐建國組建「B 團隊」，以軍事化風格管理。他在下屬桌上排置 48 顆子彈彈殼：「每週一顆，最後一顆留給失敗的你自己。」同時指示調查 ArcSys 員工移民身份進行威脅。
+              <strong>關鍵主體：</strong>卓允中（Eric Cho）、蔡木炎（Michael Tsai）、吳自立（Steven Wuu）、廖裕成（Y.Z. Liao）、ArcSys。<br>
+              <strong>事件情節：</strong>四名掌握關鍵技術的資深工程師於 2/22 與 2/27 相繼提請離職，但早在正式離職前（2/28）即搶先註冊成立 ArcSys，且在離職面談中全體拒簽重申保密義務的標準文件，埋下長達數年的侵權禍根。
             </p>
           </div>
         </div>
 
-        <!-- Item 4: 1993.03 -->
-        <div class="timeline-item relative group" data-stage="stage1">
+        <!-- Item 4: 1992 Valid Logic & VC Funding -->
+        <div class="timeline-item relative group" data-stage="stage1" data-important="false">
           <div class="absolute -left-8 sm:-left-10 top-2 w-8 h-8 rounded-full bg-white border-2 border-slate-400 flex items-center justify-center text-xs text-slate-600 font-bold shadow-sm">
             4
           </div>
-          <div class="bg-white hover:bg-slate-50 transition border border-slate-200 hover:border-slate-400 rounded-2xl p-6 shadow-sm">
+          <div class="bg-white hover:bg-slate-50 transition border border-slate-200 rounded-2xl p-6 shadow-sm">
             <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-              <span class="text-sm font-bold text-slate-600 font-mono tracking-wider">1993 年 03 月</span>
-              <span class="text-xs px-3 py-1 rounded-full bg-slate-100 text-slate-800 border border-slate-300 font-semibold">首代產品 · 鉅額虧損</span>
+              <span class="text-sm font-bold text-slate-600 font-mono tracking-wider">1992 年初</span>
+              <span class="text-xs px-3 py-1 rounded-full bg-slate-100 text-slate-700 font-semibold">資本擴張 · 創投進駐</span>
             </div>
-            <h3 class="text-lg font-bold text-slate-900">ArcSys 推出首代佈局繞線產品 ArcCell，1993 全年慘賠 220 萬美元</h3>
+            <h3 class="text-lg font-bold text-slate-900">Cadence 併購 Valid Logic 稱霸；ArcSys 獲創投 300 萬美元注資</h3>
             <p class="text-base text-slate-700 mt-2 leading-relaxed">
-              創始團隊雖具技術能力但極度缺乏銷售手腕與商務通路，年營收僅 170 萬美元。創投董事會決議尋求能征善戰的頂級 CEO 掌舵。
+              <strong>關鍵主體：</strong>Cadence、Valid Logic Systems、ArcSys、TVI、Sutter Hill Ventures。<br>
+              <strong>事件情節：</strong>Cadence 藉併購 Valid 成為業界龍頭；ArcSys 則獲得頂級創投 TVI 與 Sutter Hill 注入 300 萬美元研發資金，專注研發深次微米佈局繞線產品。
             </p>
           </div>
         </div>
 
-        <!-- Item 5: 1993 底 - 1994.03 -->
-        <div class="timeline-item relative group" data-stage="stage2">
-          <div class="absolute -left-8 sm:-left-10 top-2 w-8 h-8 rounded-full bg-white border-2 border-amber-500 flex items-center justify-center text-xs text-amber-600 font-bold shadow-sm">
+        <!-- Item 5: 1992.Late AK-47 -->
+        <div class="timeline-item relative group" data-stage="stage1" data-important="true">
+          <div class="absolute -left-8 sm:-left-10 top-2 w-8 h-8 rounded-full bg-white border-2 border-rose-500 flex items-center justify-center text-xs text-rose-600 font-bold shadow-sm">
             5
           </div>
-          <div class="bg-white hover:bg-slate-50 transition border border-slate-200 hover:border-amber-400 rounded-2xl p-6 shadow-sm">
+          <div class="bg-white hover:bg-slate-50 transition border-2 border-rose-300 rounded-2xl p-6 shadow-sm">
             <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-              <span class="text-sm font-bold text-amber-600 font-mono tracking-wider">1993 年底 ～ 1994 年 03 月</span>
+              <div class="flex items-center gap-2">
+                <span class="text-sm font-bold text-rose-600 font-mono tracking-wider">1992 年底</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-rose-600 text-white font-extrabold text-xs shadow-sm">🔥【重要！】鐵血反擊之局</span>
+              </div>
+              <span class="text-xs px-3 py-1 rounded-full bg-rose-50 text-rose-800 border border-rose-200 font-semibold">內部衝突 · AK-47 計畫</span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900">徐建國在 Cadence 發動「AK-47」計畫，誓言 47 週幹掉 ArcSys</h3>
+            <p class="text-base text-slate-700 mt-2 leading-relaxed">
+              <strong>關鍵主體：</strong>徐建國（Gerald Hsu）、科斯特洛、Cadence B 團隊、ArcSys。<br>
+              <strong>事件情節：</strong>徐建國以軍事化風格組建「B 團隊」，在同仁辦公桌上排置 48 顆彈殼警告「每週一顆，最後一顆留給失敗的你自己」；並指示清查 ArcSys 員工移民身份以檢舉。科斯特洛對徐之恐懼管理與專橫行徑產生強烈戒心。
+            </p>
+          </div>
+        </div>
+
+        <!-- Item 6: 1993.03 ArcCell Released & Loss -->
+        <div class="timeline-item relative group" data-stage="stage1" data-important="false">
+          <div class="absolute -left-8 sm:-left-10 top-2 w-8 h-8 rounded-full bg-white border-2 border-slate-400 flex items-center justify-center text-xs text-slate-600 font-bold shadow-sm">
+            6
+          </div>
+          <div class="bg-white hover:bg-slate-50 transition border border-slate-200 rounded-2xl p-6 shadow-sm">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+              <span class="text-sm font-bold text-slate-600 font-mono tracking-wider">1993 年 03 月</span>
+              <span class="text-xs px-3 py-1 rounded-full bg-slate-100 text-slate-700 font-semibold">首代產品 · 經營泥淖</span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900">ArcSys 推出首代產品 ArcCell，1993 全年慘賠 220 萬美元</h3>
+            <p class="text-base text-slate-700 mt-2 leading-relaxed">
+              <strong>關鍵主體：</strong>ArcSys、創辦四人組、TVI、Sutter Hill。<br>
+              <strong>事件情節：</strong>ArcCell 推出後貢獻 90% 營收，但因工程師團隊極度缺乏銷售技巧與客戶通路，全年營收僅 170 萬美元，慘賠 220 萬美元，迫使創投董事會決定換血尋求強勢 CEO。
+            </p>
+          </div>
+        </div>
+
+        <!-- Item 7: 1993.Late Internal Feud -->
+        <div class="timeline-item relative group" data-stage="stage2" data-important="true">
+          <div class="absolute -left-8 sm:-left-10 top-2 w-8 h-8 rounded-full bg-white border-2 border-amber-500 flex items-center justify-center text-xs text-amber-600 font-bold shadow-sm">
+            7
+          </div>
+          <div class="bg-white hover:bg-slate-50 transition border-2 border-amber-300 rounded-2xl p-6 shadow-sm">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+              <div class="flex items-center gap-2">
+                <span class="text-sm font-bold text-amber-600 font-mono tracking-wider">1993 年底 ～ 1994 年 03 月</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-rose-600 text-white font-extrabold text-xs shadow-sm">🔥【重要！】統帥叛逃轉折</span>
+              </div>
               <span class="text-xs px-3 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200 font-semibold">權力內訌 · 主將倒戈</span>
             </div>
             <h3 class="text-lg font-bold text-slate-900">徐建國與所羅門權鬥失敗遭架空，憤而自 Cadence 請辭投敵</h3>
             <p class="text-base text-slate-700 mt-2 leading-relaxed">
-              執行長科斯特洛支持所羅門，並空降外部主管共治。徐建國於 1994 年 3 月辭職，轉頭竟接掌了自己原本誓言消滅的目標——ArcSys。
+              <strong>關鍵主體：</strong>徐建國、詹姆斯·所羅門、喬·科斯特洛、Cadence、ArcSys。<br>
+              <strong>事件情節：</strong>徐建國與所羅門就 IC 設計部門指揮權產生無可調和的衝突。科斯特洛偏向所羅門並空降主管共治，徐建國遭到實質降權架空，於 1994 年 3 月請辭，隨後竟然接掌自己曾誓言殲滅的目標——ArcSys。
             </p>
           </div>
         </div>
 
-        <!-- Item 6: 1994.06 -->
-        <div class="timeline-item relative group" data-stage="stage2">
+        <!-- Item 8: 1994.06 Settlement Agreement -->
+        <div class="timeline-item relative group" data-stage="stage2" data-important="true">
           <div class="absolute -left-8 sm:-left-10 top-2 w-8 h-8 rounded-full bg-white border-2 border-amber-500 flex items-center justify-center text-xs text-amber-600 font-bold shadow-sm">
-            6
+            8
           </div>
-          <div class="bg-white hover:bg-slate-50 transition border border-slate-200 hover:border-amber-400 rounded-2xl p-6 shadow-sm">
+          <div class="bg-white hover:bg-slate-50 transition border-2 border-amber-300 rounded-2xl p-6 shadow-sm">
             <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-              <span class="text-sm font-bold text-amber-600 font-mono tracking-wider">1994 年 06 月</span>
-              <span class="text-xs px-3 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200 font-semibold">停戰合約 · 禁挖角期限制</span>
+              <div class="flex items-center gap-2">
+                <span class="text-sm font-bold text-amber-600 font-mono tracking-wider">1994 年 06 月</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-rose-600 text-white font-extrabold text-xs shadow-sm">🔥【重要！】和解契約與限制</span>
+              </div>
+              <span class="text-xs px-3 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200 font-semibold">法律緩衝 · 禁挖角期限制</span>
             </div>
             <h3 class="text-lg font-bold text-slate-900">Cadence 與徐建國簽署和解協議，豁免訴訟但禁止挖角半年</h3>
             <p class="text-base text-slate-700 mt-2 leading-relaxed">
-              科斯特洛揚言提告，談判後雙方簽約：徐建國得於 7 月任職 ArcSys CEO 並獲 55 萬股期權（認購價 $0.3），但 1995 年 1 月 1 日前嚴禁招攬益華員工。
+              <strong>關鍵主體：</strong>徐建國、科斯特洛、Cadence、ArcSys 董事會。<br>
+              <strong>事件情節：</strong>科斯特洛揚言提告，經數輪高壓談判簽署協議：徐建國於 7 月出任 ArcSys CEO 並獲 55 萬股期權（認購價 $0.30），豁免既有洩密指控，但嚴格禁止其在 1995 年 1 月 1 日前挖角 Cadence 員工。
             </p>
           </div>
         </div>
 
-        <!-- Item 7: 1994.09 -->
-        <div class="timeline-item relative group" data-stage="stage2">
+        <!-- Item 9: 1994.09 Igusa Email Leak -->
+        <div class="timeline-item relative group" data-stage="stage2" data-important="true">
           <div class="absolute -left-8 sm:-left-10 top-2 w-8 h-8 rounded-full bg-white border-2 border-rose-500 flex items-center justify-center text-xs text-rose-600 font-bold shadow-sm">
-            7
+            9
           </div>
-          <div class="bg-white hover:bg-slate-50 transition border border-slate-200 hover:border-rose-400 rounded-2xl p-6 shadow-sm">
+          <div class="bg-white hover:bg-slate-50 transition border-2 border-rose-300 rounded-2xl p-6 shadow-sm">
             <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-              <span class="text-sm font-bold text-rose-600 font-mono tracking-wider">1994 年 09 月 15～16 日</span>
-              <span class="text-xs px-3 py-1 rounded-full bg-rose-50 text-rose-800 border border-rose-200 font-semibold">電郵洩密 · 架構師井草出走</span>
+              <div class="flex items-center gap-2">
+                <span class="text-sm font-bold text-rose-600 font-mono tracking-wider">1994 年 09 月 15～16 日</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-rose-600 text-white font-extrabold text-xs shadow-sm">🔥【重要！】架構師走私代碼</span>
+              </div>
+              <span class="text-xs px-3 py-1 rounded-full bg-rose-50 text-rose-800 border border-rose-200 font-semibold">電郵洩密 · 原始碼外流</span>
             </div>
             <h3 class="text-lg font-bold text-slate-900">首席架構師井草拒絕天價挽留，寄出 6MB 核心代碼後離職</h3>
             <p class="text-base text-slate-700 mt-2 leading-relaxed">
-              井草拒絕薪資自填、全額支薪攻讀博士等條件。離職前夕將 Gate Ensemble 等 6MB 原始碼寄至 NetCom 私人信箱，並將 QPlace/FRoute 拷入磁片。
+              <strong>關鍵主體：</strong>米奇·井草（Mitch Igusa）、科斯特洛、Cadence、NetCom。<br>
+              <strong>事件情節：</strong>井草以「想賺大錢」為由離職，回絕了職位自選、薪酬自訂、全額支薪攻讀博士不綁約等挽留，並拒簽保密文件。離職前夕將 Gate Ensemble 等 6MB 檔案（單檔 5.3MB）發往個人 NetCom 信箱，拷貝軟碟帶走。
             </p>
           </div>
         </div>
 
-        <!-- Item 8: 1994.11 -->
-        <div class="timeline-item relative group" data-stage="stage2">
+        <!-- Item 10: 1994.11 DA Raid on Igusa -->
+        <div class="timeline-item relative group" data-stage="stage2" data-important="true">
           <div class="absolute -left-8 sm:-left-10 top-2 w-8 h-8 rounded-full bg-white border-2 border-purple-500 flex items-center justify-center text-xs text-purple-600 font-bold shadow-sm">
-            8
-          </div>
-          <div class="bg-white hover:bg-slate-50 transition border border-slate-200 hover:border-purple-400 rounded-2xl p-6 shadow-sm">
-            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-              <span class="text-sm font-bold text-purple-600 font-mono tracking-wider">1994 年 11 月 09～10 日</span>
-              <span class="text-xs px-3 py-1 rounded-full bg-purple-50 text-purple-800 border border-purple-200 font-semibold">檢警出擊 · 首度查獲犯罪物證</span>
-            </div>
-            <h3 class="text-lg font-bold text-slate-900">聖塔克拉拉郡地檢署搜索井草住處及機房，起獲工作站與修改過的原始碼</h3>
-            <p class="text-base text-slate-700 mt-2 leading-relaxed">
-              警方證實井草竊取 Gate Ensemble、QPlace 與 FRoute 代碼，並在行事曆中發現多次與 ArcSys 高層密商特定軟體的紀錄。Cadence 開始聘請私家偵探全天候跟監。
-            </p>
-          </div>
-        </div>
-
-        <!-- Item 9: 1995.01 -->
-        <div class="timeline-item relative group" data-stage="stage3">
-          <div class="absolute -left-8 sm:-left-10 top-2 w-8 h-8 rounded-full bg-white border-2 border-orange-500 flex items-center justify-center text-xs text-orange-600 font-bold shadow-sm">
-            9
-          </div>
-          <div class="bg-white hover:bg-slate-50 transition border border-slate-200 hover:border-orange-400 rounded-2xl p-6 shadow-sm">
-            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-              <span class="text-sm font-bold text-orange-600 font-mono tracking-wider">1995 年 01 月</span>
-              <span class="text-xs px-3 py-1 rounded-full bg-orange-50 text-orange-800 border border-orange-200 font-semibold">禁令到期 · 「K 團隊」與 byebye.tar</span>
-            </div>
-            <h3 class="text-lg font-bold text-slate-900">徐建國大舉挖角 9 名核心工程師，鄭志良打包 byebye.tar 帶走關鍵技術</h3>
-            <p class="text-base text-slate-700 mt-2 leading-relaxed">
-              禁令一解禁，ArcSys 組建「K 團隊」與「JFK Cadence」業務部隊。鄭志良離職前兩天建立 <code class="bg-slate-100 px-1.5 py-0.5 rounded text-rose-700 font-mono text-sm">byebye.tar</code> 磁帶備份檔，攜帶最新版 QPlace 與 FRoute 投奔。
-            </p>
-          </div>
-        </div>
-
-        <!-- Item 10: 1995.06 -->
-        <div class="timeline-item relative group" data-stage="stage3">
-          <div class="absolute -left-8 sm:-left-10 top-2 w-8 h-8 rounded-full bg-white border-2 border-emerald-500 flex items-center justify-center text-xs text-emerald-600 font-bold shadow-sm">
             10
           </div>
-          <div class="bg-white hover:bg-slate-50 transition border border-slate-200 hover:border-emerald-400 rounded-2xl p-6 shadow-sm">
+          <div class="bg-white hover:bg-slate-50 transition border-2 border-purple-300 rounded-2xl p-6 shadow-sm">
             <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-              <span class="text-sm font-bold text-emerald-600 font-mono tracking-wider">1995 年 06 月 06 日</span>
-              <span class="text-xs px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 font-semibold">資本登頂 · ArcSys 成功 IPO</span>
+              <div class="flex items-center gap-2">
+                <span class="text-sm font-bold text-purple-600 font-mono tracking-wider">1994 年 11 月 09～10 日</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-rose-600 text-white font-extrabold text-xs shadow-sm">🔥【重要！】檢警查扣直接物證</span>
+              </div>
+              <span class="text-xs px-3 py-1 rounded-full bg-purple-50 text-purple-800 border border-purple-200 font-semibold">刑事偵辦 · 扣押工作站</span>
             </div>
-            <h3 class="text-lg font-bold text-slate-900">ArcSys 成功公開上市，掛牌首日市值達 2.4 億美元</h3>
+            <h3 class="text-lg font-bold text-slate-900">聖塔克拉拉地檢署搜索井草住處及機房，起獲工作站與修改代碼</h3>
             <p class="text-base text-slate-700 mt-2 leading-relaxed">
-              憑藉 ArcCell 與年化 1,300 萬美元營收達損益兩平，股價收在 26.5 美元。徐建國持有的 55 萬股期權市值高達 2,000 萬美元，為後續收購儲備巨額資本。
+              <strong>關鍵主體：</strong>聖塔克拉拉郡地檢署、聖荷西警方、米奇·井草、NetCom。<br>
+              <strong>事件情節：</strong>檢警持搜索票查扣井草 UNIX 工作站與軟碟，證實其竊取 Gate Ensemble、QPlace 與 FRoute 程式碼；並在其行事曆檔案中發現多次與 ArcSys 高層密商特定軟體的紀錄。
             </p>
           </div>
         </div>
 
-        <!-- Item 11: 1995.08 -->
-        <div class="timeline-item relative group" data-stage="stage3">
-          <div class="absolute -left-8 sm:-left-10 top-2 w-8 h-8 rounded-full bg-white border-2 border-rose-500 flex items-center justify-center text-xs text-rose-600 font-bold shadow-sm">
+        <!-- Item 11: 1995.01 K-Team & byebye.tar -->
+        <div class="timeline-item relative group" data-stage="stage3" data-important="true">
+          <div class="absolute -left-8 sm:-left-10 top-2 w-8 h-8 rounded-full bg-white border-2 border-orange-500 flex items-center justify-center text-xs text-orange-600 font-bold shadow-sm">
             11
           </div>
-          <div class="bg-white hover:bg-slate-50 transition border border-slate-200 hover:border-rose-400 rounded-2xl p-6 shadow-sm">
+          <div class="bg-white hover:bg-slate-50 transition border-2 border-orange-300 rounded-2xl p-6 shadow-sm">
             <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-              <span class="text-sm font-bold text-rose-600 font-mono tracking-wider">1995 年 08 月</span>
-              <span class="text-xs px-3 py-1 rounded-full bg-rose-50 text-rose-800 border border-rose-200 font-semibold">白手套被抓 · 蜥蜴基金與井草被捕</span>
+              <div class="flex items-center gap-2">
+                <span class="text-sm font-bold text-orange-600 font-mono tracking-wider">1995 年 01 月</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-rose-600 text-white font-extrabold text-xs shadow-sm">🔥【重要！】K 團隊與磁帶打包</span>
+              </div>
+              <span class="text-xs px-3 py-1 rounded-full bg-orange-50 text-orange-800 border border-orange-200 font-semibold">禁令到期 · 組織化挖角</span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900">徐建國大舉挖角 9 名核心工程師，鄭志良打包 byebye.tar 投奔</h3>
+            <p class="text-base text-slate-700 mt-2 leading-relaxed">
+              <strong>關鍵主體：</strong>徐建國、鄭志良（Eric Cheng）、李正道（J.T. Lee）、羅盛春、曾屏三、奧弗·塞格夫、ArcSys。<br>
+              <strong>事件情節：</strong>禁令期滿，ArcSys 吸納 9 名工程師組建「K 團隊」（十二金剛）。鄭志良離職前兩天建立 <code class="bg-rose-50 text-rose-700 font-mono font-bold px-1.5 py-0.5 rounded border border-rose-200">byebye.tar</code>，打包 QPlace 與 FRoute 原始碼複製至磁帶機帶走，並查獲 ArcSys 對其可疑付款記錄。
+            </p>
+          </div>
+        </div>
+
+        <!-- Item 12: 1995.Early JFK Cadence Team -->
+        <div class="timeline-item relative group" data-stage="stage3" data-important="false">
+          <div class="absolute -left-8 sm:-left-10 top-2 w-8 h-8 rounded-full bg-white border-2 border-slate-400 flex items-center justify-center text-xs text-slate-600 font-bold shadow-sm">
+            12
+          </div>
+          <div class="bg-white hover:bg-slate-50 transition border border-slate-200 rounded-2xl p-6 shadow-sm">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+              <span class="text-sm font-bold text-slate-600 font-mono tracking-wider">1995 年初</span>
+              <span class="text-xs px-3 py-1 rounded-full bg-slate-100 text-slate-700 font-semibold">市場狼群 · 業務進攻</span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900">徐建國成立「JFK Cadence」業務部隊，專攻 Cadence 大客戶</h3>
+            <p class="text-base text-slate-700 mt-2 leading-relaxed">
+              <strong>關鍵主體：</strong>徐建國、ArcSys、Cadence。<br>
+              <strong>事件情節：</strong>徐建國組建名為「Just F@#$ing Kill Cadence」的精銳銷售軍團，鎖定 Cadence 客戶提供改進版軟體與優渥條件，策動客戶轉移陣營。
+            </p>
+          </div>
+        </div>
+
+        <!-- Item 13: 1995.06.06 ArcSys IPO -->
+        <div class="timeline-item relative group" data-stage="stage3" data-important="true">
+          <div class="absolute -left-8 sm:-left-10 top-2 w-8 h-8 rounded-full bg-white border-2 border-emerald-500 flex items-center justify-center text-xs text-emerald-600 font-bold shadow-sm">
+            13
+          </div>
+          <div class="bg-white hover:bg-slate-50 transition border-2 border-emerald-300 rounded-2xl p-6 shadow-sm">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+              <div class="flex items-center gap-2">
+                <span class="text-sm font-bold text-emerald-600 font-mono tracking-wider">1995 年 06 月 06 日</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-rose-600 text-white font-extrabold text-xs shadow-sm">🔥【重要！】資本市場登頂</span>
+              </div>
+              <span class="text-xs px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 font-semibold">資本成功 · ArcSys 上市</span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900">ArcSys 成功公開上市 (IPO)，掛牌首日市值達 2.4 億美元</h3>
+            <p class="text-base text-slate-700 mt-2 leading-relaxed">
+              <strong>關鍵主體：</strong>ArcSys、徐建國、華爾街投資人。<br>
+              <strong>事件情節：</strong>年化營收衝上 1,300 萬美元達損益兩平，掛牌首日收盤價 $26.50，市值達 2.4 億美元。徐建國的 55 萬股認股選擇權市值瞬間飆至 2,000 萬美元。
+            </p>
+          </div>
+        </div>
+
+        <!-- Item 14: 1995.08 K2 & Saurus Fund & Igusa Arrest -->
+        <div class="timeline-item relative group" data-stage="stage3" data-important="true">
+          <div class="absolute -left-8 sm:-left-10 top-2 w-8 h-8 rounded-full bg-white border-2 border-rose-500 flex items-center justify-center text-xs text-rose-600 font-bold shadow-sm">
+            14
+          </div>
+          <div class="bg-white hover:bg-slate-50 transition border-2 border-rose-300 rounded-2xl p-6 shadow-sm">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+              <div class="flex items-center gap-2">
+                <span class="text-sm font-bold text-rose-600 font-mono tracking-wider">1995 年 08 月</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-rose-600 text-white font-extrabold text-xs shadow-sm">🔥【重要！】白手套被抓與重罪起訴</span>
+              </div>
+              <span class="text-xs px-3 py-1 rounded-full bg-rose-50 text-rose-800 border border-rose-200 font-semibold">白手套金庫 · 井草逮捕</span>
             </div>
             <h3 class="text-lg font-bold text-slate-900">井草遭起訴六項重罪逮捕，先驅科技高層以「蜥蜴基金」輸送黑錢曝光</h3>
             <p class="text-base text-slate-700 mt-2 leading-relaxed">
-              井草成立 K2，Avant! 工程副總在隔壁設立「蜥蜴基金（Saurus Fund）」作為資金轉交白手套。徐建國自掏腰包保釋井草；私家偵探拍到井草在街頭收取 Avant! 現金信封。
+              <strong>關鍵主體：</strong>米奇·井草、徐建國、Avant! 工程副總、K2 Design、蜥蜴基金（Saurus Fund）。<br>
+              <strong>事件情節：</strong>董事會否決聘用井草後，管理層在井草辦公室隔壁成立「蜥蜴基金」充當資金輸送白手套。井草遭起訴六項重罪逮捕，徐建國個人出資交保；私家偵探拍下井草收取現金信封。
             </p>
           </div>
         </div>
 
-        <!-- Item 12: 1995.08 -->
-        <div class="timeline-item relative group" data-stage="stage3">
+        <!-- Item 15: 1995.08 Cypress Smoking Gun -->
+        <div class="timeline-item relative group" data-stage="stage3" data-important="true">
           <div class="absolute -left-8 sm:-left-10 top-2 w-8 h-8 rounded-full bg-white border-2 border-red-600 flex items-center justify-center text-xs text-red-600 font-bold shadow-sm">
-            12
+            15
           </div>
-          <div class="bg-white hover:bg-slate-50 transition border border-slate-200 hover:border-red-400 rounded-2xl p-6 shadow-sm">
+          <div class="bg-white hover:bg-slate-50 transition border-2 border-red-400 rounded-2xl p-6 shadow-sm">
             <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-              <span class="text-sm font-bold text-red-600 font-mono tracking-wider">1995 年 08 月</span>
-              <span class="text-xs px-3 py-1 rounded-full bg-red-50 text-red-800 border border-red-200 font-semibold">致命吸煙槍 · Cypress 錯字破綻</span>
+              <div class="flex items-center gap-2">
+                <span class="text-sm font-bold text-red-600 font-mono tracking-wider">1995 年 08 月</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-rose-600 text-white font-extrabold text-xs shadow-sm">🔥【重要！】破案關鍵「吸煙之槍」</span>
+              </div>
+              <span class="text-xs px-3 py-1 rounded-full bg-red-50 text-red-800 border border-red-200 font-semibold">錯字鐵證 · 破綻曝光</span>
             </div>
             <h3 class="text-lg font-bold text-slate-900">拜訪客戶 Cypress 時，當場抓包 ArcSys 軟體存在一模一樣的錯字臭蟲</h3>
             <p class="text-base text-slate-700 mt-2 leading-relaxed">
-              軟體跳出報錯訊息：<code class="px-2 py-0.5 rounded bg-rose-50 text-rose-700 border border-rose-200 font-mono text-sm">Error a: color, not found in this file</code>（冒號倒置且逗號多餘）。該錯誤在 Cadence 存在多年未修，成為不可抹滅的抄襲鐵證。
+              <strong>關鍵主體：</strong>Cadence 工程師、賽普拉斯半導體（Cypress）、ArcSys。<br>
+              <strong>事件情節：</strong>Cadence 工程師觀看展示時，抓包跳出錯誤訊息：<code class="px-2 py-0.5 rounded bg-rose-50 text-rose-700 border border-rose-200 font-mono text-sm font-bold">Error a: color, not found in this file</code>（冒號位置倒置且多餘逗號）。該錯誤在 Cadence 沉睡多年，成為無法辯駁的直接抄襲鐵證。
             </p>
           </div>
         </div>
 
-        <!-- Item 13: 1995.11 - 12 -->
-        <div class="timeline-item relative group" data-stage="stage3">
+        <!-- Item 16: 1995.11.27 Merger ISS -> Avant! -->
+        <div class="timeline-item relative group" data-stage="stage3" data-important="false">
           <div class="absolute -left-8 sm:-left-10 top-2 w-8 h-8 rounded-full bg-white border-2 border-indigo-600 flex items-center justify-center text-xs text-indigo-600 font-bold shadow-sm">
-            13
+            16
           </div>
-          <div class="bg-white hover:bg-slate-50 transition border border-slate-200 hover:border-indigo-400 rounded-2xl p-6 shadow-sm">
+          <div class="bg-white hover:bg-slate-50 transition border border-slate-200 rounded-2xl p-6 shadow-sm">
             <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-              <span class="text-sm font-bold text-indigo-600 font-mono tracking-wider">1995 年 11～12 月</span>
-              <span class="text-xs px-3 py-1 rounded-full bg-indigo-50 text-indigo-800 border border-indigo-200 font-semibold">合併改名 · 檢警大突襲</span>
+              <span class="text-sm font-bold text-indigo-600 font-mono tracking-wider">1995 年 11 月 27 日</span>
+              <span class="text-xs px-3 py-1 rounded-full bg-indigo-50 text-indigo-800 border border-indigo-200 font-semibold">企業更名 · 衝上 $51 天價</span>
             </div>
-            <h3 class="text-lg font-bold text-slate-900">ArcSys 併購 ISS 改名 Avant! 衝上 $51 高點；一週後四警政機關直搗總部</h3>
+            <h3 class="text-lg font-bold text-slate-900">ArcSys 併購 ISS 正式更名 Avant!，股價幾天內飆上 $51 歷史高點</h3>
             <p class="text-base text-slate-700 mt-2 leading-relaxed">
-              12 月 5 日，地檢署、FBI 及警隊突擊搜查總部，搜出「19 天完成 47,000 行代碼」異常紀錄、Cadence 下代藍圖與全體員工薪資表。專家鑑定 ArcCell 代碼直接抄襲。
+              <strong>關鍵主體：</strong>ArcSys、Integrated Silicon Systems (ISS)、Avant! Corporation。<br>
+              <strong>事件情節：</strong>透過併購 ISS 擴充產品線並改名 Avant!，意圖稀釋 ArcCell 侵權色彩，股價在華爾街追捧下飆至 $51。
             </p>
           </div>
         </div>
 
-        <!-- Item 14: 1995.12.06 -->
-        <div class="timeline-item relative group" data-stage="stage4">
-          <div class="absolute -left-8 sm:-left-10 top-2 w-8 h-8 rounded-full bg-white border-2 border-rose-600 flex items-center justify-center text-xs text-rose-600 font-bold shadow-sm">
-            14
+        <!-- Item 17: 1995.12.05 Raid on Avant! HQ -->
+        <div class="timeline-item relative group" data-stage="stage3" data-important="true">
+          <div class="absolute -left-8 sm:-left-10 top-2 w-8 h-8 rounded-full bg-white border-2 border-purple-600 flex items-center justify-center text-xs text-purple-600 font-bold shadow-sm">
+            17
           </div>
-          <div class="bg-white hover:bg-slate-50 transition border border-slate-200 hover:border-rose-400 rounded-2xl p-6 shadow-sm">
+          <div class="bg-white hover:bg-slate-50 transition border-2 border-purple-400 rounded-2xl p-6 shadow-sm">
             <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-              <span class="text-sm font-bold text-rose-600 font-mono tracking-wider">1995 年 12 月 06 日</span>
-              <span class="text-xs px-3 py-1 rounded-full bg-rose-50 text-rose-800 border border-rose-200 font-semibold">提告侵權 · 股價血崩</span>
+              <div class="flex items-center gap-2">
+                <span class="text-sm font-bold text-purple-600 font-mono tracking-wider">1995 年 12 月 05 日</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-rose-600 text-white font-extrabold text-xs shadow-sm">🔥【重要！】四檢警突擊總部搜查</span>
+              </div>
+              <span class="text-xs px-3 py-1 rounded-full bg-purple-50 text-purple-800 border border-purple-200 font-semibold">四機關突襲 · 搜出巨量鐵證</span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900">地檢署、FBI 及警隊突擊搜查 Avant! 總部，起獲 19 天寫 4.7 萬行日誌</h3>
+            <p class="text-base text-slate-700 mt-2 leading-relaxed">
+              <strong>關鍵主體：</strong>聖塔克拉拉地檢署、FBI、聖荷西警方、森尼韋爾警方、Avant! 總部。<br>
+              <strong>事件情節：</strong>警方搜出「19 天完成 47,000 行代碼」的異常日誌、Cadence 下代產品藍圖、員工全體薪資表，專家鑑定 ArcCell 原始碼直接抄襲。
+            </p>
+          </div>
+        </div>
+
+        <!-- Item 18: 1995.12.06 Cadence Civil Lawsuit & Stock Crash -->
+        <div class="timeline-item relative group" data-stage="stage4" data-important="true">
+          <div class="absolute -left-8 sm:-left-10 top-2 w-8 h-8 rounded-full bg-white border-2 border-rose-600 flex items-center justify-center text-xs text-rose-600 font-bold shadow-sm">
+            18
+          </div>
+          <div class="bg-white hover:bg-slate-50 transition border-2 border-rose-300 rounded-2xl p-6 shadow-sm">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+              <div class="flex items-center gap-2">
+                <span class="text-sm font-bold text-rose-600 font-mono tracking-wider">1995 年 12 月 06 日</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-rose-600 text-white font-extrabold text-xs shadow-sm">🔥【重要！】聯邦民事提告與崩盤</span>
+              </div>
+              <span class="text-xs px-3 py-1 rounded-full bg-rose-50 text-rose-800 border border-rose-200 font-semibold">民事提告 · 股價腰斬雪崩</span>
             </div>
             <h3 class="text-lg font-bold text-slate-900">Cadence 正式向聯邦法院提起民事訴訟，Avant! 股價單週崩跌至 $14</h3>
             <p class="text-base text-slate-700 mt-2 leading-relaxed">
-              起訴著作權侵害、營業秘密侵犯與不正競爭，要求繳回所有獲利並索求懲罰性賠償。先驅科技股價從 $42.25 暴跌至 $14.25。
+              <strong>關鍵主體：</strong>Cadence、Avant!、聖荷西聯邦地方法院。<br>
+              <strong>事件情節：</strong>起訴著作權侵害、營業秘密侵犯與不正競爭，要求交出全部獲利與懲罰性賠償。先驅科技股價從 $42.25 暴跌至 $14.25。
             </p>
           </div>
         </div>
 
-        <!-- Item 15: 1996.01.16 -->
-        <div class="timeline-item relative group" data-stage="stage4">
+        <!-- Item 19: 1996.01.16 Avant! Counterclaim -->
+        <div class="timeline-item relative group" data-stage="stage4" data-important="false">
           <div class="absolute -left-8 sm:-left-10 top-2 w-8 h-8 rounded-full bg-white border-2 border-orange-600 flex items-center justify-center text-xs text-orange-600 font-bold shadow-sm">
-            15
+            19
           </div>
-          <div class="bg-white hover:bg-slate-50 transition border border-slate-200 hover:border-orange-400 rounded-2xl p-6 shadow-sm">
+          <div class="bg-white hover:bg-slate-50 transition border border-slate-200 rounded-2xl p-6 shadow-sm">
             <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
               <span class="text-sm font-bold text-orange-600 font-mono tracking-wider">1996 年 01 月 16 日</span>
-              <span class="text-xs px-3 py-1 rounded-full bg-orange-50 text-orange-800 border border-orange-200 font-semibold">全面反制 · 反訴與做空指控</span>
+              <span class="text-xs px-3 py-1 rounded-full bg-orange-50 text-orange-800 border border-orange-200 font-semibold">法律反訴 · 輿論攻防戰</span>
             </div>
             <h3 class="text-lg font-bold text-slate-900">Avant! 提起反訴指控不正競爭，批 Cadence「市場打不贏才告上法庭」</h3>
             <p class="text-base text-slate-700 mt-2 leading-relaxed">
-              徐建國反控科斯特洛以不實言論恐嚇客戶與應聘者、破壞融資，甚至指控科斯特洛私下放空 Avant! 股票謀利。成功將股價於 1996 年 5 月拉回至 $21。
+              <strong>關鍵主體：</strong>Avant!、徐建國、Cadence、科斯特洛。<br>
+              <strong>事件情節：</strong>徐建國反控科斯特洛以不實言論恐嚇客戶與應聘者、破壞融資，甚至指控科斯特洛私下放空股票謀利，成功將股價反彈至 $21。
             </p>
           </div>
         </div>
 
-        <!-- Item 16: 1996.05.08 -->
-        <div class="timeline-item relative group" data-stage="stage4">
+        <!-- Item 20: 1996.05.08 Preliminary Injunction -->
+        <div class="timeline-item relative group" data-stage="stage4" data-important="true">
           <div class="absolute -left-8 sm:-left-10 top-2 w-8 h-8 rounded-full bg-white border-2 border-rose-600 flex items-center justify-center text-xs text-rose-600 font-bold shadow-sm ring-4 ring-rose-100">
-            16
+            20
           </div>
-          <div class="bg-rose-50/60 border-2 border-rose-500 rounded-2xl p-6 shadow-md">
+          <div class="bg-rose-50/70 border-2 border-rose-500 rounded-2xl p-6 shadow-md">
             <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-              <span class="text-sm font-bold text-rose-700 font-mono tracking-wider">1996 年 05 月 08 日</span>
-              <span class="text-xs px-3 py-1 rounded-full bg-rose-600 text-white font-bold uppercase tracking-wider animate-pulse">個案核心斷點 · 生死禁制令</span>
+              <div class="flex items-center gap-2">
+                <span class="text-sm font-bold text-rose-700 font-mono tracking-wider">1996 年 05 月 08 日</span>
+                <span class="px-3 py-1 rounded-full bg-rose-600 text-white font-black text-xs shadow-md animate-pulse">🔥【重要！】生死存亡決策斷點</span>
+              </div>
+              <span class="text-xs px-3 py-1 rounded-full bg-white text-rose-700 border border-rose-300 font-bold">直切 60% 營收動脈</span>
             </div>
             <h3 class="text-xl font-bold text-slate-900">Cadence 正式聲請「初步禁制令」，要求全面禁售 ArcCell 核心產品</h3>
-            <p class="text-base text-slate-700 mt-2 leading-relaxed">
-              禁制令直指佔 Avant! 營收 60% 的 ArcCell 與 ArcCell XO。若法院核准，Avant! 商業心脈將瞬間截斷；與此同時，66% 的工程師反對 Cadence 勝訴，雙方迎來最終戰略抉擇時刻。
+            <p class="text-base text-slate-800 mt-2 leading-relaxed font-medium">
+              <strong>關鍵主體：</strong>Cadence、Avant!、聖荷西聯邦法院。<br>
+              <strong>事件情節：</strong>禁制令直指佔 Avant! 營收 60% 的 ArcCell 與 ArcCell XO。若法院核准，先驅科技商業心脈將瞬間截斷；同時業界高達 66% 工程師反對 Cadence 勝訴，雙方迎來最後策略抉擇。
             </p>
           </div>
         </div>
@@ -425,10 +570,10 @@
         <div>
           <h2 class="text-xl font-bold text-slate-900 flex items-center gap-3">
             <span>🕸️ 陣營結構與商業諜戰因果關係圖</span>
-            <span class="text-sm px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 font-semibold border border-indigo-200">結構化清晰重構版</span>
+            <span class="text-sm px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 font-semibold border border-indigo-200">全人物與涉案機構名冊</span>
           </h2>
           <p class="text-base text-slate-600 mt-1">
-            依據陣營角色清晰分流，徹底杜絕線條混亂。點選下方「關鍵動態鏈」可即時高亮追蹤特定事件路徑。
+            完整收錄個案 14 位關鍵人物與 10 大關鍵機構。點選下方按鈕可即時高亮追蹤特定事件路徑。
           </p>
         </div>
         <div class="flex flex-wrap gap-2 text-sm">
@@ -692,217 +837,272 @@
       <!-- Search & Filters -->
       <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div class="relative flex-1">
-          <input type="text" id="event-search" oninput="searchEvents()" placeholder="輸入關鍵字搜尋事件（如：byebye.tar、錯字、禁制令、井草、IPO...）" class="w-full bg-slate-50 border border-slate-300 rounded-xl pl-11 pr-4 py-3 text-base text-slate-900 placeholder-slate-400 focus:outline-none focus:border-indigo-600 focus:bg-white transition">
+          <input type="text" id="event-search" oninput="searchEvents()" placeholder="輸入關鍵字搜尋事件（如：重要、byebye.tar、錯字、禁制令、井草、IPO、AK-47...）" class="w-full bg-slate-50 border border-slate-300 rounded-xl pl-11 pr-4 py-3 text-base text-slate-900 placeholder-slate-400 focus:outline-none focus:border-indigo-600 focus:bg-white transition">
           <svg class="w-5 h-5 text-slate-400 absolute left-3.5 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
         </div>
         <div class="flex items-center gap-2 flex-wrap text-sm">
-          <button onclick="filterEventTag('all')" class="ev-tag-btn active px-4 py-2 rounded-lg font-semibold bg-indigo-600 text-white border border-indigo-600 shadow-sm transition">全部</button>
+          <button onclick="filterEventTag('all')" class="ev-tag-btn active px-4 py-2 rounded-lg font-semibold bg-indigo-600 text-white border border-indigo-600 shadow-sm transition">全部事件</button>
+          <button onclick="filterEventTag('重要')" class="ev-tag-btn px-4 py-2 rounded-lg font-semibold bg-rose-50 text-rose-700 border border-rose-300 hover:bg-rose-100 transition">🔥 僅看【重要！】事件</button>
           <button onclick="filterEventTag('刑事物證')" class="ev-tag-btn px-4 py-2 rounded-lg font-semibold bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">刑事物證</button>
           <button onclick="filterEventTag('商業與組織')" class="ev-tag-btn px-4 py-2 rounded-lg font-semibold bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">商業與組織</button>
           <button onclick="filterEventTag('司法訴訟')" class="ev-tag-btn px-4 py-2 rounded-lg font-semibold bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">司法訴訟</button>
         </div>
       </div>
 
-      <!-- Table Container with Crisp White Theme and High Legibility -->
-      <div class="overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm">
-        <table class="w-full text-left text-base text-slate-800">
-          <thead class="bg-slate-100 text-slate-700 uppercase font-mono text-sm border-b border-slate-200">
+      <!-- Table Container with Fixed Scroll and Sticky Header (表頭凍結不跑掉) -->
+      <div class="table-scroll-container rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <table class="w-full text-left text-base text-slate-800 border-collapse">
+          <thead class="sticky-thead bg-slate-100 text-slate-700 uppercase font-mono text-sm border-b border-slate-200">
             <tr>
-              <th class="py-4 px-4 w-16 text-center">序號</th>
+              <th class="py-4 px-3 w-14 text-center">序號</th>
+              <th class="py-4 px-3 w-28 text-center">重要度</th>
               <th class="py-4 px-4 w-32">時間點</th>
-              <th class="py-4 px-5 w-52">事件名稱</th>
-              <th class="py-4 px-4 w-44">核心主體</th>
-              <th class="py-4 px-5">詳細情節與關鍵證據</th>
+              <th class="py-4 px-4 w-52">事件名稱</th>
+              <th class="py-4 px-4 w-52">核心人物與關鍵主體</th>
+              <th class="py-4 px-5 min-w-[280px]">詳細情節與關鍵證據</th>
               <th class="py-4 px-5 w-56">戰略與法律衝擊</th>
-              <th class="py-4 px-4 w-28 text-center">屬性標籤</th>
+              <th class="py-4 px-3 w-28 text-center">屬性標籤</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-slate-200" id="event-table-body">
             <!-- Row 1 -->
-            <tr class="hover:bg-slate-50/80 transition" data-tag="商業與組織">
-              <td class="py-4 px-4 text-center font-mono text-slate-500 font-bold">01</td>
+            <tr class="hover:bg-slate-50/80 transition" data-tag="商業與組織" data-important="true">
+              <td class="py-4 px-3 text-center font-mono text-slate-500 font-bold">01</td>
+              <td class="py-4 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-rose-600 text-white text-xs font-bold shadow-sm whitespace-nowrap">🔥【重要！】</span></td>
               <td class="py-4 px-4 font-mono font-bold text-sky-700">1988年</td>
-              <td class="py-4 px-5 font-bold text-slate-900">Cadence 成立與技術奠基</td>
-              <td class="py-4 px-4 text-slate-700 font-medium">SDA, ECAD, Tangent</td>
-              <td class="py-4 px-5 text-slate-600 leading-relaxed">SDA 與 ECAD 合併成立 Cadence，並收購所羅門的 Tangent Software，掌握實體佈局與繞線核心專利架構。</td>
-              <td class="py-4 px-5 text-slate-700 font-medium">確立實體佈局領域的技術壟斷護城河，成為日後爭奪之智財根基。</td>
-              <td class="py-4 px-4 text-center"><span class="px-3 py-1 rounded-full bg-blue-50 text-blue-800 text-xs font-semibold border border-blue-200">商業與組織</span></td>
+              <td class="py-4 px-4 font-bold text-slate-900">Cadence 成立與技術奠基</td>
+              <td class="py-4 px-4 text-slate-700 font-medium">SDA, ECAD, Tangent, 所羅門, 科斯特洛</td>
+              <td class="py-4 px-5 text-slate-600 leading-relaxed">SDA 與 ECAD 合併成立 Cadence，並收購所羅門的 Tangent Software，取得實體佈局與繞線（Place-and-Route）核心專利演算法架構。</td>
+              <td class="py-4 px-5 text-slate-700 font-medium">確立佈局繞線市場的絕對技術護城河，成為日後雙方爭奪之智財根基。</td>
+              <td class="py-4 px-3 text-center"><span class="px-2.5 py-1 rounded-full bg-blue-50 text-blue-800 text-xs font-semibold border border-blue-200 whitespace-nowrap">商業與組織</span></td>
             </tr>
 
             <!-- Row 2 -->
-            <tr class="hover:bg-slate-50/80 transition" data-tag="商業與組織">
-              <td class="py-4 px-4 text-center font-mono text-slate-500 font-bold">02</td>
-              <td class="py-4 px-4 font-mono font-bold text-orange-600">1991.02-03</td>
-              <td class="py-4 px-5 font-bold text-slate-900">四人離職創立 ArcSys</td>
-              <td class="py-4 px-4 text-slate-700 font-medium">卓允中、蔡木炎等4人</td>
-              <td class="py-4 px-5 text-slate-600 leading-relaxed">四名工程師相繼提辭呈，離職前拒簽保密重申協議，且在正式離職前（2/28）即已登記註冊成立 ArcSys。</td>
-              <td class="py-4 px-5 text-slate-700 font-medium">埋下技術外流與競業疑雲種子，專攻深次微米技術。</td>
-              <td class="py-4 px-4 text-center"><span class="px-3 py-1 rounded-full bg-blue-50 text-blue-800 text-xs font-semibold border border-blue-200">商業與組織</span></td>
+            <tr class="hover:bg-slate-50/80 transition" data-tag="商業與組織" data-important="false">
+              <td class="py-4 px-3 text-center font-mono text-slate-500 font-bold">02</td>
+              <td class="py-4 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-xs font-medium">一般</span></td>
+              <td class="py-4 px-4 font-mono font-bold text-slate-600">1990.03</td>
+              <td class="py-4 px-4 font-bold text-slate-900">Cadence 成功上市 (IPO)</td>
+              <td class="py-4 px-4 text-slate-700 font-medium">Cadence, 科斯特洛</td>
+              <td class="py-4 px-5 text-slate-600 leading-relaxed">度過 1987 股災後成功公開上市，市值近 10 億美元，年複合獲利成長達 23%。</td>
+              <td class="py-4 px-5 text-slate-700 font-medium">取得公開資本市場充足銀彈，加速產業版圖擴張。</td>
+              <td class="py-4 px-3 text-center"><span class="px-2.5 py-1 rounded-full bg-blue-50 text-blue-800 text-xs font-semibold border border-blue-200 whitespace-nowrap">商業與組織</span></td>
             </tr>
 
             <!-- Row 3 -->
-            <tr class="hover:bg-slate-50/80 transition" data-tag="商業與組織">
-              <td class="py-4 px-4 text-center font-mono text-slate-500 font-bold">03</td>
-              <td class="py-4 px-4 font-mono font-bold text-rose-600">1992年底</td>
-              <td class="py-4 px-5 font-bold text-slate-900">「AK-47」消滅計畫</td>
-              <td class="py-4 px-4 text-slate-700 font-medium">徐建國 (Cadence)</td>
-              <td class="py-4 px-5 text-slate-600 leading-relaxed">徐建國組建「B 團隊」，排桌 48 顆彈殼恐嚇下屬，要求「47 週消滅 ArcSys」，並派員清查對手員工移民身份。</td>
-              <td class="py-4 px-5 text-slate-700 font-medium">加劇徐建國與 Cadence 企業文化的裂痕，引發科斯特洛戒心。</td>
-              <td class="py-4 px-4 text-center"><span class="px-3 py-1 rounded-full bg-blue-50 text-blue-800 text-xs font-semibold border border-blue-200">商業與組織</span></td>
+            <tr class="hover:bg-slate-50/80 transition" data-tag="商業與組織" data-important="true">
+              <td class="py-4 px-3 text-center font-mono text-slate-500 font-bold">03</td>
+              <td class="py-4 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-rose-600 text-white text-xs font-bold shadow-sm whitespace-nowrap">🔥【重要！】</span></td>
+              <td class="py-4 px-4 font-mono font-bold text-orange-600">1991.02-03</td>
+              <td class="py-4 px-4 font-bold text-slate-900">四人離職創立 ArcSys</td>
+              <td class="py-4 px-4 text-slate-700 font-medium">卓允中、蔡木炎、吳自立、廖裕成</td>
+              <td class="py-4 px-5 text-slate-600 leading-relaxed">四名核心工程師相繼提辭呈，離職前拒簽保密重申協議，且在正式離職前（2/28）即搶先登記註冊成立 ArcSys。</td>
+              <td class="py-4 px-5 text-slate-700 font-medium">埋下技術外流與競業侵權疑雲種子，鎖定深次微米技術。</td>
+              <td class="py-4 px-3 text-center"><span class="px-2.5 py-1 rounded-full bg-blue-50 text-blue-800 text-xs font-semibold border border-blue-200 whitespace-nowrap">商業與組織</span></td>
             </tr>
 
             <!-- Row 4 -->
-            <tr class="hover:bg-slate-50/80 transition" data-tag="商業與組織">
-              <td class="py-4 px-4 text-center font-mono text-slate-500 font-bold">04</td>
-              <td class="py-4 px-4 font-mono font-bold text-slate-600">1993.03</td>
-              <td class="py-4 px-5 font-bold text-slate-900">ArcCell 首代產品問世</td>
-              <td class="py-4 px-4 text-slate-700 font-medium">ArcSys</td>
-              <td class="py-4 px-5 text-slate-600 leading-relaxed">獲創投 300 萬美元注資後推出 ArcCell，但因銷售體系薄弱，1993 全年慘賠 220 萬美元。</td>
-              <td class="py-4 px-5 text-slate-700 font-medium">迫使創投董事會決議換血，尋找擅長銷售之頂級 CEO。</td>
-              <td class="py-4 px-4 text-center"><span class="px-3 py-1 rounded-full bg-blue-50 text-blue-800 text-xs font-semibold border border-blue-200">商業與組織</span></td>
+            <tr class="hover:bg-slate-50/80 transition" data-tag="商業與組織" data-important="false">
+              <td class="py-4 px-3 text-center font-mono text-slate-500 font-bold">04</td>
+              <td class="py-4 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-xs font-medium">一般</span></td>
+              <td class="py-4 px-4 font-mono font-bold text-slate-600">1992年初</td>
+              <td class="py-4 px-4 font-bold text-slate-900">併購 Valid 與創投進駐</td>
+              <td class="py-4 px-4 text-slate-700 font-medium">Valid Logic, TVI, Sutter Hill, ArcSys</td>
+              <td class="py-4 px-5 text-slate-600 leading-relaxed">Cadence 併購 Valid 成為 EDA 絕對龍頭；ArcSys 則獲 TVI、Sutter Hill 等創投 300 萬美元早期投資。</td>
+              <td class="py-4 px-5 text-slate-700 font-medium">雙方儲備銀彈，形成龍頭壟斷與新創突圍之格局。</td>
+              <td class="py-4 px-3 text-center"><span class="px-2.5 py-1 rounded-full bg-blue-50 text-blue-800 text-xs font-semibold border border-blue-200 whitespace-nowrap">商業與組織</span></td>
             </tr>
 
             <!-- Row 5 -->
-            <tr class="hover:bg-slate-50/80 transition" data-tag="商業與組織">
-              <td class="py-4 px-4 text-center font-mono text-slate-500 font-bold">05</td>
-              <td class="py-4 px-4 font-mono font-bold text-amber-600">1993年底</td>
-              <td class="py-4 px-5 font-bold text-slate-900">Cadence 高層內訌權鬥</td>
-              <td class="py-4 px-4 text-slate-700 font-medium">徐建國、所羅門、科斯特洛</td>
-              <td class="py-4 px-5 text-slate-600 leading-relaxed">徐建國與所羅門爭奪積體電路設計部門主導權，科斯特洛選擇挺所羅門並空降外部主管共治。</td>
-              <td class="py-4 px-5 text-slate-700 font-medium">徐建國遭到實質降權架空，成為倒戈投敵關鍵導火線。</td>
-              <td class="py-4 px-4 text-center"><span class="px-3 py-1 rounded-full bg-blue-50 text-blue-800 text-xs font-semibold border border-blue-200">商業與組織</span></td>
+            <tr class="hover:bg-slate-50/80 transition" data-tag="商業與組織" data-important="true">
+              <td class="py-4 px-3 text-center font-mono text-slate-500 font-bold">05</td>
+              <td class="py-4 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-rose-600 text-white text-xs font-bold shadow-sm whitespace-nowrap">🔥【重要！】</span></td>
+              <td class="py-4 px-4 font-mono font-bold text-rose-600">1992年底</td>
+              <td class="py-4 px-4 font-bold text-slate-900">「AK-47」消滅計畫</td>
+              <td class="py-4 px-4 text-slate-700 font-medium">徐建國 (Cadence IC 部門), B 團隊</td>
+              <td class="py-4 px-5 text-slate-600 leading-relaxed">徐建國成立「B 團隊」，排桌 48 顆彈殼恐嚇下屬「47 週消滅 ArcSys，最後一顆留給失敗的你」，並指示清查 ArcSys 員工移民身份。</td>
+              <td class="py-4 px-5 text-slate-700 font-medium">加劇徐建國與 Cadence 企業文化衝突，引發科斯特洛強烈戒心。</td>
+              <td class="py-4 px-3 text-center"><span class="px-2.5 py-1 rounded-full bg-blue-50 text-blue-800 text-xs font-semibold border border-blue-200 whitespace-nowrap">商業與組織</span></td>
             </tr>
 
             <!-- Row 6 -->
-            <tr class="hover:bg-slate-50/80 transition" data-tag="司法訴訟">
-              <td class="py-4 px-4 text-center font-mono text-slate-500 font-bold">06</td>
-              <td class="py-4 px-4 font-mono font-bold text-amber-600">1994.06</td>
-              <td class="py-4 px-5 font-bold text-slate-900">徐建國辭職與和解協議</td>
-              <td class="py-4 px-4 text-slate-700 font-medium">徐建國, Cadence, ArcSys</td>
-              <td class="py-4 px-5 text-slate-600 leading-relaxed">徐 3 月請辭，隨後接任 ArcSys CEO。科斯特洛揚言提告，雙方 6 月和解：豁免既有洩密指控，限制其半年內不得招攬 Cadence 員工。</td>
-              <td class="py-4 px-5 text-slate-700 font-medium">徐獲得 55 萬股超低價期權；ArcSys 取得法律緩衝期。</td>
-              <td class="py-4 px-4 text-center"><span class="px-3 py-1 rounded-full bg-purple-50 text-purple-800 text-xs font-semibold border border-purple-200">司法訴訟</span></td>
+            <tr class="hover:bg-slate-50/80 transition" data-tag="商業與組織" data-important="false">
+              <td class="py-4 px-3 text-center font-mono text-slate-500 font-bold">06</td>
+              <td class="py-4 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-xs font-medium">一般</span></td>
+              <td class="py-4 px-4 font-mono font-bold text-slate-600">1993.03</td>
+              <td class="py-4 px-4 font-bold text-slate-900">ArcCell 問世與經營重挫</td>
+              <td class="py-4 px-4 text-slate-700 font-medium">ArcSys 創始團隊, 創投董事會</td>
+              <td class="py-4 px-5 text-slate-600 leading-relaxed">推出首代產品 ArcCell（貢獻 90% 營收），但因銷售能力薄弱，1993 全年慘賠 220 萬美元（年營收僅 170 萬）。</td>
+              <td class="py-4 px-5 text-slate-700 font-medium">迫使創投董事會決定換血，引進具備極強銷售手腕之頂級 CEO。</td>
+              <td class="py-4 px-3 text-center"><span class="px-2.5 py-1 rounded-full bg-blue-50 text-blue-800 text-xs font-semibold border border-blue-200 whitespace-nowrap">商業與組織</span></td>
             </tr>
 
             <!-- Row 7 -->
-            <tr class="hover:bg-slate-50/80 transition" data-tag="刑事物證">
-              <td class="py-4 px-4 text-center font-mono text-slate-500 font-bold">07</td>
-              <td class="py-4 px-4 font-mono font-bold text-rose-600">1994.09.15</td>
-              <td class="py-4 px-5 font-bold text-slate-900">架構師井草離職與電郵洩密</td>
-              <td class="py-4 px-4 text-slate-700 font-medium">井草 (Igusa), 科斯特洛</td>
-              <td class="py-4 px-5 text-slate-600 leading-relaxed">井草以「想賺大錢」為由請辭，拒絕所有優渥挽留。清查發現其將 6MB 檔案（含 Gate Ensemble 5.3MB 單檔）寄至 NetCom 私人信箱，並拷貝軟碟。</td>
-              <td class="py-4 px-5 text-slate-700 font-medium">洩密留下第一筆客觀資安鐵證，促使地檢署立案偵查。</td>
-              <td class="py-4 px-4 text-center"><span class="px-3 py-1 rounded-full bg-rose-50 text-rose-800 text-xs font-semibold border border-rose-200">刑事物證</span></td>
+            <tr class="hover:bg-slate-50/80 transition" data-tag="商業與組織" data-important="true">
+              <td class="py-4 px-3 text-center font-mono text-slate-500 font-bold">07</td>
+              <td class="py-4 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-rose-600 text-white text-xs font-bold shadow-sm whitespace-nowrap">🔥【重要！】</span></td>
+              <td class="py-4 px-4 font-mono font-bold text-amber-600">1993底-94.03</td>
+              <td class="py-4 px-4 font-bold text-slate-900">Cadence 高層內訌主將倒戈</td>
+              <td class="py-4 px-4 text-slate-700 font-medium">徐建國, 所羅門, 科斯特洛</td>
+              <td class="py-4 px-5 text-slate-600 leading-relaxed">徐建國與所羅門爭奪 IC 設計部主導權，科斯特洛挺所羅門並空降外部主管共治。徐遭架空後於 1994 年 3 月請辭，隨後接任 ArcSys CEO。</td>
+              <td class="py-4 px-5 text-slate-700 font-medium">全案最大轉折點：誓言消滅 ArcSys 的指揮官，反身成為該公司統帥。</td>
+              <td class="py-4 px-3 text-center"><span class="px-2.5 py-1 rounded-full bg-blue-50 text-blue-800 text-xs font-semibold border border-blue-200 whitespace-nowrap">商業與組織</span></td>
             </tr>
 
             <!-- Row 8 -->
-            <tr class="hover:bg-slate-50/80 transition" data-tag="刑事物證">
-              <td class="py-4 px-4 text-center font-mono text-slate-500 font-bold">08</td>
-              <td class="py-4 px-4 font-mono font-bold text-purple-600">1994.11.09</td>
-              <td class="py-4 px-5 font-bold text-slate-900">檢警搜查井草住處與機房</td>
-              <td class="py-4 px-4 text-slate-700 font-medium">聖塔克拉拉地檢署, 警方</td>
-              <td class="py-4 px-5 text-slate-600 leading-relaxed">查扣井草 UNIX 工作站、軟碟機與修改過的原始碼，以及與 ArcSys 高層密商特定軟體的行事曆。</td>
-              <td class="py-4 px-5 text-slate-700 font-medium">確認井草充當內應，Cadence 開始雇私家偵探全天候跟監。</td>
-              <td class="py-4 px-4 text-center"><span class="px-3 py-1 rounded-full bg-rose-50 text-rose-800 text-xs font-semibold border border-rose-200">刑事物證</span></td>
+            <tr class="hover:bg-slate-50/80 transition" data-tag="司法訴訟" data-important="true">
+              <td class="py-4 px-3 text-center font-mono text-slate-500 font-bold">08</td>
+              <td class="py-4 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-rose-600 text-white text-xs font-bold shadow-sm whitespace-nowrap">🔥【重要！】</span></td>
+              <td class="py-4 px-4 font-mono font-bold text-amber-600">1994.06</td>
+              <td class="py-4 px-4 font-bold text-slate-900">徐建國辭職與和解限制協議</td>
+              <td class="py-4 px-4 text-slate-700 font-medium">徐建國, Cadence, ArcSys 董事會</td>
+              <td class="py-4 px-5 text-slate-600 leading-relaxed">科斯特洛揚言提告，雙方簽約和解：豁免既有洩密指控，徐獲 55 萬股超低價期權（$0.30），但嚴禁其在 1995 年 1 月 1 日前挖角益華員工。</td>
+              <td class="py-4 px-5 text-slate-700 font-medium">賦予 ArcSys 半年法律緩衝期；徐建國取得巨大股權激勵籌碼。</td>
+              <td class="py-4 px-3 text-center"><span class="px-2.5 py-1 rounded-full bg-purple-50 text-purple-800 text-xs font-semibold border border-purple-200 whitespace-nowrap">司法訴訟</span></td>
             </tr>
 
             <!-- Row 9 -->
-            <tr class="hover:bg-slate-50/80 transition" data-tag="刑事物證">
-              <td class="py-4 px-4 text-center font-mono text-slate-500 font-bold">09</td>
-              <td class="py-4 px-4 font-mono font-bold text-orange-600">1995.01</td>
-              <td class="py-4 px-5 font-bold text-slate-900">K 團隊挖角與 byebye.tar</td>
-              <td class="py-4 px-4 text-slate-700 font-medium">徐建國, 鄭志良等 9 工程師</td>
-              <td class="py-4 px-5 text-slate-600 leading-relaxed">禁招攬期滿，ArcSys 挖角 9 名工程師。鄭志良離職前兩天建立 <code class="text-rose-700 font-mono font-bold bg-rose-50 px-1 py-0.5 rounded">byebye.tar</code>，打包 QPlace/FRoute 複製到磁帶機帶走。</td>
-              <td class="py-4 px-5 text-slate-700 font-medium">ArcSys 迅速獲取最精華研發大軍與王牌代碼，組建 JFK 銷售部隊。</td>
-              <td class="py-4 px-4 text-center"><span class="px-3 py-1 rounded-full bg-rose-50 text-rose-800 text-xs font-semibold border border-rose-200">刑事物證</span></td>
+            <tr class="hover:bg-slate-50/80 transition" data-tag="刑事物證" data-important="true">
+              <td class="py-4 px-3 text-center font-mono text-slate-500 font-bold">09</td>
+              <td class="py-4 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-rose-600 text-white text-xs font-bold shadow-sm whitespace-nowrap">🔥【重要！】</span></td>
+              <td class="py-4 px-4 font-mono font-bold text-rose-600">1994.09.15</td>
+              <td class="py-4 px-4 font-bold text-slate-900">架構師井草離職與電郵洩密</td>
+              <td class="py-4 px-4 text-slate-700 font-medium">米奇·井草 (Igusa), 科斯特洛, NetCom</td>
+              <td class="py-4 px-5 text-slate-600 leading-relaxed">井草回絕薪資自填、帶薪讀博等挽留並拒簽保密協議。離職前夕將 Gate Ensemble 等 6MB 檔案（單檔 5.3MB 原始碼）發至 NetCom 私人信箱並拷貝軟碟。</td>
+              <td class="py-4 px-5 text-slate-700 font-medium">留下第一筆無可否認的資安犯罪物證，促使地檢署正式刑事立案。</td>
+              <td class="py-4 px-3 text-center"><span class="px-2.5 py-1 rounded-full bg-rose-50 text-rose-800 text-xs font-semibold border border-rose-200 whitespace-nowrap">刑事物證</span></td>
             </tr>
 
             <!-- Row 10 -->
-            <tr class="hover:bg-slate-50/80 transition" data-tag="商業與組織">
-              <td class="py-4 px-4 text-center font-mono text-slate-500 font-bold">10</td>
-              <td class="py-4 px-4 font-mono font-bold text-emerald-600">1995.06.06</td>
-              <td class="py-4 px-5 font-bold text-slate-900">ArcSys 成功公開上市 (IPO)</td>
-              <td class="py-4 px-4 text-slate-700 font-medium">ArcSys, 徐建國</td>
-              <td class="py-4 px-5 text-slate-600 leading-relaxed">年化營收 1,300 萬美元達損益兩平，首日股價 $26.5，市值達 2.4 億美元。徐建國選擇權市值達 2,000 萬美元。</td>
-              <td class="py-4 px-5 text-slate-700 font-medium">募得公開市場巨資，為後續收購合併蓄積豐厚籌碼。</td>
-              <td class="py-4 px-4 text-center"><span class="px-3 py-1 rounded-full bg-blue-50 text-blue-800 text-xs font-semibold border border-blue-200">商業與組織</span></td>
+            <tr class="hover:bg-slate-50/80 transition" data-tag="刑事物證" data-important="true">
+              <td class="py-4 px-3 text-center font-mono text-slate-500 font-bold">10</td>
+              <td class="py-4 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-rose-600 text-white text-xs font-bold shadow-sm whitespace-nowrap">🔥【重要！】</span></td>
+              <td class="py-4 px-4 font-mono font-bold text-purple-600">1994.11.09</td>
+              <td class="py-4 px-4 font-bold text-slate-900">檢警搜查井草住處與機房</td>
+              <td class="py-4 px-4 text-slate-700 font-medium">聖塔克拉拉地檢署, 聖荷西警方, 井草</td>
+              <td class="py-4 px-5 text-slate-600 leading-relaxed">持搜索票扣押井草 UNIX 工作站、軟碟機與修改過的原始碼，以及與 ArcSys 高層密商特定軟體的行事曆。</td>
+              <td class="py-4 px-5 text-slate-700 font-medium">坐實井草充當技術走私內應，Cadence 開始聘請私家偵探進行全天候跟監。</td>
+              <td class="py-4 px-3 text-center"><span class="px-2.5 py-1 rounded-full bg-rose-50 text-rose-800 text-xs font-semibold border border-rose-200 whitespace-nowrap">刑事物證</span></td>
             </tr>
 
             <!-- Row 11 -->
-            <tr class="hover:bg-slate-50/80 transition" data-tag="刑事物證">
-              <td class="py-4 px-4 text-center font-mono text-slate-500 font-bold">11</td>
-              <td class="py-4 px-4 font-mono font-bold text-rose-600">1995.08</td>
-              <td class="py-4 px-5 font-bold text-slate-900">白手套蜥蜴基金與井草被捕</td>
-              <td class="py-4 px-4 text-slate-700 font-medium">井草, 徐建國, Avant! 副總</td>
-              <td class="py-4 px-5 text-slate-600 leading-relaxed">井草成立 K2；Avant! 副總設立「蜥蜴基金」作為洗錢輸送管道。井草被捕後徐建國自掏腰包保釋；私偵拍到井草收取現金信封。</td>
-              <td class="py-4 px-5 text-slate-700 font-medium">坐實高層主觀知情且組織化竊密的刑事指控。</td>
-              <td class="py-4 px-4 text-center"><span class="px-3 py-1 rounded-full bg-rose-50 text-rose-800 text-xs font-semibold border border-rose-200">刑事物證</span></td>
+            <tr class="hover:bg-slate-50/80 transition" data-tag="刑事物證" data-important="true">
+              <td class="py-4 px-3 text-center font-mono text-slate-500 font-bold">11</td>
+              <td class="py-4 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-rose-600 text-white text-xs font-bold shadow-sm whitespace-nowrap">🔥【重要！】</span></td>
+              <td class="py-4 px-4 font-mono font-bold text-orange-600">1995.01</td>
+              <td class="py-4 px-4 font-bold text-slate-900">K 團隊挖角與 byebye.tar</td>
+              <td class="py-4 px-4 text-slate-700 font-medium">徐建國, 鄭志良, 李正道, 羅盛春, 曾屏三</td>
+              <td class="py-4 px-5 text-slate-600 leading-relaxed">禁招攬期滿，ArcSys 挖角 9 名核心研發人員。鄭志良離職前兩天建立 <code class="text-rose-700 font-mono font-bold bg-rose-50 px-1 py-0.5 rounded">byebye.tar</code>，打包 QPlace/FRoute 複製至磁帶機帶走。</td>
+              <td class="py-4 px-5 text-slate-700 font-medium">ArcSys 短期獲取 Cadence 最精華研發大軍與王牌代碼，組建仿製核心部隊。</td>
+              <td class="py-4 px-3 text-center"><span class="px-2.5 py-1 rounded-full bg-rose-50 text-rose-800 text-xs font-semibold border border-rose-200 whitespace-nowrap">刑事物證</span></td>
             </tr>
 
             <!-- Row 12 -->
-            <tr class="hover:bg-slate-50/80 transition" data-tag="刑事物證">
-              <td class="py-4 px-4 text-center font-mono text-slate-500 font-bold">12</td>
-              <td class="py-4 px-4 font-mono font-bold text-red-600">1995.08</td>
-              <td class="py-4 px-5 font-bold text-slate-900">Cypress 關鍵錯字鐵證</td>
-              <td class="py-4 px-4 text-slate-700 font-medium">Cadence 工程師, Cypress</td>
-              <td class="py-4 px-5 text-slate-600 leading-relaxed">工程師在客戶 Cypress 觀摩時發現一模一樣的錯字 Bug：<code class="text-rose-700 font-mono font-bold bg-rose-50 px-1.5 py-0.5 rounded">Error a: color, not found in this file</code>。</td>
-              <td class="py-4 px-5 text-slate-700 font-medium">成為無可辯駁的「吸煙之槍」，粉碎對手「偶發字串雷同」說詞。</td>
-              <td class="py-4 px-4 text-center"><span class="px-3 py-1 rounded-full bg-rose-50 text-rose-800 text-xs font-semibold border border-rose-200">刑事物證</span></td>
+            <tr class="hover:bg-slate-50/80 transition" data-tag="商業與組織" data-important="false">
+              <td class="py-4 px-3 text-center font-mono text-slate-500 font-bold">12</td>
+              <td class="py-4 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-xs font-medium">一般</span></td>
+              <td class="py-4 px-4 font-mono font-bold text-slate-600">1995年初</td>
+              <td class="py-4 px-4 font-bold text-slate-900">「JFK Cadence」業務部隊成軍</td>
+              <td class="py-4 px-4 text-slate-700 font-medium">徐建國, ArcSys 銷售團隊</td>
+              <td class="py-4 px-5 text-slate-600 leading-relaxed">徐建國組建名為「Just F@#$ing Kill Cadence」的狼群銷售部隊，大舉挖角 Cadence 業務與客戶，發動攻勢。</td>
+              <td class="py-4 px-5 text-slate-700 font-medium">強勢拉升 ArcSys 營收至 1,300 萬美元達損益兩平。</td>
+              <td class="py-4 px-3 text-center"><span class="px-2.5 py-1 rounded-full bg-blue-50 text-blue-800 text-xs font-semibold border border-blue-200 whitespace-nowrap">商業與組織</span></td>
             </tr>
 
             <!-- Row 13 -->
-            <tr class="hover:bg-slate-50/80 transition" data-tag="商業與組織">
-              <td class="py-4 px-4 text-center font-mono text-slate-500 font-bold">13</td>
-              <td class="py-4 px-4 font-mono font-bold text-indigo-600">1995.11.27</td>
-              <td class="py-4 px-5 font-bold text-slate-900">合併 ISS 正式更名 Avant!</td>
-              <td class="py-4 px-4 text-slate-700 font-medium">ArcSys, ISS</td>
-              <td class="py-4 px-5 text-slate-600 leading-relaxed">ArcSys 與 ISS 合併更名 Avant!，股價幾天內飆至歷史最高點 51 美元。</td>
-              <td class="py-4 px-5 text-slate-700 font-medium">業務多元化並試圖沖淡侵權色彩，但司法風暴隨即而至。</td>
-              <td class="py-4 px-4 text-center"><span class="px-3 py-1 rounded-full bg-blue-50 text-blue-800 text-xs font-semibold border border-blue-200">商業與組織</span></td>
+            <tr class="hover:bg-slate-50/80 transition" data-tag="商業與組織" data-important="true">
+              <td class="py-4 px-3 text-center font-mono text-slate-500 font-bold">13</td>
+              <td class="py-4 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-rose-600 text-white text-xs font-bold shadow-sm whitespace-nowrap">🔥【重要！】</span></td>
+              <td class="py-4 px-4 font-mono font-bold text-emerald-600">1995.06.06</td>
+              <td class="py-4 px-4 font-bold text-slate-900">ArcSys 成功公開上市 (IPO)</td>
+              <td class="py-4 px-4 text-slate-700 font-medium">ArcSys, 徐建國, 創投機構</td>
+              <td class="py-4 px-5 text-slate-600 leading-relaxed">首日掛牌股價收在 $26.50，市值達 2.4 億美元。徐建國個人認股選擇權市值飆至 2,000 萬美元。</td>
+              <td class="py-4 px-5 text-slate-700 font-medium">募集公開市場巨資，為日後發動併購（ISS）儲備巨額資本。</td>
+              <td class="py-4 px-3 text-center"><span class="px-2.5 py-1 rounded-full bg-blue-50 text-blue-800 text-xs font-semibold border border-blue-200 whitespace-nowrap">商業與組織</span></td>
             </tr>
 
             <!-- Row 14 -->
-            <tr class="hover:bg-slate-50/80 transition" data-tag="刑事物證">
-              <td class="py-4 px-4 text-center font-mono text-slate-500 font-bold">14</td>
-              <td class="py-4 px-4 font-mono font-bold text-purple-600">1995.12.05</td>
-              <td class="py-4 px-5 font-bold text-slate-900">檢警突襲搜查 Avant! 總部</td>
-              <td class="py-4 px-4 text-slate-700 font-medium">地檢署, FBI, 警隊</td>
-              <td class="py-4 px-5 text-slate-600 leading-relaxed">搜出「19 天完成 47,000 行代碼」的異常日誌、Cadence 下代產品藍圖、薪資表，以及專家鑑定直接抄襲的原始碼。</td>
-              <td class="py-4 px-5 text-slate-700 font-medium">為民事訴訟提供極具殺傷力的客觀物證基礎。</td>
-              <td class="py-4 px-4 text-center"><span class="px-3 py-1 rounded-full bg-rose-50 text-rose-800 text-xs font-semibold border border-rose-200">刑事物證</span></td>
+            <tr class="hover:bg-slate-50/80 transition" data-tag="刑事物證" data-important="true">
+              <td class="py-4 px-3 text-center font-mono text-slate-500 font-bold">14</td>
+              <td class="py-4 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-rose-600 text-white text-xs font-bold shadow-sm whitespace-nowrap">🔥【重要！】</span></td>
+              <td class="py-4 px-4 font-mono font-bold text-rose-600">1995.08</td>
+              <td class="py-4 px-4 font-bold text-slate-900">白手套蜥蜴基金與井草被捕</td>
+              <td class="py-4 px-4 text-slate-700 font-medium">井草, 徐建國, Avant! 副總, Saurus Fund</td>
+              <td class="py-4 px-5 text-slate-600 leading-relaxed">董事會否決聘用井草後，管理層在隔壁設立「蜥蜴基金」作為白手套。井草遭起訴六項重罪逮捕，徐建國私人出資交保；私偵拍到井草收取現金信封。</td>
+              <td class="py-4 px-5 text-slate-700 font-medium">直接坐實管理階層組織化掩護竊密的刑事重罪共謀。</td>
+              <td class="py-4 px-3 text-center"><span class="px-2.5 py-1 rounded-full bg-rose-50 text-rose-800 text-xs font-semibold border border-rose-200 whitespace-nowrap">刑事物證</span></td>
             </tr>
 
             <!-- Row 15 -->
-            <tr class="hover:bg-slate-50/80 transition" data-tag="司法訴訟">
-              <td class="py-4 px-4 text-center font-mono text-slate-500 font-bold">15</td>
-              <td class="py-4 px-4 font-mono font-bold text-rose-600">1995.12.06</td>
-              <td class="py-4 px-5 font-bold text-slate-900">Cadence 提起聯邦民事訴訟</td>
-              <td class="py-4 px-4 text-slate-700 font-medium">Cadence, Avant!</td>
-              <td class="py-4 px-5 text-slate-600 leading-relaxed">提告著作權侵害、營業秘密侵犯、不正競爭，要求交出所有不法獲利與損害賠償。Avant! 股價雪崩至 14.25 美元。</td>
-              <td class="py-4 px-5 text-slate-700 font-medium">公開法律割喉戰爆發，市場信心受重創。</td>
-              <td class="py-4 px-4 text-center"><span class="px-3 py-1 rounded-full bg-purple-50 text-purple-800 text-xs font-semibold border border-purple-200">司法訴訟</span></td>
+            <tr class="hover:bg-slate-50/80 transition" data-tag="刑事物證" data-important="true">
+              <td class="py-4 px-3 text-center font-mono text-slate-500 font-bold">15</td>
+              <td class="py-4 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-rose-600 text-white text-xs font-bold shadow-sm whitespace-nowrap">🔥【重要！】</span></td>
+              <td class="py-4 px-4 font-mono font-bold text-red-600">1995.08</td>
+              <td class="py-4 px-4 font-bold text-slate-900">Cypress 關鍵錯字破案鐵證</td>
+              <td class="py-4 px-4 text-slate-700 font-medium">Cadence 工程師, Cypress Semiconductor</td>
+              <td class="py-4 px-5 text-slate-600 leading-relaxed">工程師在拜訪 Cypress 時觀看 ArcSys 展示，赫然抓包跳出錯誤訊息：<code class="text-rose-700 font-mono font-bold bg-rose-50 px-1.5 py-0.5 rounded">Error a: color, not found in this file</code>（冒號倒置且逗號多餘）。</td>
+              <td class="py-4 px-5 text-slate-700 font-medium">全案最具殺傷力的「吸煙之槍」，徹底粉碎「字串偶發雷同」藉口。</td>
+              <td class="py-4 px-3 text-center"><span class="px-2.5 py-1 rounded-full bg-rose-50 text-rose-800 text-xs font-semibold border border-rose-200 whitespace-nowrap">刑事物證</span></td>
             </tr>
 
             <!-- Row 16 -->
-            <tr class="hover:bg-slate-50/80 transition" data-tag="司法訴訟">
-              <td class="py-4 px-4 text-center font-mono text-slate-500 font-bold">16</td>
-              <td class="py-4 px-4 font-mono font-bold text-orange-600">1996.01.16</td>
-              <td class="py-4 px-5 font-bold text-slate-900">Avant! 提起反訴與輿論攻防</td>
-              <td class="py-4 px-4 text-slate-700 font-medium">Avant!, Cadence, 科斯特洛</td>
-              <td class="py-4 px-5 text-slate-600 leading-relaxed">反控不正競爭、抹黑聲譽與凍結招聘，並指控科斯特洛私下放空股票謀利。</td>
-              <td class="py-4 px-5 text-slate-700 font-medium">成功將焦點轉移為壟斷打壓，股價反彈至 21 美元。</td>
-              <td class="py-4 px-4 text-center"><span class="px-3 py-1 rounded-full bg-purple-50 text-purple-800 text-xs font-semibold border border-purple-200">司法訴訟</span></td>
+            <tr class="hover:bg-slate-50/80 transition" data-tag="商業與組織" data-important="false">
+              <td class="py-4 px-3 text-center font-mono text-slate-500 font-bold">16</td>
+              <td class="py-4 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-xs font-medium">一般</span></td>
+              <td class="py-4 px-4 font-mono font-bold text-indigo-600">1995.11.27</td>
+              <td class="py-4 px-4 font-bold text-slate-900">合併 ISS 正式更名 Avant!</td>
+              <td class="py-4 px-4 text-slate-700 font-medium">ArcSys, ISS, Avant!</td>
+              <td class="py-4 px-5 text-slate-600 leading-relaxed">ArcSys 與 ISS 合併正式改名 Avant! Corporation，股價在數日內衝上每股 51 美元歷史天價。</td>
+              <td class="py-4 px-5 text-slate-700 font-medium">產品線多元化並試圖淡化侵權陰影，但隨即面臨司法風暴。</td>
+              <td class="py-4 px-3 text-center"><span class="px-2.5 py-1 rounded-full bg-blue-50 text-blue-800 text-xs font-semibold border border-blue-200 whitespace-nowrap">商業與組織</span></td>
             </tr>
 
             <!-- Row 17 -->
-            <tr class="hover:bg-rose-50/60 transition bg-rose-50/30" data-tag="司法訴訟">
-              <td class="py-4 px-4 text-center font-mono text-rose-700 font-extrabold">17</td>
+            <tr class="hover:bg-slate-50/80 transition" data-tag="刑事物證" data-important="true">
+              <td class="py-4 px-3 text-center font-mono text-slate-500 font-bold">17</td>
+              <td class="py-4 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-rose-600 text-white text-xs font-bold shadow-sm whitespace-nowrap">🔥【重要！】</span></td>
+              <td class="py-4 px-4 font-mono font-bold text-purple-600">1995.12.05</td>
+              <td class="py-4 px-4 font-bold text-slate-900">檢警突襲搜查 Avant! 總部</td>
+              <td class="py-4 px-4 text-slate-700 font-medium">地檢署, FBI, 聖荷西/森尼韋爾警方</td>
+              <td class="py-4 px-5 text-slate-600 leading-relaxed">四檢警突擊總部，搜出「19 天完成 47,000 行代碼」的異常研發日誌、Cadence 下代藍圖與全體員工薪資表，專家比對代碼高度重合。</td>
+              <td class="py-4 px-5 text-slate-700 font-medium">為民事訴訟提供極具摧毀性的直接客觀證據鏈。</td>
+              <td class="py-4 px-3 text-center"><span class="px-2.5 py-1 rounded-full bg-rose-50 text-rose-800 text-xs font-semibold border border-rose-200 whitespace-nowrap">刑事物證</span></td>
+            </tr>
+
+            <!-- Row 18 -->
+            <tr class="hover:bg-slate-50/80 transition" data-tag="司法訴訟" data-important="true">
+              <td class="py-4 px-3 text-center font-mono text-slate-500 font-bold">18</td>
+              <td class="py-4 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-rose-600 text-white text-xs font-bold shadow-sm whitespace-nowrap">🔥【重要！】</span></td>
+              <td class="py-4 px-4 font-mono font-bold text-rose-600">1995.12.06</td>
+              <td class="py-4 px-4 font-bold text-slate-900">Cadence 提起聯邦民事訴訟</td>
+              <td class="py-4 px-4 text-slate-700 font-medium">Cadence, Avant!, 聖荷西聯邦法院</td>
+              <td class="py-4 px-5 text-slate-600 leading-relaxed">提告著作權侵害、營業秘密侵犯、不正競爭，要求繳回所有獲利並索求懲罰性賠償。Avant! 股價單週自 $42.25 崩至 $14.25。</td>
+              <td class="py-4 px-5 text-slate-700 font-medium">由私下攻防升級為公開法律死鬥，市場信心遭受毀滅性打擊。</td>
+              <td class="py-4 px-3 text-center"><span class="px-2.5 py-1 rounded-full bg-purple-50 text-purple-800 text-xs font-semibold border border-purple-200 whitespace-nowrap">司法訴訟</span></td>
+            </tr>
+
+            <!-- Row 19 -->
+            <tr class="hover:bg-slate-50/80 transition" data-tag="司法訴訟" data-important="false">
+              <td class="py-4 px-3 text-center font-mono text-slate-500 font-bold">19</td>
+              <td class="py-4 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-xs font-medium">一般</span></td>
+              <td class="py-4 px-4 font-mono font-bold text-orange-600">1996.01.16</td>
+              <td class="py-4 px-4 font-bold text-slate-900">Avant! 提起反訴與輿論攻防</td>
+              <td class="py-4 px-4 text-slate-700 font-medium">Avant!, Cadence, 科斯特洛</td>
+              <td class="py-4 px-5 text-slate-600 leading-relaxed">反控不正競爭、抹黑聲譽與凍結招聘，並指控科斯特洛私下放空股票謀利，批評其「市場打不贏才告上法庭」。</td>
+              <td class="py-4 px-5 text-slate-700 font-medium">成功將焦點轉移為壟斷打壓，股價於 1996 年 5 月反彈至 $21。</td>
+              <td class="py-4 px-3 text-center"><span class="px-2.5 py-1 rounded-full bg-purple-50 text-purple-800 text-xs font-semibold border border-purple-200 whitespace-nowrap">司法訴訟</span></td>
+            </tr>
+
+            <!-- Row 20 -->
+            <tr class="hover:bg-rose-50/60 transition bg-rose-50/30" data-tag="司法訴訟" data-important="true">
+              <td class="py-4 px-3 text-center font-mono text-rose-700 font-extrabold">20</td>
+              <td class="py-4 px-3 text-center"><span class="px-2.5 py-1 rounded-full bg-rose-600 text-white text-xs font-black shadow-md whitespace-nowrap animate-pulse">🔥【重要！】</span></td>
               <td class="py-4 px-4 font-mono text-rose-700 font-extrabold">1996.05.08</td>
-              <td class="py-4 px-5 font-extrabold text-slate-900">聲請初步禁制令（核心斷點）</td>
-              <td class="py-4 px-4 text-slate-800 font-semibold">聖荷西聯邦法院, 雙方</td>
-              <td class="py-4 px-5 text-slate-800 font-medium leading-relaxed">Cadence 聲請禁制令：禁止銷售佔 Avant! 營收 60% 的 ArcCell / ArcCell XO 及任何換名產品。</td>
-              <td class="py-4 px-5 text-rose-700 font-bold">直指 Avant! 生死心脈；若成立將導致其資金鏈斷流死亡。</td>
-              <td class="py-4 px-4 text-center"><span class="px-3 py-1 rounded-full bg-rose-600 text-white text-xs font-bold shadow-sm">關鍵決戰</span></td>
+              <td class="py-4 px-4 font-extrabold text-slate-900">聲請初步禁制令（核心斷點）</td>
+              <td class="py-4 px-4 text-slate-800 font-semibold">Cadence, Avant!, 聖荷西聯邦法院</td>
+              <td class="py-4 px-5 text-slate-800 font-medium leading-relaxed">Cadence 正式聲請初步禁制令：全面禁止銷售佔 Avant! 營收 60% 的 ArcCell / ArcCell XO 及任何換名產品。</td>
+              <td class="py-4 px-5 text-rose-700 font-bold leading-relaxed">個案核心決策斷點：若准許將切斷 Avant! 60% 現金流；若駁回 Cadence 將在市場持續失血。</td>
+              <td class="py-4 px-3 text-center"><span class="px-2.5 py-1 rounded-full bg-rose-600 text-white text-xs font-bold shadow-sm whitespace-nowrap">關鍵決戰</span></td>
             </tr>
           </tbody>
         </table>
@@ -992,11 +1192,20 @@
     <!-- ==================== TAB 5: 個案決策思考題 ==================== -->
     <div id="tab-dilemma" class="hidden space-y-6">
       <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-        <h2 class="text-xl font-bold text-slate-900">🎓 史丹佛個案核心思考題與決策指引</h2>
-        <p class="text-base text-slate-600 mt-1">點選各角色題目，展開檢視針對當時局勢的策略分析與決策選項。</p>
+        <div class="flex items-center gap-3">
+          <span class="text-2xl">🎓</span>
+          <div>
+            <h2 class="text-xl font-bold text-slate-900">史丹佛個案核心思考題與決策指引</h2>
+            <p class="text-base text-slate-600 mt-0.5">收錄原案課堂討論核心題，以及針對併購成長、內部創業、退場機制（EXIT）與 Synopsys 終局併購的深度商業決策解析。</p>
+          </div>
+        </div>
       </div>
 
       <div class="space-y-4">
+        <div class="flex items-center gap-2 pt-2 pb-1">
+          <span class="w-2.5 h-2.5 rounded-full bg-sky-600"></span>
+          <h3 class="text-base font-extrabold text-slate-900 tracking-wide">第一部分：個案核心情境題（1996 初步禁制令當下）</h3>
+        </div>
 
         <!-- Q1 -->
         <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
@@ -1044,6 +1253,167 @@
           <div id="faq4" class="hidden mt-4 pt-4 border-t border-slate-200 text-base text-slate-700 space-y-3 leading-relaxed">
             <p><strong>受託人責任（Fiduciary Duty）：</strong>創投董事對股東負有忠實義務與注意義務。允許高層設立「蜥蜴基金」充當資金輸送管道，已使董事會身陷組織犯罪共謀風險。</p>
             <p><strong>當前自救行動：</strong>成立獨立特別調查委員會，聘請外部獨立資深法證會計師與律師查核所有專利代碼；切斷所有可疑的外部顧問基金撥款；評估更換涉及刑事爭議的 CEO 徐建國，主動向 Cadence 尋求民事授權和解（License Settlement），保全公開上市公司的存續價值。</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 pt-6 pb-1">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
+          <h3 class="text-base font-extrabold text-slate-900 tracking-wide">第二部分：商業併購、退場機制（EXIT）與終局賽局題（追加深度題）</h3>
+        </div>
+
+        <!-- Q5 (追加 1) -->
+        <div class="bg-white border-2 border-indigo-100 hover:border-indigo-300 rounded-2xl p-5 shadow-sm transition">
+          <button onclick="toggleFaq('faq5')" class="w-full text-left flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+              <span class="px-2.5 py-0.5 rounded-md bg-indigo-100 text-indigo-800 font-bold text-xs">追加題 1</span>
+              <span class="text-base font-bold text-slate-900">Cadence 與 Avant! 兩家公司都透過併購而成長，請問這兩家公司如何透過併購而成長？</span>
+            </div>
+            <span id="faq5-icon" class="text-slate-500 text-xl font-mono">+</span>
+          </button>
+          <div id="faq5" class="hidden mt-4 pt-4 border-t border-slate-200 text-base text-slate-700 space-y-3 leading-relaxed">
+            <div class="bg-sky-50/70 p-4 rounded-xl border border-sky-200">
+              <h4 class="font-bold text-sky-900 mb-1 flex items-center gap-2">
+                <span>🔷 Cadence 的併購成長模式：以平台整合與市場壟斷為導向（Roll-Up 滾雪球模式）</span>
+              </h4>
+              <ul class="list-disc list-inside space-y-1.5 text-sm text-slate-700">
+                <li><strong>建立核心（1988）：</strong>SDA Systems 與 ECAD 合併成立 Cadence，並隨即收購 James Solomon 創立的 Tangent Software，一舉取得實體佈局與繞線（QPlace / FRoute）的核心專利與演算法。</li>
+                <li><strong>強強聯手稱霸（1992）：</strong>併購同業巨頭 Valid Logic Systems，補齊系統級設計並迅速吸納其龐大既有客戶群，在 4 年內躍升為全美第一大 EDA 供應商。</li>
+                <li><strong>戰略本質：</strong>透過併購成熟的技術引擎，結合其強大的全球業務網路、標準化架構與高轉換成本護城河，迅速擴張市場份額。</li>
+              </ul>
+            </div>
+            <div class="bg-orange-50/70 p-4 rounded-xl border border-orange-200">
+              <h4 class="font-bold text-orange-950 mb-1 flex items-center gap-2">
+                <span>🔶 Avant! 的併購成長模式：以資本作貨幣、稀釋法律風險與拼圖式擴張</span>
+              </h4>
+              <ul class="list-disc list-inside space-y-1.5 text-sm text-slate-700">
+                <li><strong>更名與多元化（1995）：</strong>ArcSys 在 IPO 估值暴漲後，迅速與 Integrated Silicon Systems（ISS）進行股票換股合併，更名為 Avant!。此舉不僅跨足 IC 實體驗證領域，更成功將核心營收對涉嫌侵權的 ArcCell 依賴度自 90% 降至 60%，並試圖在資本市場淡化法律色彩。</li>
+                <li><strong>拼圖式連環購併（1996～1998）：</strong>上市後以高本益比的股票作為貨幣，陸續收購 Meta-Software（斬獲黃金標準模擬工具 HSPICE）、Technology Modeling Associates（TMA）、Chrysalis 等，打造出極具競爭力的深次微米完整產品線。</li>
+                <li><strong>戰略本質：</strong>利用股市高估值快速「洗白與稀釋」單一涉案產品的法律風險，將藉由非法手段搶下的技術先機轉化為正向的併購資本。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Q6 (追加 2) -->
+        <div class="bg-white border-2 border-indigo-100 hover:border-indigo-300 rounded-2xl p-5 shadow-sm transition">
+          <button onclick="toggleFaq('faq6')" class="w-full text-left flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+              <span class="px-2.5 py-0.5 rounded-md bg-indigo-100 text-indigo-800 font-bold text-xs">追加題 2</span>
+              <span class="text-base font-bold text-slate-900">若你是 Cadence 的 CEO Joe Costello，面對員工要離職創業並與自己競爭，你要如何因應？是否鼓勵內部創業？</span>
+            </div>
+            <span id="faq6-icon" class="text-slate-500 text-xl font-mono">+</span>
+          </button>
+          <div id="faq6" class="hidden mt-4 pt-4 border-t border-slate-200 text-base text-slate-700 space-y-3 leading-relaxed">
+            <p><strong>1. 面對員工離職創業的系統性因應措施：</strong></p>
+            <ul class="list-disc list-inside space-y-1.5 text-sm pl-2">
+              <li><strong>防微杜漸的資安技術審計：</strong>揚棄「單純仰賴人性誠信」的被動管理。對掌握核心代碼的架構師建立「數位外發阻斷（DLP）」、雙人授權、外發容量自動警報機制，並在離職提出當下立刻凍結工作站磁帶與原始碼存取權。</li>
+              <li><strong>健全的離職合規清查與競業約束：</strong>離職面談中若遇員工拒簽保密重申協議（如 1991 年四創辦人與 1994 年井草），應立即啟動數位鑑識（Forensics）調查，保留所有系統 Log；在加州禁止一般競業禁止（Non-compete）的前提下，嚴格執行「商業秘密保護」與「禁止惡意招攬員工（Non-solicitation）」合約。</li>
+              <li><strong>消除內部派系擠壓：</strong>反思管理階層權鬥（如徐建國與所羅門之爭），避免因高層降權架空而將頂尖業務與技術將領逼成敵營統帥。</li>
+            </ul>
+            <p><strong>2. 是否應該鼓勵「內部創業（Corporate Venturing / Spin-out）」？</strong></p>
+            <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-200 text-sm">
+              <strong>強烈建議採取積極的內部創業與旋轉門機制：</strong><br>
+              EDA 產業高度依賴少數天才工程師的「啟發式演算法」。當頂尖人才（如井草、卓允中）渴望獲得新創股權回報而官僚組織無法滿足時，出走創業不可避免。Cadence 應設立<strong>企業創投基金（CVC）或內部孵化器</strong>：
+              <ol class="list-decimal list-inside mt-2 space-y-1">
+                <li>允許團隊設立獨立子公司或旋轉門專案，給予團隊具流動性的顯著股權激勵；</li>
+                <li>母公司以種子輪投資人身份入股，並保留技術授權費、優先收購權（First Right of Refusal）或通路獨家代理權；</li>
+                <li><strong>戰略效益：</strong>不僅能留住野心勃勃的頂級大腦，將潛在毀滅性競爭者轉化為自家生態系前鋒，更能徹底杜絕「帶走原始碼私下創業」的犯罪動機。</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+
+        <!-- Q7 (追加 3) -->
+        <div class="bg-white border-2 border-indigo-100 hover:border-indigo-300 rounded-2xl p-5 shadow-sm transition">
+          <button onclick="toggleFaq('faq7')" class="w-full text-left flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+              <span class="px-2.5 py-0.5 rounded-md bg-indigo-100 text-indigo-800 font-bold text-xs">追加題 3</span>
+              <span class="text-base font-bold text-slate-900">若你是 Cadence 的 CEO Joe Costello，面對 Avant! 的崛起，你會如何因應？是否會考慮直接併購 Avant!？何時併購？</span>
+            </div>
+            <span id="faq7-icon" class="text-slate-500 text-xl font-mono">+</span>
+          </button>
+          <div id="faq7" class="hidden mt-4 pt-4 border-t border-slate-200 text-base text-slate-700 space-y-3 leading-relaxed">
+            <p><strong>1. 面對 Avant! 崛起的全方位因應策略：</strong></p>
+            <ul class="list-disc list-inside space-y-1.5 text-sm pl-2">
+              <li><strong>技術端：</strong>全力啟動無污染的深次微米（&lt;0.5μm）全新架構開發，徹底解決 QPlace 老舊引擎在深次微米環境下的延遲瓶頸，用純技術實力奪回市場份額。</li>
+              <li><strong>公關與市場端（重大戰略修正）：</strong>立即停止歇斯底里、人身攻擊式的輿論抹黑戰。個案調查顯示<strong>高達 66% 的晶片工程師反對 Cadence 勝訴</strong>，因為業界厭惡「壟斷者打壓創新者」的霸凌姿態。應轉為「客戶成功保證計畫」，承諾為受訴訟影響的客戶提供平穩遷移方案與技術支援。</li>
+              <li><strong>法律端：</strong>緊扣客觀代碼證據（如 Cypress 錯字與 19 天寫 4.7 萬行日誌），聲請針對性初步禁制令，同時避免過度牽扯反托拉斯風險。</li>
+            </ul>
+            <p><strong>2. 是否考慮直接併購 Avant!？時機點深度權衡：</strong></p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+              <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                <span class="font-bold text-emerald-800 block mb-1">✅ 最佳併購時機：1993 ～ 1994 初</span>
+                當時 ArcSys 全年慘賠 220 萬美元、年營收僅 170 萬，創辦團隊缺乏銷售能力，徐建國尚未入主。若 Cadence 於此時以數百萬美元低價收購，能將深次微米技術與四名出走人才重新收編，從源頭化解危機。
+              </div>
+              <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                <span class="font-bold text-amber-800 block mb-1">⚠️ 次佳時機：1994 年 6 月和解談判</span>
+                徐建國出走接任 ArcSys 時，以股權入股或全面併購作為和解條件，平息恩怨。但此時徐建國復仇心切，談判難度較高。
+              </div>
+              <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                <span class="font-bold text-rose-800 block mb-1">❌ 絕不可併購：1995 上市後及當前</span>
+                Avant! 市值已飆破數億美元，併購代價極其高昂；且 Cadence 原本市佔即達 75%，併購主要競爭對手必定引發<strong>美國 FTC / DoJ 反托拉斯審查否決</strong>。更嚴重的是，向偷竊自己代碼的小偷支付巨資併購，會引發極端惡劣的道德風險（Moral Hazard）。
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Q8 (追加 4) -->
+        <div class="bg-white border-2 border-indigo-100 hover:border-indigo-300 rounded-2xl p-5 shadow-sm transition">
+          <button onclick="toggleFaq('faq8')" class="w-full text-left flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+              <span class="px-2.5 py-0.5 rounded-md bg-indigo-100 text-indigo-800 font-bold text-xs">追加題 4</span>
+              <span class="text-base font-bold text-slate-900">Gerald Hsu 在訴訟威脅下，決定將公司與 Synopsys 合併，退出經營，對此退出（EXIT）決策你有何看法？</span>
+            </div>
+            <span id="faq8-icon" class="text-slate-500 text-xl font-mono">+</span>
+          </button>
+          <div id="faq8" class="hidden mt-4 pt-4 border-t border-slate-200 text-base text-slate-700 space-y-3 leading-relaxed">
+            <p><strong>1. 商業與財務層面：極具冷酷理性與精準算計的「金蟬脫殼」之策</strong></p>
+            <ul class="list-disc list-inside space-y-1.5 text-sm pl-2">
+              <li><strong>化解毀滅性死局：</strong>2001 年 5 月，加州法院對 Avant! 提起刑事重罪審判，徐建國及多名涉案高層被迫選擇「不抗辯（No Contest）」認罪，面臨刑事罰款與民事天價索賠，Avant! 商業信譽幾近破產，若獨立經營必死無疑。</li>
+              <li><strong>鎖定股東與個人財富：</strong>徐建國在公司價值完全歸零前，於 2001 年底以約 <strong>8.3 億美元的股票交易</strong>將 Avant! 賣給業界第二大龍頭 Synopsys。這讓 Avant! 股東（包含其自身擁有的天價期權）成功換成了財務健全的 Synopsys 績優股票，在法律斷頭台落下前實現了完美的資產轉移與財富變現。</li>
+              <li><strong>轉移訴訟包袱：</strong>藉由公司控制權的完全讓渡與退出經營，將後續長達數年的民事訴訟與巨額賠償（最終由 Synopsys 與 Avant! 支付 Cadence 約 2.65 億美元和解金）轉嫁至龐大的 Synopsys 資產負債表上。</li>
+            </ul>
+            <p><strong>2. 道德與公司治理層面：對商業倫理與法治的極大諷刺</strong></p>
+            <div class="bg-amber-50 p-4 rounded-xl border border-amber-200 text-sm">
+              徐建國的退場本質上是將<strong>「以不法竊密為基石建立的企業，藉由資本市場併購洗白套現」</strong>的極致操作。雖然他個人被判處罰款、緩刑並被逐出管理層，但在財務回報上他依然帶著千萬美元巨富退場，這對矽谷健全的智慧財產權體系造成了極為負面的示範效應。
+            </div>
+          </div>
+        </div>
+
+        <!-- Q9 (追加 5) -->
+        <div class="bg-white border-2 border-indigo-100 hover:border-indigo-300 rounded-2xl p-5 shadow-sm transition">
+          <button onclick="toggleFaq('faq9')" class="w-full text-left flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+              <span class="px-2.5 py-0.5 rounded-md bg-indigo-100 text-indigo-800 font-bold text-xs">追加題 5</span>
+              <span class="text-base font-bold text-slate-900">你覺得 Synopsys 的 CEO 決定併購飽受訴訟威脅的 Avant! 是基於哪些考慮？若你是 Synopsys 的董事，你會要求公司採取何種策略以避免 Synopsys 被捲入訴訟或高額賠償？</span>
+            </div>
+            <span id="faq9-icon" class="text-slate-500 text-xl font-mono">+</span>
+          </button>
+          <div id="faq9" class="hidden mt-4 pt-4 border-t border-slate-200 text-base text-slate-700 space-y-3 leading-relaxed">
+            <p><strong>1. Synopsys 執行長 Aart de Geus 決定「火中取栗」的關鍵考量：</strong></p>
+            <ul class="list-disc list-inside space-y-2 text-sm pl-2">
+              <li><strong>戰略生死拼圖（RTL-to-GDSII 全流程霸業）：</strong>Synopsys 長年獨霸前端邏輯合成（Synthesis 佔 80%~90%），但極度缺乏後端「實體佈局與繞線（Place & Route）」。當時 Cadence 企圖跨足前端挑戰 Synopsys；Synopsys 若不能掌握後端核心，將面臨被 Cadence 捆綁銷售全套流程邊緣化的戰略危機。併購 Avant! 讓 Synopsys 一夜之間獲得 Apollo、Astro 與黃金模擬工具 HSPICE，瞬間具備與 Cadence 平起平坐的全流程能力。</li>
+              <li><strong>以極低訴訟折價（Litigation Discount）撿取優質資產：</strong>若無官司纏身，Avant! 憑藉其在深次微米技術與 HSPICE 的市場地位，估值遠超 8 億美元。Synopsys 認為即使將潛在的民事賠償算入，這筆收購的戰略價值依然遠大於財務風險。</li>
+            </ul>
+            <p><strong>2. 若身為 Synopsys 董事，要求採取的「防火牆與風險防護策略」：</strong></p>
+            <div class="space-y-2 text-sm">
+              <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                <strong class="text-slate-900 font-bold">① 估值調整與託管賠償基金（Escrow & Indemnity Holdback）：</strong><br>
+                要求在 8.3 億美元收購價金中，扣留顯著比例的股票或現金（如 2.5 億至 3 億美元）置於獨立託管帳戶（Escrow），明確約定專款用於支付 Cadence 後續的民事和解與法院判決賠償，不得由 Synopsys 原有股東承擔。
+              </div>
+              <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                <strong class="text-slate-900 font-bold">② 管理階層徹底清洗與人事切割（Clean House）：</strong><br>
+                交割條件必須明文規定：徐建國及所有涉及刑事指控與爭議的前 Cadence 涉案人員（如鄭志良等）必須在交割前無條件辭職、徹底退出經營，不得在 Synopsys 擔任任何管理職務、董事席位或諮詢顧問，徹底切斷人身關聯。
+              </div>
+              <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                <strong class="text-slate-900 font-bold">③ 代碼全面檢驗與乾淨研發隔離（Clean-Room Code Rewrite）：</strong><br>
+                聘請第三方獨立軟體鑑識審計機構，對 Avant! 核心產品進行逐行代碼掃描；對涉案的爭議模組執行無污染重構（Clean-room reimplementation），加速推動全新架構（如日後 Synopsys 成功推出的 Galaxy 設計平台），將侵權風險降為零。
+              </div>
+              <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                <strong class="text-slate-900 font-bold">④ 主動推進民事一攬子和解（Pre-empted Settlement）：</strong><br>
+                在交割前或交割後第一時間，主動指派律師團與 Cadence 開展雙邊高層和解會談，以一次性授權費、交叉授權或封頂賠償金額達成民事和解協議，消除華爾街對 Synopsys 股票的法律不確定性折價。
+              </div>
+            </div>
           </div>
         </div>
 
@@ -1156,27 +1526,38 @@
         const el = document.getElementById('tab-' + t);
         const btn = document.getElementById('btn-' + t);
         if (t === tabId) {
-          el.classList.remove('hidden');
-          btn.classList.add('active');
+          if (el) el.classList.remove('hidden');
+          if (btn) btn.classList.add('active');
         } else {
-          el.classList.add('hidden');
-          btn.classList.remove('active');
+          if (el) el.classList.add('hidden');
+          if (btn) btn.classList.remove('active');
         }
       });
+      // 保持平滑滑動回頂部
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // Timeline filtering for White Theme
-    function filterTimeline(stage) {
-      document.querySelectorAll('.timeline-f-btn').forEach(b => {
-        b.classList.remove('active', 'bg-indigo-600', 'text-white', 'border-indigo-600');
-        b.classList.add('bg-white', 'text-slate-700', 'border-slate-300');
-      });
-      event.target.classList.add('active', 'bg-indigo-600', 'text-white', 'border-indigo-600');
-      event.target.classList.remove('bg-white', 'text-slate-700', 'border-slate-300');
+    // Timeline filtering for White Theme with Important filter
+    function filterTimeline(stage, btnElement) {
+      const targetBtn = btnElement || (window.event ? window.event.currentTarget || window.event.target : null);
+      if (targetBtn) {
+        document.querySelectorAll('.timeline-f-btn').forEach(b => {
+          b.classList.remove('active', 'bg-indigo-600', 'text-white', 'border-indigo-600');
+          b.classList.add('bg-white', 'text-slate-700', 'border-slate-300');
+        });
+        targetBtn.classList.add('active', 'bg-indigo-600', 'text-white', 'border-indigo-600');
+        targetBtn.classList.remove('bg-white', 'text-slate-700', 'border-slate-300');
+      }
 
       const items = document.querySelectorAll('.timeline-item');
       items.forEach(item => {
-        if (stage === 'all' || item.getAttribute('data-stage') === stage) {
+        const itemStage = item.getAttribute('data-stage');
+        const isImportant = item.getAttribute('data-important') === 'true';
+        if (stage === 'all') {
+          item.style.display = 'block';
+        } else if (stage === 'important') {
+          item.style.display = isImportant ? 'block' : 'none';
+        } else if (itemStage === stage) {
           item.style.display = 'block';
         } else {
           item.style.display = 'none';
@@ -1194,19 +1575,27 @@
       });
     }
 
-    // Event Table Tag Filter for White Theme
-    function filterEventTag(tag) {
-      document.querySelectorAll('.ev-tag-btn').forEach(b => {
-        b.classList.remove('active', 'bg-indigo-600', 'text-white', 'border-indigo-600');
-        b.classList.add('bg-white', 'text-slate-700', 'border-slate-300');
-      });
-      event.target.classList.add('active', 'bg-indigo-600', 'text-white', 'border-indigo-600');
-      event.target.classList.remove('bg-white', 'text-slate-700', 'border-slate-300');
+    // Event Table Tag Filter with Important Filter
+    function filterEventTag(tag, btnElement) {
+      const targetBtn = btnElement || (window.event ? window.event.currentTarget || window.event.target : null);
+      if (targetBtn) {
+        document.querySelectorAll('.ev-tag-btn').forEach(b => {
+          b.classList.remove('active', 'bg-indigo-600', 'text-white', 'border-indigo-600');
+          b.classList.add('bg-white', 'text-slate-700', 'border-slate-300');
+        });
+        targetBtn.classList.add('active', 'bg-indigo-600', 'text-white', 'border-indigo-600');
+        targetBtn.classList.remove('bg-white', 'text-slate-700', 'border-slate-300');
+      }
 
       const rows = document.querySelectorAll('#event-table-body tr');
       rows.forEach(row => {
         const rowTag = row.getAttribute('data-tag');
-        if (tag === 'all' || rowTag === tag) {
+        const isImportant = row.getAttribute('data-important') === 'true';
+        if (tag === 'all') {
+          row.style.display = '';
+        } else if (tag === '重要') {
+          row.style.display = isImportant ? '' : 'none';
+        } else if (rowTag === tag) {
           row.style.display = '';
         } else {
           row.style.display = 'none';
