@@ -99,7 +99,11 @@
 
     <!-- Navigation Tabs -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex space-x-3 border-t border-slate-200 overflow-x-auto py-2.5 text-base">
-      <button onclick="switchTab('timeline')" id="btn-timeline" class="tab-btn active px-5 py-2.5 rounded-xl font-semibold text-slate-700 hover:text-slate-900 transition flex items-center gap-2.5 border border-transparent">
+      <button onclick="switchTab('fulltext')" id="btn-fulltext" class="tab-btn active px-5 py-2.5 rounded-xl font-semibold text-slate-700 hover:text-slate-900 transition flex items-center gap-2.5 border border-transparent">
+        <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+        個案全文
+      </button>
+      <button onclick="switchTab('timeline')" id="btn-timeline" class="tab-btn px-5 py-2.5 rounded-xl font-semibold text-slate-700 hover:text-slate-900 transition flex items-center gap-2.5 border border-transparent">
         <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
         全景時間軸
       </button>
@@ -124,8 +128,159 @@
 
   <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
+    <!-- ==================== TAB 0: 個案全文 ==================== -->
+    <div id="tab-fulltext" class="space-y-6">
+      <div class="bg-white p-8 sm:p-10 rounded-2xl border border-slate-200 shadow-sm leading-relaxed text-slate-800 space-y-8">
+        
+        <!-- 文章主標題 -->
+        <div class="border-b border-slate-200 pb-6 text-center">
+          <span class="text-xs font-bold uppercase tracking-wider px-3.5 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200">Case Study Full Text</span>
+          <h2 class="text-3xl font-extrabold text-slate-900 mt-3">智財資產的併購——IPAD 商標併購與訴訟之路</h2>
+          <p class="text-sm text-slate-500 mt-2 font-mono">個案講義完整原文收錄與條列化閱讀呈現</p>
+        </div>
+
+        <!-- 導言區塊 -->
+        <div class="p-5 rounded-xl bg-slate-50 border border-slate-200 text-slate-700 leading-relaxed">
+          <p class="text-base">
+            2010年4月19日，深圳市中級人民法院受理了蘋果和IP申請發展有限公司（IP Application & Development Limited，縮寫剛好是IPAD）起訴深圳唯冠的 iPad 商標糾紛案[cite: 3]。該案經2011年2月23日、8月21日、10月18日三次開庭審理，法院於2011年12月5日作出一審判決：<strong>駁回蘋果公司及IPAD公司的訴訟請求</strong>[cite: 3]。蘋果不服深圳中院判決，並於2012年1月5日向深圳中院提交了上訴狀，上訴至廣東省高級人民法院[cite: 3]。
+          </p>
+        </div>
+
+        <!-- 章節：起因 -->
+        <section class="space-y-3">
+          <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2 border-l-4 border-indigo-600 pl-3">
+            <span>一、起因</span>
+          </h3>
+          <p class="text-base text-slate-700 leading-relaxed">
+            早在1998年唯冠集團已經開始於歐洲與亞洲國家註冊 IPAD 商標，並使用於所銷售的 all-in-one 電腦上，對唯冠集團而言，iPad 是 <strong>Internet Personal Access Device</strong> 的縮寫[cite: 3]。在2001年，唯冠集團透過深圳唯冠（臺灣唯冠持有股權）在中國大陸申請並取得 IPAD 商標之註冊[cite: 3]。當時蘋果並未推出 iPad 平板電腦[cite: 3]。
+          </p>
+          <p class="text-base text-slate-700 leading-relaxed">
+            2006年蘋果公司開始策劃推出 iPad 時發現，iPad 商標權早就被唯冠公司在多國取得註冊[cite: 3]。
+          </p>
+          
+          <!-- 利益關係圖示意卡片 -->
+          <div class="p-4 rounded-xl bg-amber-50 border border-amber-200 text-sm text-amber-900 mt-3">
+            <h4 class="font-bold text-amber-950 mb-1 flex items-center gap-1.5">
+              <span>📌 原個案「iPad 商標轉移利益關係圖」脈絡解析：</span>
+            </h4>
+            <ul class="list-disc list-inside space-y-1 text-slate-700">
+              <li><strong>1998 年研發 iPad</strong>：唯冠國際 ➔ 旗下台北唯冠 ➔ 2009 年以 3.5 萬英鎊轉商標予英國 IP 公司 ➔ 英國 IP 公司以 10 英鎊再轉讓給美國蘋果公司[cite: 3]。</li>
+              <li><strong>大小債主與中國商標權</strong>：深圳唯冠於 2001 年在大陸註冊 iPad, IPAD 商標[cite: 3]；唯冠國際積欠中行、民生、國開、廣發、交行、浦發、華夏、深圳平安等 8 家銀行高達 11.45 億 RMB 債務[cite: 3]。</li>
+              <li><strong>重組與索價</strong>：債權銀行指定和君創業擔任重組顧問與訴訟公關總協調，要價 20 億美元換中國商標權[cite: 3]。</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- 章節：智財併購交易 -->
+        <section class="space-y-3">
+          <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2 border-l-4 border-indigo-600 pl-3">
+            <span>二、智財併購交易</span>
+          </h3>
+          <p class="text-base text-slate-700 leading-relaxed">
+            2009年12月23日，蘋果通過英國律師事務所成立的一家紙上公司 <strong>IP Application & Development, Inc.（縮寫為 IPAD）</strong>與向唯冠集團台灣子公司唯冠國際（Proview International Holdings Ltd.）購買 iPad 全球商標權[cite: 3]。雙方達成協議，由英國 IPAD 公司以 3.5 萬英鎊的價格收購唯冠國際註冊的所有 IPAD 商標，並簽署「IPAD」全球商標轉讓協定，在這份協議的附件之中，列出各個地區的 10 項 iPAD 商標權，中國大陸的商標權也在其中[cite: 3]。
+          </p>
+          <p class="text-base text-slate-700 leading-relaxed">
+            2010年2月，英國 IPAD 公司與蘋果簽訂一份《權利轉讓協議》，英國 IPAD 公司同意以 10 英鎊為對價，向蘋果公司轉讓臺灣唯冠轉讓給其的所有「IPAD」商標的所有權利[cite: 3]。
+          </p>
+          <p class="text-base text-slate-700 leading-relaxed">
+            2010年1月27日，蘋果正式發佈 iPad[cite: 3]。
+          </p>
+          <p class="text-base text-slate-700 leading-relaxed">
+            2010年4月7日，蘋果向中國商標局申請大陸 iPad 商標的轉讓過戶，被中國商標局駁回[cite: 3]。同月蘋果在深圳起訴唯冠深圳公司，要求確認其為 iPad 商標專用權人[cite: 3]。2010年4月，深圳唯冠和蘋果就商標轉讓進行談判，但並未達成一致[cite: 3]。
+          </p>
+          <p class="text-base text-slate-700 leading-relaxed">
+            據唯冠公告顯示，其流動負債淨額達 28.7 億元，38 億元貸款逾期未償還，對中國銀行等 8 家銀行的負債大約為 1.8 億美元，約合人民幣 11.45 億元，負債纍纍[cite: 3]。
+          </p>
+          <p class="text-base text-slate-700 leading-relaxed">
+            在唯冠深圳向蘋果提出商標權還在自己手中時，起初蘋果還是願意坐下來談判的[cite: 3]。不過隨著中國地區 iPad 上市日期的日益臨近，唯冠的報價一路「水漲船高」，從一千萬美金漲到兩千萬，然後又漲到四千萬[cite: 3]。這讓蘋果十分不滿[cite: 3]。但真正讓蘋果放棄和唯冠談判的，是中國銀行、民生銀行等 8 家銀行查封了唯冠資產[cite: 3]。唯冠方面起初想把 iPad 商標權轉到負債纍纍的唯冠深圳之外的公司，這樣便於自己去談判出售 iPad 商標[cite: 3]。但香港法院2010年的一紙禁制令讓唯冠的如意算盤落空[cite: 3]。當時由於唯冠與蘋果的談判仍在進行中，所以法院判定不允許唯冠在此期間把商標轉出去[cite: 3]。最終，包括 iPad 商標權在內的唯冠深圳全部資產被 8 家債權銀行查封[cite: 3]。
+          </p>
+          <p class="text-base text-slate-700 leading-relaxed">
+            蘋果方面得知這一消息後，馬上單獨與各家銀行溝通，詢問是否願意出售 iPad 商標[cite: 3]。在得到肯定答覆之後，蘋果方面認為拿下商標沒有問題，隨後開始正式在中國銷售 iPad[cite: 3]。蘋果未取得授權公然銷售 iPad 的做法其實也觸怒了 8 家銀行[cite: 3]。8 家銀行都認為 iPad 商標是唯冠最值錢的資產，反對讓其破產，決定繼續清償[cite: 3]。而清償的核心，就是蘋果能支付多少的轉讓費[cite: 3]。
+          </p>
+        </section>
+
+        <!-- 章節：訴訟階段 -->
+        <section class="space-y-3">
+          <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2 border-l-4 border-indigo-600 pl-3">
+            <span>三、訴訟階段</span>
+          </h3>
+          <ul class="space-y-2.5 text-base text-slate-700 list-disc list-inside">
+            <li><strong>2010年4月</strong>：蘋果向深圳市中級法院起訴，要求深圳唯冠執行商標轉讓[cite: 3]。</li>
+            <li><strong>2011年11月</strong>：深圳市中級法院一審宣判，駁回蘋果起訴[cite: 3]。</li>
+            <li><strong>2012年1月</strong>：蘋果不服，向廣東省高級法院提出上訴，並提出該案應適用香港法律判定，二審定於2月29日開庭[cite: 3]。</li>
+            <li><strong>2012年2月7日</strong>：唯冠深圳向上海法院提出申請，要求發佈蘋果 iPad 禁售令[cite: 3]。</li>
+            <li><strong>2012年2月10日</strong>：唯冠深圳起訴蘋果公司 iPad 商標侵權案一審宣判：蘋果敗訴，法院頒佈蘋果 iPad 禁售令[cite: 3]。國內多地區工商局接到相關律師函，開始調查侵權 iPad[cite: 3]。</li>
+            <li><strong>2012年2月15日</strong>：蘋果主動通知亞馬遜等電子商務網站下架所有 iPad 產品[cite: 3]。</li>
+            <li><strong>2012年2月22日</strong>：深圳唯冠起訴蘋果貿易（上海）有限公司侵害 iPad 商標權一案在上海浦東法院進行了一審，雙方當庭激辯 4 小時，但法院並未當庭宣判[cite: 3]。</li>
+            <li><strong>2012年2月23日</strong>：上海浦東法院開審一天後即做出裁定：中止訴訟[cite: 3]。同時，浦東法院還駁回了原告深圳唯冠要求責令被告蘋果停止銷售 "iPad" 平板電腦的申請[cite: 3]。</li>
+            <li><strong>2012年2月29日</strong>：IPAD 商標糾紛案終審在廣東省高級人民法院開庭審理[cite: 3]。蘋果公司、IP申請發展有限公司以及深圳唯冠科技公司均由代理律師出庭，庭審共持續了近六個小時[cite: 3]。當日，廣東省高級人民法院並未當庭宣判[cite: 3]。</li>
+            <li><strong>2012年4月24日</strong>：在國務院新聞辦舉行的新聞發佈會上，國家工商行政管理總局副局長付雙建表示，根據商標法的有關規定，目前深圳唯冠仍然是 IPAD 商標的合法註冊人[cite: 3]。</li>
+            <li><strong>2012年5月7日</strong>：在廣東省高院對雙方進行調解這一法定程序中，唯冠方面表示，一直在積極努力地進行和解，而蘋果方面也未拒絕調解[cite: 3]。這意味著，雙方正式進入了和解程序，至於和談的金額，則成為此案的關鍵之關鍵[cite: 3]。</li>
+            <li><strong>2012年5月9日</strong>：加州高等法院的一位法官駁回唯冠電子股份有限公司（Proview Electronics Co.）針對中國市場 "iPad" 商標問題對蘋果公司（Apple Inc.）提起的訴訟[cite: 3]。理由是雙方之前已經同意在香港解決法律上的分歧[cite: 3]。</li>
+          </ul>
+        </section>
+
+        <!-- 章節：爭論焦點與法律爭議 -->
+        <section class="space-y-4">
+          <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2 border-l-4 border-indigo-600 pl-3">
+            <span>四、爭論焦點與法律爭議</span>
+          </h3>
+          
+          <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
+            <h4 class="font-bold text-slate-900 text-base">⚖️ 一審的爭論焦點：</h4>
+            <p class="text-sm text-slate-700 leading-relaxed">
+              唯冠的 IPAD 商標一共 10 個，其中唯冠臺灣擁有 8 個其它國家地區的商標，而中國大陸兩個類別的商標權則註冊在深圳唯冠名下[cite: 3]。也就是說，唯冠臺灣並不能代表唯冠深圳出售資產[cite: 3]。但蘋果方面認為，唯冠臺灣和唯冠深圳的法人代表都是楊榮山，唯冠臺灣可以代表唯冠深圳[cite: 3]。之後，唯冠和蘋果就中國地區的 iPad 商標權大戰全面展開[cite: 3]。
+            </p>
+            <p class="text-sm text-slate-700 leading-relaxed">
+              蘋果 IPAD 商標權的爭奪焦點就在於臺灣唯冠和深圳唯冠這兩家唯冠能否被視為一體？蘋果方面認為，臺灣唯冠和深圳唯冠均屬於唯冠國際的子公司，「IPAD」商標轉讓協議是唯冠國際的集體交易行為[cite: 3]。因此，蘋果向深圳市中級人民法院提起訴訟，要求法院判令這兩個商標歸其所有[cite: 3]。
+            </p>
+            <p class="text-sm text-slate-700 leading-relaxed">
+              法院審理認為，商標轉讓合同系英國 IPAD 公司與臺灣唯冠簽訂，深圳唯冠沒有參與談判，也沒有授權他人處分其商標及訂立商標轉讓合同，涉案的商標轉讓合同對深圳唯冠無約束力，從而駁回了蘋果的訴訟請求[cite: 3]。
+            </p>
+          </div>
+
+          <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
+            <h4 class="font-bold text-slate-900 text-base">⚖️ 二審焦點：</h4>
+            <p class="text-sm text-slate-700 leading-relaxed">
+              在法庭上，蘋果展示了多份新的證據，其中最為關鍵的一份證據是用深圳唯冠的信頭紙寫的簽名函，其內容正是 iPad 商標轉讓事宜，落款是唯冠董事長楊榮山[cite: 3]。蘋果還出示了交易參與者麥世巨的名片，以證明他是深圳唯冠法務處長，此外還有多封當時雙方往來的電子郵件[cite: 3]。蘋果方面表示，一審判決錯誤認為參與的所有人不能代表深圳唯冠，但楊榮山當時是深圳唯冠、臺灣唯冠以及唯冠集團的實際控制人，深圳唯冠的多位員工參與了 iPad 商標轉讓過程，因此不能說深圳唯冠沒有授權[cite: 3]。
+            </p>
+          </div>
+
+          <div class="bg-indigo-50/70 p-4 rounded-xl border border-indigo-200 space-y-1 text-sm text-indigo-950 font-medium">
+            <h4 class="font-bold text-indigo-900 mb-1">🔍 核心法律爭議總結：</h4>
+            <p>1. IPAD 公司與臺灣唯冠簽署的商標交易合同是否對深圳唯冠具有約束力？[cite: 3]</p>
+            <p>2. 商標交易過程中，臺灣唯冠對深圳唯冠是否構成隱名代理等？[cite: 3]</p>
+          </div>
+        </section>
+
+        <!-- 章節：宣告和解 -->
+        <section class="space-y-3">
+          <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2 border-l-4 border-indigo-600 pl-3">
+            <span>五、宣告和解</span>
+          </h3>
+          <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-950 leading-relaxed">
+            <p class="text-base font-semibold">
+              2012年7月2日，廣東省高級人民法院對外公佈稱，蘋果公司已與深圳唯冠就 iPad 商標案達成和解，蘋果公司向深圳唯冠公司支付 6,000 萬美元收回所有相關商標權[cite: 3]。解決完商標問題後，iPad 於7月20日在中國大陸上市[cite: 3]。
+            </p>
+          </div>
+        </section>
+
+        <!-- 研討問題引用區塊 -->
+        <div class="border-t border-slate-200 pt-6">
+          <h4 class="text-base font-bold text-slate-800 mb-2">📌 附錄：個案原始討論問題</h4>
+          <ol class="list-decimal list-inside space-y-1 text-sm text-slate-600">
+            <li>蘋果進行 IP 資產的佈局與併購？[cite: 3]</li>
+            <li>蘋果在 IPAD 商標的併購中出現什麼問題？[cite: 3]</li>
+            <li>面對 IP 資產的併購，應注意哪些問題？[cite: 3]</li>
+          </ol>
+          <p class="text-xs text-indigo-600 mt-2">💡 提示：切換至「個案決策思考題」頁籤可檢視包含上述題目及追加進階問題的專家級深度解答！</p>
+        </div>
+
+      </div>
+    </div>
+
     <!-- ==================== TAB 1: 全景時間軸 ==================== -->
-    <div id="tab-timeline" class="space-y-8">
+    <div id="tab-timeline" class="hidden space-y-8">
       <!-- 篩選列 -->
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-5 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
         <div>
@@ -282,7 +437,7 @@
             <h3 class="text-lg font-bold text-slate-900">深圳中院判決：合約對深圳唯冠無約束力，駁回蘋果全部訴求</h3>
             <p class="text-base text-slate-700 mt-2 leading-relaxed">
               <strong>關鍵主體：</strong>深圳市中級人民法院、蘋果、深圳唯冠[cite: 3]。<br>
-              <strong>事件情節：</strong>深圳中院認定：商標轉讓合約係與台灣唯冠簽訂，深圳唯冠未參與亦未出具授權處分書，基於公司獨立法人格原則，涉案轉讓協議對深圳唯冠無拘束力，判決蘋果敗訴[cite: 3]。
+              <strong>事件情節：</strong>一審認定合同為台灣唯冠簽訂，深圳唯冠未授權，基於獨立法人原則合約對深圳唯冠無效，駁回蘋果起訴[cite: 3]。
             </p>
           </div>
         </div>
@@ -349,7 +504,7 @@
             <h3 class="text-lg font-bold text-slate-900">加州法院駁回唯冠海外控告，廣東高院主持全面調解</h3>
             <p class="text-base text-slate-700 mt-2 leading-relaxed">
               <strong>關鍵主體：</strong>加州高等法院、廣東高院調解庭[cite: 3]。<br>
-              <strong>事件情節：</strong>加州法官以管轄約定在香港為由駁回唯冠在美訴訟；廣東高院積極介入主持雙方調解，核心聚焦「和解金數額」[cite: 3]。
+              <strong>事件情節：</strong>加州法官以管轄約定在香港為由駁回唯冠在美提告，雙方全數戰場聚焦廣東高院調解庭[cite: 3]。
             </p>
           </div>
         </div>
@@ -531,7 +686,7 @@
             </p>
           </div>
 
-          <div onclick="showPersonDetail('gd_court')" class="node-card cursor-pointer bg-white hover:bg-purple-50/60 border-2 border-purple-300 rounded-xl p-4 shadow-sm transition hover:shadow-md" data-roles="gd_court,all,injunction">
+          <div onclick="showPersonDetail('gd_court')" class="node-card cursor-pointer bg-white hover:bg-purple-50/60 border border-purple-200 rounded-xl p-4 shadow-sm transition hover:shadow-md" data-roles="gd_court,all,injunction">
             <div class="flex items-center justify-between mb-1">
               <h4 class="font-bold text-purple-950 text-base">廣東省高級人民法院</h4>
               <span class="text-xs px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold">終審和解主導</span>
@@ -677,7 +832,7 @@
               <td class="py-4 px-4 font-mono font-bold text-rose-700">2011.12.05</td>
               <td class="py-4 px-4 font-bold text-slate-900">深圳中院一審判決駁回蘋果起訴</td>
               <td class="py-4 px-4 text-slate-700 font-medium">深圳市中級人民法院、蘋果、深圳唯冠</td>
-              <td class="py-4 px-5 text-slate-600 leading-relaxed">一審認定合同為台灣唯冠簽訂，深圳唯冠無授權，基於獨立法人原則合約對深圳唯冠無效，駁回蘋果起訴[cite: 3]。</td>
+              <td class="py-4 px-5 text-slate-600 leading-relaxed">一審認定合同為台灣唯冠簽訂，深圳唯冠未授權，基於獨立法人原則合約對深圳唯冠無效，駁回蘋果起訴[cite: 3]。</td>
               <td class="py-4 px-5 text-slate-700 font-medium">蘋果在陸全面陷入非法侵權狀態，引爆唯冠全國索賠海嘯[cite: 3]。</td>
               <td class="py-4 px-3 text-center"><span class="px-2.5 py-1 rounded-full bg-purple-50 text-purple-800 text-xs font-semibold border border-purple-200 whitespace-nowrap">司法訴訟</span></td>
             </tr>
@@ -709,7 +864,6 @@
             <!-- Row 10 -->
             <tr class="hover:bg-slate-50/80 transition" data-tag="司法訴訟" data-important="false">
               <td class="py-4 px-3 text-center font-mono text-slate-500 font-bold">10</td>
-              <td class="py-4 px-3 text-center"><span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-xs font-medium">一般</span></td>
               <td class="py-4 px-4 font-mono font-bold text-purple-700">2012.02.29</td>
               <td class="py-4 px-4 font-bold text-slate-900">廣東高院二審終審開庭激辯</td>
               <td class="py-4 px-4 text-slate-700 font-medium">廣東高院、蘋果、深圳唯冠</td>
@@ -834,7 +988,7 @@
       </div>
     </div>
 
-    <!-- ==================== TAB 5: 個案決策思考題（完整整併追加提問） ==================== -->
+    <!-- ==================== TAB 5: 個案決策思考題 ==================== -->
     <div id="tab-dilemma" class="hidden space-y-6">
       <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
         <div class="flex items-center gap-3">
@@ -919,14 +1073,14 @@
         </div>
       </div>
 
-      <!-- 第二部分：追加深度提問（整合 DD、雙個案比對、台廠分析與心得） -->
+      <!-- 第二部分：追加深度提問 -->
       <div class="space-y-4 pt-4">
         <div class="flex items-center gap-2 pt-2 pb-1">
           <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
           <h3 class="text-base font-extrabold text-slate-900 tracking-wide">第二部分：追加深度決策提問（DD、福斯與 Apple 交叉比對、台廠戰略）</h3>
         </div>
 
-        <!-- Q4 (追加 1: 何謂 DD 及重要性) -->
+        <!-- Q4 -->
         <div class="bg-white border-2 border-indigo-100 hover:border-indigo-300 rounded-2xl p-5 shadow-sm transition">
           <button onclick="toggleFaq('faq4')" class="w-full text-left flex items-center justify-between">
             <div class="flex items-center gap-2.5">
@@ -949,7 +1103,7 @@
           </div>
         </div>
 
-        <!-- Q5 (追加 2: 福斯與 Apple 的 DD 瑕疵) -->
+        <!-- Q5 -->
         <div class="bg-white border-2 border-indigo-100 hover:border-indigo-300 rounded-2xl p-5 shadow-sm transition">
           <button onclick="toggleFaq('faq5')" class="w-full text-left flex items-center justify-between">
             <div class="flex items-center gap-2.5">
@@ -980,7 +1134,7 @@
           </div>
         </div>
 
-        <!-- Q6 (追加 3: 若你在做 DD 時發現，如何處理) -->
+        <!-- Q6 -->
         <div class="bg-white border-2 border-indigo-100 hover:border-indigo-300 rounded-2xl p-5 shadow-sm transition">
           <button onclick="toggleFaq('faq6')" class="w-full text-left flex items-center justify-between">
             <div class="flex items-center gap-2.5">
@@ -1007,7 +1161,7 @@
           </div>
         </div>
 
-        <!-- Q7 (追加 4: 台灣企業為何鮮少運用 IP 併購策略) -->
+        <!-- Q7 -->
         <div class="bg-white border-2 border-indigo-100 hover:border-indigo-300 rounded-2xl p-5 shadow-sm transition">
           <button onclick="toggleFaq('faq7')" class="w-full text-left flex items-center justify-between">
             <div class="flex items-center gap-2.5">
@@ -1031,7 +1185,7 @@
           </div>
         </div>
 
-        <!-- Q8 (追加 5: 個案心得與未來因應方針) -->
+        <!-- Q8 -->
         <div class="bg-white border-2 border-indigo-100 hover:border-indigo-300 rounded-2xl p-5 shadow-sm transition">
           <button onclick="toggleFaq('faq8')" class="w-full text-left flex items-center justify-between">
             <div class="flex items-center gap-2.5">
@@ -1149,7 +1303,7 @@
 
     // 頁籤切換
     function switchTab(tabId) {
-      const tabs = ['timeline', 'ecosystem', 'events', 'insights', 'dilemma'];
+      const tabs = ['fulltext', 'timeline', 'ecosystem', 'events', 'insights', 'dilemma'];
       tabs.forEach(t => {
         const el = document.getElementById('tab-' + t);
         const btn = document.getElementById('btn-' + t);
