@@ -129,6 +129,10 @@
         <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
         個案決策思考題
       </button>
+      <button onclick="switchTab('fulltext')" id="btn-fulltext" class="tab-btn px-5 py-2.5 rounded-xl font-semibold text-slate-700 hover:text-slate-900 transition flex items-center gap-2.5 border border-transparent">
+        <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+        個案全文 (繁體中文)
+      </button>
     </div>
   </header>
 
@@ -1420,6 +1424,343 @@
       </div>
     </div>
 
+    <!-- ==================== TAB 6: 個案全文 (繁體中文) ==================== -->
+    <div id="tab-fulltext" class="hidden space-y-8">
+      
+      <!-- Top Title and Article Navigation Bar -->
+      <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-5">
+          <div>
+            <div class="flex items-center gap-3">
+              <span class="px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 font-bold text-xs border border-indigo-200 uppercase tracking-wide">
+                Stanford GSB Case E-61A
+              </span>
+              <span class="text-sm text-slate-500 font-medium">版本：2003 年 6 月 6 日</span>
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2 tracking-tight">
+              益華電腦 對決 先驅科技（A）全文翻譯
+            </h2>
+            <p class="text-base text-slate-600 mt-1">
+              Cadence vs. Avant! (A) 原案完整繁體中文研讀版（保留關鍵公司、人物、專用技術與法律術語之英文對照）
+            </p>
+          </div>
+          <div class="text-xs text-slate-500 bg-slate-50 p-3 rounded-xl border border-slate-200 leading-relaxed max-w-sm">
+            本案由 Pratap Mukherjee 在 John Glynn 教授指導下編撰，旨在作為課堂討論基礎，而非評斷行政處置得當與否之範例。
+          </div>
+        </div>
+
+        <!-- Quick Jump Links (TOC) -->
+        <div class="flex items-center gap-2 flex-wrap text-sm pt-1">
+          <span class="font-bold text-slate-700 mr-1 flex items-center gap-1.5">
+            <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path></svg>
+            章節跳轉：
+          </span>
+          <a href="#ft-sec-intro" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-indigo-50 hover:text-indigo-700 text-slate-700 font-medium transition">開篇引言</a>
+          <a href="#ft-sec-eda" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-indigo-50 hover:text-indigo-700 text-slate-700 font-medium transition">EDA 產業概觀</a>
+          <a href="#ft-sec-cadence" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-indigo-50 hover:text-indigo-700 text-slate-700 font-medium transition">益華電腦 (Cadence)</a>
+          <a href="#ft-sec-avant" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-indigo-50 hover:text-indigo-700 text-slate-700 font-medium transition">先驅科技 (Avant!)</a>
+          <a href="#ft-sec-war" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-indigo-50 hover:text-indigo-700 text-slate-700 font-medium transition">戰火點燃與井草走私</a>
+          <a href="#ft-sec-jfk" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-indigo-50 hover:text-indigo-700 text-slate-700 font-medium transition">JFK Cadence 與白手套</a>
+          <a href="#ft-sec-straw" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-indigo-50 hover:text-indigo-700 text-slate-700 font-medium transition">最後稻草與錯字臭蟲</a>
+          <a href="#ft-sec-legal" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-indigo-50 hover:text-indigo-700 text-slate-700 font-medium transition">法律戰與反訴</a>
+          <a href="#ft-sec-market" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-indigo-50 hover:text-indigo-700 text-slate-700 font-medium transition">市場實戰交鋒</a>
+          <a href="#ft-sec-stakes" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-indigo-50 hover:text-indigo-700 text-slate-700 font-medium transition">禁制令籌碼升級</a>
+          <a href="#ft-sec-conclusion" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-indigo-50 hover:text-indigo-700 text-slate-700 font-medium transition">結語與思考題</a>
+        </div>
+      </div>
+
+      <!-- Main Reading Document Container (White Paper Style) -->
+      <div class="bg-white p-6 sm:p-10 rounded-2xl border border-slate-200 shadow-sm space-y-10 leading-relaxed text-slate-800 text-base sm:text-lg">
+
+        <!-- Epigraph & Opening Scene -->
+        <section id="ft-sec-intro" class="space-y-5 scroll-mt-28">
+          <div class="p-6 rounded-2xl bg-amber-50/80 border-l-4 border-amber-500 text-slate-800 italic space-y-2">
+            <p class="font-serif text-base sm:text-lg text-amber-950">
+              「故敵間之來間我者，必索而利之，導而舍之，故反間可得而用也。……反間者，因知敵情，故智略之士，可使施誑也；因知敵情，故勇力之士，可使造攻也。」
+            </p>
+            <div class="text-right text-xs sm:text-sm text-amber-900 font-semibold not-italic">
+              —— 孫子，《孫子兵法·用間篇》（Sun Tzu, The Art of War）
+            </div>
+          </div>
+
+          <p>
+            先驅科技（Avant! Corporation）總裁兼執行長（President and CEO）徐建國（Gerald Hsu）掛上電話，雙手握拳抱著頭，極力壓抑心中的怒火。這天是 1996 年 5 月 8 日，他的律師剛剛告知，他的頭號死敵兼前東家益華電腦（Cadence Design Systems）已向法院聲請初步禁制令（Preliminary Injunction），這項禁令若成立，將禁止銷售先驅科技的核心產品，而這些產品佔了公司總營收的 60%。
+          </p>
+          <p>
+            六個月前，在益華電腦指控其侵犯著作權（Copyright Infringement）及營業秘密（Trade Secret Misappropriation）、執法人員突擊搜查先驅科技總部後，先驅科技的股價在一週內從 42 美元腰斬暴跌至 14 美元；徐建國苦戰了半年，才剛把股價拉回 21 美元。更糟的是，益華電腦的執行長喬·科斯特洛（Joe Costello）展開了鋪天蓋地的輿論宣傳攻勢（Publicity Campaign），向所有願意聆聽的人散播這些指控，包括先驅科技現有與潛在的客戶及投資人。徐建國必須拋開個人情緒，專注於維護股東價值、市場份額與員工士氣。他現在該怎麼做？他一心只想在市場上堂堂正正競爭，而不是在法庭上廝殺。
+          </p>
+        </section>
+
+        <hr class="border-slate-200">
+
+        <!-- Section: EDA Industry Overview -->
+        <section id="ft-sec-eda" class="space-y-5 scroll-mt-28">
+          <div class="flex items-center gap-3 border-b border-slate-200 pb-3">
+            <span class="w-3 h-3 rounded-full bg-indigo-600"></span>
+            <h3 class="text-xl sm:text-2xl font-bold text-slate-900">電子設計自動化（EDA）產業概觀</h3>
+          </div>
+          <p>
+            電子設計自動化（Electronic Design Automation, EDA）產業的主要產品，是用於複雜積體電路（Integrated Circuits, ICs）電腦輔助設計（Computer-Aided Design, CAD）的軟體產品。使用自動化軟體能實現更有效率的實體佈局、提高元件密度，並減少設計時間、晶片尺寸以及 IC 生產成本。
+          </p>
+          <p>
+            這些 EDA 產品的主要客戶包括特殊應用晶片（Application-Specific Integrated Circuit, ASIC）開發商（如 LSI Logic 與 Cirrus Logic），以及通用半導體設計與製造商（如 Intel 與 Cypress Semiconductor）。晶片設計是一個極度複雜且耗時的過程。由於需要龐大數量的電晶體（Transistors）與連接導線，設計單一晶片可能需要 9 到 12 個月。在這些自動化工具出現之前，企業在單一晶片上只能容納約一千個電晶體，且設計過程全靠人工、容易出錯且成本高昂。自動化為 IC 製造商帶來了巨大的生產力提升。EDA 工具讓設計人員能夠在相同的時間內、以更少的錯誤製造出含有數百萬個電晶體的晶片。此外，晶片設計與尺寸的最佳化也直接為晶片製造商帶來生產效益。例如，透過有效的電晶體擺放與繞線使晶片面積（Die Size）縮小 10%，就能降低 20% 或更多的生產成本。
+          </p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-4">
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+              <h4 class="font-bold text-indigo-900 text-base mb-1">1. 合成（Synthesis）</h4>
+              <p class="text-sm text-slate-600">前端流程（Front-end），將晶片概念與規格邏輯轉化為符合效能規範的電路設計。該領域長年由新思科技（Synopsys）獨占鰲頭。</p>
+            </div>
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+              <h4 class="font-bold text-sky-900 text-base mb-1">2. 佈局與繞線（Place-and-Route）</h4>
+              <p class="text-sm text-slate-600">決定數千至數百萬微型元件的實體擺放位置（Placement）與電氣線路最佳走線（Routing），成長率高達每年 30%。</p>
+            </div>
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+              <h4 class="font-bold text-emerald-900 text-base mb-1">3. 驗證（Verification）</h4>
+              <p class="text-sm text-slate-600">確認包含佈局繞線後的設計嚴格遵守設計規則（Design Rules），確保投片生產後符合規格，1994 年 Cadence 獨占 83%。</p>
+            </div>
+          </div>
+
+          <p>
+            該領域的軟體以極度複雜著稱。一套典型的 EDA 程式開發或升級週期至少需要四年才能完成。之所以如此複雜，是因為該領域尚未開發出任何絕對有效的演算法（Algorithms）。演算法是一套必定能產生預期結果的確定性指令。但此類軟體並非像多數軟體那樣採用演算法，而是採用<strong>啟發式方法（Heuristics-based）</strong>。這意味著軟體只是試圖模仿人類的行為，只是速度更快且不會出錯。這種程式碼永遠無法算是「徹底完成」，只能算日趨「成熟（Mature）」。產品只要被認為「夠好」（通常意味著滿足 80% 的客戶需求）就會出貨。即便只是達到這個標準，也可能需要長達七年的時間。
+          </p>
+          <p>
+            根據產業分析師估計，1995 年全球 EDA 軟體銷售總額介於 12 億至 16 億美元之間。分析師預測該市場至 1999 年將成長至 25 億至 30 億美元，年複合成長率介於 15% 至 20% 之間。合成領域佔了最大比例（3 億至 5 億美元）。佈局與繞線產品佔了 1.5 億至 2 億美元營收，且是成長最快的環節（年成長率 30%）。1995 年全球 IC 驗證市場約為 7,500 萬美元，預期年成長率至少 10%。其餘部分則由眾多小型細分市場組成。
+          </p>
+          <p><strong>有幾股力量正在塑造該產業的發展：</strong></p>
+          <ul class="list-disc list-inside space-y-1.5 pl-2 text-slate-700">
+            <li><strong>應用領域增加（Growth in Applications）</strong>：使用 IC 的應用數量爆炸性成長，滲透至電信（Telecommunications）、汽車（Automotive）到工業自動化（Industrial Automation）。</li>
+            <li><strong>產品生命週期縮短（Shortened Product Life Cycles）</strong>：全球競爭使產品更新換代極快，推動晶片製造製程與設計技術日益複雜。</li>
+            <li><strong>先進技術推進（Advanced Technologies）</strong>：傳統實體設計軟體已不敷使用，未來技術在於次微米（Submicron，小於 1 微米）與深次微米（Deep Submicron，小於 0.5 微米；作為參考，句號直徑約 500 微米）。</li>
+          </ul>
+          <p>
+            EDA 市場高度集中。在合成領域，由新思科技（Synopsys）絕對主導，益華電腦（Cadence）與先驅科技（Avant!）在此領域並非主要競爭對手。在佈局與繞線軟體方面，估計益華電腦擁有 75% 的市場份額，明導國際（Mentor Graphics）為 15%，先驅科技為 10%。然而，截至 1995 年，先驅科技成長極為迅猛，在深次微米市場甚至以 23% 逆超益華電腦的 18%。分析師預測到 2000 年，先驅科技在深次微米領域將以 33% 領先益華電腦的 12%。在 IC 驗證市場中，益華電腦在 1994 年掌握了 83% 的市佔率，明導國際為 10%，先驅科技則為 7%。
+          </p>
+          <p>
+            市場高度集中有其關鍵原因。EDA 絕非容易跨入或擴大份額的產業。爭奪新客戶競爭白熱化，因為客戶一旦簽約，將面臨<strong>極高的轉換成本（Switching Costs）</strong>：必須報廢巨額軟體投資、重訓工程師、更改設計流程資料庫；此外，在晶片設計專案期間，競爭對手將被鎖定在外（Locked out），無法獲取附帶的產品銷售與教育訓練收入。再加上研發（R&D）極為昂貴、合格工程師極為匱乏，以及長達 9 至 12 個月的嚴苛測試銷售週期（Sales Cycle），使新進業者跨入門檻極高。
+          </p>
+        </section>
+
+        <hr class="border-slate-200">
+
+        <!-- Section: Cadence Design Systems -->
+        <section id="ft-sec-cadence" class="space-y-5 scroll-mt-28">
+          <div class="flex items-center gap-3 border-b border-slate-200 pb-3">
+            <span class="w-3 h-3 rounded-full bg-sky-600"></span>
+            <h3 class="text-xl sm:text-2xl font-bold text-slate-900">益華電腦（Cadence Design Systems）</h3>
+          </div>
+          <p>
+            益華電腦（Cadence Design Systems, Inc.）誕生於 1988 年，由 SDA Systems, Inc. 與其對手 ECAD, Inc. 合併而成，新主體更名為 Cadence。在接下來的兩年中，該公司從默默無聞迅速崛起，成為電子設計自動化軟體的第二大供應商。歷經穩定的內部成長後，益華於 1992 年收購了另一家主要 EDA 軟體公司 Valid Logic Systems，隨即登上產業龍頭寶座。
+          </p>
+          <p>
+            從 1990 年到 1995 年，總營收從 2.33 億美元成長至 5.48 億美元（年成長 13%），淨利年增長 23%，1995 年淨利近 1 億美元。益華於 1990 年 3 月掛牌上市（IPO），至 1995 年底市值攀升至 26 億美元，帶給股東超過 21% 的年化報酬率。
+          </p>
+          <p>
+            益華的成功很大程度歸功於 42 歲的執行長喬·科斯特洛（Joseph Costello）。他畢業於哈維瑪德學院（Harvey Mudd College）並取得耶魯大學（Yale University）物理學碩士，在國家半導體公司（National Semiconductor Corp.）實習時對管理產生濃厚興趣。1984 年曾創業生產語音模擬產品，因與夥伴不合而離開，隨後加入 SDA Systems 並於 1987 年升任總裁，主導了與 ECAD 的合併。科斯特洛充滿領袖魅力、口才極佳且極度拼命（每週工時 80 小時，每晚只睡 5 小時），被譽為產業遠見者，但批評者認為他只是一位油滑的頂級業務員（Slick sales guy）。
+          </p>
+          
+          <div class="p-4 rounded-xl bg-sky-50 border border-sky-200">
+            <strong class="text-sky-950 font-bold block mb-1">1991 年分裂種子：四位工程師集體出走創辦 ArcSys</strong>
+            1991 年，四名員工決定離開益華並成立 ArcSys：卓允中（Yun-Chung "Eric" Cho）與蔡木炎（Michael Mon-Yen Tsai）於 2 月 22 日提出離職；吳自立（Tzyh-Lih "Steven" Wuu）與廖裕成（Yhu-Zen "Y.Z." Liao）於 2 月 27 日提出離職。在離職面談（Exit Interviews）中，四人全數拒絕簽署益華重申保密義務的標準文件（Nondisclosure Obligations），且 ArcSys 早在 2 月 28 日就已搶先註冊成立。
+          </div>
+
+          <p>
+            面對威脅，益華積體電路設計部門（Integrated Circuit Design Division）共同總經理徐建國於 1992 年底組建「B 團隊」（B-team），發起「AK-47」或「47 週內消滅 ArcSys（Kill ArcSys within 47 weeks）」的行動。徐建國崇尚《孫子兵法》，曾走進一名經理辦公室在桌上排置 48 顆子彈彈殼，冷冷地警告每週一顆，「如果任務失敗，最後一顆子彈留給你自己」；他甚至指示清查 ArcSys 員工的移民身份以向當局檢舉。科斯特洛對徐建國的軍事化恐懼管理產生強烈戒心。
+          </p>
+          <p>
+            1993 年底，徐建國與部門另一位共同總經理——Tangent Software 創辦人兼技術教父詹姆斯·所羅門（James Solomon）在指揮鏈問題（Chain-of-command issues）上爆發劇烈衝突。科斯特洛選擇力挺所羅門，並空降外部主管共治，徐建國實質遭到架空。
+          </p>
+          <p>
+            1994 年 3 月，徐建國憤而請辭，隨後竟然接掌了自己在益華誓言殲滅的目標——ArcSys！科斯特洛獲悉後極度震怒並揚言提告。經過漫長緊張的談判，雙方於 1994 年 6 月簽署和解協議：徐建國獲准於 7 月就任 ArcSys 執行長並免除既有洩密指控，但嚴禁其在 1995 年 1 月 1 日前招攬、延攬或聘用（Solicit, recruit, or employ）任何益華員工。
+          </p>
+          <p>
+            在此期間，益華重新審視了資安防護體系：包含全員簽署保密協定、軟體與版權標註專有警告、防火牆（Firewall）防護、登入帳號密碼管制（Login security）、大樓門禁卡（Card access system）、限制存取權限至專案人員，以及定期監控存取。然而，與所有高科技公司一樣，益華最終依舊依賴「員工個人的誠信（Employee integrity）」，並不會對離職員工進行搜身或金屬探測檢查。
+          </p>
+        </section>
+
+        <hr class="border-slate-200">
+
+        <!-- Section: Avant! Corporation -->
+        <section id="ft-sec-avant" class="space-y-5 scroll-mt-28">
+          <div class="flex items-center gap-3 border-b border-slate-200 pb-3">
+            <span class="w-3 h-3 rounded-full bg-orange-600"></span>
+            <h3 class="text-xl sm:text-2xl font-bold text-slate-900">先驅科技（Avant! Corporation，前身為 ArcSys）</h3>
+          </div>
+          <p>
+            ArcSys 創始四人初期共同出資近 20 萬美元，並於 1992 年初獲得創投機構 TVI（Technology Venture Investors）與 Sutter Hill Ventures 兩家創投 300 萬美元注資。1993 年 3 月推出首代佈局繞線產品 ArcCell（貢獻 90% 營收），但因缺乏市場銷售經驗，1993 全年營收僅 170 萬美元，鉅額虧損 220 萬美元；1994 年第一季依然虧損 56.3 萬美元，迫使創投董事會決定換血尋求強勢 CEO。
+          </p>
+          <p>
+            1994 年 7 月中旬，徐建國接掌帥印，獲授以每股 0.30 美元認購 55 萬股 ArcSys 股票的選擇權（Stock Options，僅一年多後市值即飆升至 2,000 萬美元）。徐建國精通業務與戰略，但以咆哮與恐懼統御員工，經常在大型會議當眾開除未能如期交出訂單確認書（Sales order confirmations）的業務員。
+          </p>
+          <p>
+            徐建國為 ArcSys 制定了三步走戰略：第一，擴大現有產品銷售與加快新產品推出，大舉招募工程與業務團隊；第二，與 IC 設計技術領先大廠建立戰略夥伴關係，獲取技術反饋並樹立標竿案例；第三，全力推動公開上市（IPO），藉由高估值股票作為後續併購的資產貨幣（Growth by acquisition）。
+          </p>
+          <p>
+            這套策略獲得巨大成功。1995 年 6 月 6 日，ArcSys 年化營收衝上 1,300 萬美元並達到損益兩平（Break-even profitability），正式掛牌上市。首日收盤價 26.50 美元，市值達 2.4 億美元。1995 年 11 月 27 日，ArcSys 與北卡羅來納州羅利市的 Integrated Silicon Systems（ISS）合併，正式更名為先驅科技（Avant! Corporation，發音為 ah-VAHN-tee）。華爾街給予極高評價，股價在數日內飆上每股 51 美元的歷史顛峰。
+          </p>
+        </section>
+
+        <hr class="border-slate-200">
+
+        <!-- Section: The War Begins & Mitch Igusa -->
+        <section id="ft-sec-war" class="space-y-5 scroll-mt-28">
+          <div class="flex items-center gap-3 border-b border-slate-200 pb-3">
+            <span class="w-3 h-3 rounded-full bg-rose-600"></span>
+            <h3 class="text-xl sm:text-2xl font-bold text-slate-900">戰火點燃：首席架構師井草離職與電郵洩密</h3>
+          </div>
+          <p>
+            徐建國接任 ArcSys 後不久，私下接觸了益華最頂尖的工程師之一——首席系統架構師米奇·井草（Mitch Igusa, Architect）。1994 年 9 月 1 日，井草向科斯特洛提請辭職，坦言「想賺大錢」，認為留在益華錯失了許多發財機會。當科斯特洛追問去向時，井草以「法律原因」拒絕回答，但承認曾與徐建國吃過午飯。
+          </p>
+          <p>
+            科斯特洛深感營業秘密遭受威脅，開出令人難以置信的天價留人條件：職務自選、薪酬待遇自訂（隨意填寫薪水與股票）、全額支薪攻讀博士學位（Ph.D. studies）且畢業後完全不綁約。然而井草一概回絕。科斯特洛要求其簽署重申保密與不侵權義務的文件，井草同樣以「法律原因」拒絕簽字。
+          </p>
+          <div class="p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-950 font-medium">
+            🚨 <strong>關鍵電腦稽核結果</strong>：科斯特洛下令清查井草的工作站（Workstation）。紀錄顯示：1994 年 9 月 15 日（離職前一天），井草將高達 6MB 的檔案由工作站發往個人的 NetCom 私人信箱，其中單一檔案即達 5.3MB！隔天井草正式離職轉任獨立顧問（Independent consultant）。
+          </div>
+          <p>
+            益華向加州聖塔克拉拉郡地檢署（Santa Clara County District Attorney's office）報案。1994 年 11 月 9 日至 10 日，檢警持搜索票搜索了井草住所與 NetCom 通訊公司機房，查扣 UNIX 工作站並取得電子郵件存取權。檢警起獲了 Gate Ensemble 原始碼，並在軟碟機中查扣了僅作表面修飾的 QPlace 與 FRoute 核心程式碼，以及井草與 ArcSys 高層密商特定軟體的會議行程紀錄。益華隨即聘請私家偵探（Private investigator）對井草展開 24 小時全面跟監。
+          </p>
+        </section>
+
+        <hr class="border-slate-200">
+
+        <!-- Section: JFK Cadence & Saurus Fund -->
+        <section id="ft-sec-jfk" class="space-y-5 scroll-mt-28">
+          <div class="flex items-center gap-3 border-b border-slate-200 pb-3">
+            <span class="w-3 h-3 rounded-full bg-purple-600"></span>
+            <h3 class="text-xl sm:text-2xl font-bold text-slate-900">JFK Cadence 銷售部隊與「蜥蜴基金」白手套</h3>
+          </div>
+          <p>
+            1995 年 1 月 1 日，徐建國的「禁挖角協議（No-hire agreement）」剛一屆滿，ArcSys 立即大舉挖走 9 名益華核心研發工程師，組成代號「K 團隊（K-team）」的仿製核心部隊，連同先前加入者被公稱為「十二金剛」（The Dirty Dozen），包含李正道（J.T. Lee）、鄭志良（Chih-Liang "Eric" Cheng）、羅盛春（Sheng-Chun Lo）、曾屏三（Ping-San Tzeng）與塞格夫（Opher Segev）等。
+          </p>
+          <p>
+            鄭志良離職時同樣試圖隱瞞去向。電腦稽核顯示：鄭志良在離職前兩天，在工作站建立了名為 <code class="font-mono bg-rose-100 text-rose-800 px-1 rounded">byebye.tar</code> 的備份壓縮檔，打包了最新的 QPlace 與 FRoute 程式碼，並在幾分鐘後轉移至配有磁帶機（Tape drive）的電腦帶走。同時查獲了 ArcSys 在其跳槽期間向鄭志良支付的可疑款項。
+          </p>
+          <p>
+            隨後，徐建國組建了直轄業務狼群部隊，命名為「JFK Cadence」團隊（內部代號：<strong>Just F@#$ing Kill Cadence</strong>），專門鎖定益華客戶，以改進版軟體與優渥合約進行掠奪。
+          </p>
+          <p>
+            1995 年上半年，徐建國向董事會提議正式聘用井草，但董事會因恐懼刑事調查後果而否決。隨後管理階層想出對策：由個人名義出資規避公司審計。8 月初，井草在總部附近設立「K2 設計系統（K2 Design Systems）」；先驅科技工程副總裁則在井草辦公室幾間門牌之隔處，以「蜥蜴基金（Saurus Fund）」之名租下辦公室充當白手套。
+          </p>
+          <p>
+            當月稍晚，井草遭檢警起訴六項營業秘密挪用重罪（Felony counts of misappropriation of trade secrets）並逮捕，徐建國以私人資金出資保釋。私家偵探於 10 月 20 日拍下了井草從 ArcSys 員工手中接過裝滿現金信封的畫面。地檢署直指該基金為行賄與輸送黑錢的小金庫（Slush fund），先驅科技則堅稱其為合法的創投業務（Venture capital business）。
+          </p>
+        </section>
+
+        <hr class="border-slate-200">
+
+        <!-- Section: The Last Straw & Smoking Gun -->
+        <section id="ft-sec-straw" class="space-y-5 scroll-mt-28">
+          <div class="flex items-center gap-3 border-b border-slate-200 pb-3">
+            <span class="w-3 h-3 rounded-full bg-red-600"></span>
+            <h3 class="text-xl sm:text-2xl font-bold text-slate-900">最後一根稻草：Cypress 錯字臭蟲與總部大突擊</h3>
+          </div>
+          <p>
+            1995 年 8 月，益華一名工程師在拜訪重要客戶賽普拉斯半導體（Cypress Semiconductor）時，觀摩了 ArcSys 軟體的實機展示。工程師震驚地發現介面與益華驚人一致，更抓包跳出了一行不可思議的錯誤訊息：
+          </p>
+          <div class="p-4 rounded-xl bg-red-50 border-2 border-red-300 font-mono text-center text-rose-800 font-bold text-base sm:text-lg">
+            Error a: color, not found in this file
+          </div>
+          <p>
+            正確語法應為「`Error: a color not found in this file`」。這個冒號倒置且逗號多餘的語法錯誤，在益華軟體中沉睡多年無人修復，如今竟然原封不動在對手軟體中觸發！這成為無法辯駁的「吸煙之槍（Smoking Gun）」。
+          </p>
+          <p>
+            1995 年 12 月 5 日（合併宣布僅一週後），地檢署、FBI、聖荷西警方與森尼韋爾警方（Sunnyvale Police）四路出動，大舉突擊搜查先驅科技總部。警方搜出了 ArcSys <strong>「在 19 天內產出 47,000 行程式碼」</strong>的異常日誌（通常優秀工程師一天僅能產出 100 行無臭蟲代碼）、益華下一代產品研發藍圖與全體員工薪酬名冊。專家比對扣押的原始碼斷定：佔先驅科技營收 60% 的 ArcCell 與 ArcCell XO，包含直接抄襲自益華的原始碼。
+          </p>
+        </section>
+
+        <hr class="border-slate-200">
+
+        <!-- Section: The Legal Battle & Counterclaims -->
+        <section id="ft-sec-legal" class="space-y-5 scroll-mt-28">
+          <div class="flex items-center gap-3 border-b border-slate-200 pb-3">
+            <span class="w-3 h-3 rounded-full bg-indigo-600"></span>
+            <h3 class="text-xl sm:text-2xl font-bold text-slate-900">法律戰全面爆發：聯邦民事提告與先驅科技反訴</h3>
+          </div>
+          <p>
+            搜索隔日（1995 年 12 月 6 日），益華向聖荷西聯邦法院正式提告先驅科技侵犯著作權、挪用營業秘密、不正競爭（Unfair Competition），要求交出所有違法利潤（Accounting of profits）、聲請禁制令並索求懲罰性賠償（Punitive damages）。先驅科技股價在一週內自 42.25 美元暴跌至 14.25 美元。
+          </p>
+          <p>
+            徐建國強硬回擊，抨擊訴訟是「走投無路公司的垂死掙扎（An act of corporate desperation）」，堅稱「字串相符只是調用 X-Windows 等通用開源程式庫或常用字詞所致」，反指益華是因為市場競爭失敗才告上法庭。
+          </p>
+          <p>
+            1996 年 1 月 16 日，先驅科技向益華提起反訴（Counterclaim），指控不正競爭、刻意干擾預期經濟利益（Intentional interference with prospective economic advantage）與商業抹黑，控訴科斯特洛向客戶與分析師散佈謠言凍結其人才招聘，甚至指控科斯特洛私下大量「放空（Shorting）」先驅科技股票謀取暴利。先驅科技請求金錢損害賠償，並要求法院拆解益華在市場上的壟斷地位。
+          </p>
+        </section>
+
+        <hr class="border-slate-200">
+
+        <!-- Section: The Marketplace Battle -->
+        <section id="ft-sec-market" class="space-y-5 scroll-mt-28">
+          <div class="flex items-center gap-3 border-b border-slate-200 pb-3">
+            <span class="w-3 h-3 rounded-full bg-amber-600"></span>
+            <h3 class="text-xl sm:text-2xl font-bold text-slate-900">市場實戰交鋒：法庭勝訴 vs. 業界失信</h3>
+          </div>
+          <p>
+            當法庭攻防膠著之際，市場戰役更加慘烈。益華股價由 1995 年 11 月的 36 美元飆升至 1996 年 5 月的 56.75 美元；先驅科技股價也因訴訟陷入拉鋸而自谷底回升至 21 美元。
+          </p>
+          <p>
+            科斯特洛親自上陣向媒體、客戶大打輿論戰。Cypress 在接獲通報並測試後終止評估 Avant! 產品；但許多客戶因極高的轉換成本而深感厭倦與無奈：「整件事醜陋又昂貴，綁架了我們的商業決策。」
+          </p>
+          <div class="p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-950 font-medium">
+            📊 <strong>震撼的業界民調反饋</strong>：
+            儘管掌握鐵證，科斯特洛過於高調的道德抹黑卻激起了矽谷的反感。一項針對 347 名晶片設計師的調查顯示，<strong>僅有 13% 支持益華，高達 66% 的工程師認為益華不該贏得訴訟</strong>！業界批評益華太愛打官司（Too litigious），並認為「徐建國和科斯特洛根本就是同一路人（Birds of the same feather）」。
+          </div>
+        </section>
+
+        <hr class="border-slate-200">
+
+        <!-- Section: Raising the Stakes -->
+        <section id="ft-sec-stakes" class="space-y-5 scroll-mt-28">
+          <div class="flex items-center gap-3 border-b border-slate-200 pb-3">
+            <span class="w-3 h-3 rounded-full bg-rose-600"></span>
+            <h3 class="text-xl sm:text-2xl font-bold text-slate-900">籌碼升級：聲請致命的「初步禁制令」</h3>
+          </div>
+          <p>
+            1996 年 5 月 8 日，經過專家對比程式碼後，益華正式向聯邦法院聲請初步禁制令（Preliminary Injunction），要求全面禁止先驅科技銷售或出貨 ArcCell、ArcCell XO 或任何換名產品，禁止使用竊取的營業秘密，並停止侵犯原始碼著作權。主要法律論據如下：
+          </p>
+          <ul class="list-disc list-inside space-y-2 pl-2 text-slate-700">
+            <li><strong>具備獨立經濟價值的保護秘密</strong>：原始碼與軟體架構屬受保護營業秘密，且公司採取了合理的保護措施。</li>
+            <li><strong>構成不法挪用侵權</strong>：軟體間存在具體且無可抵賴的高吻合特徵（依據《統一營業秘密法》Uniform Trade Secrets Act, UTSA）。</li>
+            <li><strong>將遭受難以彌補的損害（Irreparable Harm）</strong>：若不禁售，益華將被迫在市場上與自己被偷走的產品競爭；客戶一旦被先驅科技鎖定（Locked out），整個晶片週期內益華將被完全排除，造成不可回復的損失。</li>
+          </ul>
+        </section>
+
+        <hr class="border-slate-200">
+
+        <!-- Section: Conclusion & Dilemma -->
+        <section id="ft-sec-conclusion" class="space-y-5 scroll-mt-28">
+          <div class="flex items-center gap-3 border-b border-slate-200 pb-3">
+            <span class="w-3 h-3 rounded-full bg-slate-800"></span>
+            <h3 class="text-xl sm:text-2xl font-bold text-slate-900">結語與十字路口決策</h3>
+          </div>
+          <p>
+            徐建國坐在辦公桌前苦思對策。短期而言，他必須決定是打拖延戰還是迅速尋求和解妥協？長期而言，他該如何對待來自益華的工程師？在未來的法庭審判中又該如何加強防禦實力？
+          </p>
+          <p>
+            與此同時，喬·科斯特洛也在權衡：究竟該打一場曠日持久且昂貴的官司以徹底勒令對手停業，還是尋求快速和解徹底終結對方的挖角與盜用？他又該如何防止下一家「先驅科技」從自家內部再度分裂出去？
+          </p>
+
+          <!-- Original Stanford Study Questions Box -->
+          <div class="p-6 rounded-2xl bg-indigo-50/70 border-2 border-indigo-200 space-y-3 mt-6">
+            <h4 class="font-extrabold text-indigo-900 text-lg flex items-center gap-2">
+              <span>🎓 史丹佛商學院課堂研討核心問題（Stanford GSB Study Questions, E-61ASQ）</span>
+            </h4>
+            <ol class="list-decimal list-inside space-y-2 text-slate-800 font-medium">
+              <li>哪些力量正在塑造 EDA 產業的格局？這些力量如何促成了當前的法律正面對決？（Forces shaping the EDA industry）</li>
+              <li>換作你是喬·科斯特洛（Joe Costello），你當初能如何更好地保護公司的智慧財產權？面對當前的局勢，你又該採取何種策略推進？</li>
+              <li>換作你是徐建國（Gerald Hsu），你當初能如何更好地開發所需的智慧財產權，同時保護先驅科技免受法律糾紛所擾？面對益華最新的訴訟與禁制令聲請，你現在該如何回應？</li>
+              <li>換作你是先驅科技董事會中的創投（VC）董事，你在智慧財產權的開發與監督上應承擔何種受託人責任（Fiduciary Duty）？此時此刻你該怎麼做？</li>
+            </ol>
+            <p class="text-sm text-indigo-800 pt-2 border-t border-indigo-200">
+              💡 提示：如需查看上述思考題以及追加的 5 道重大併購（M&A）與退場（EXIT）深層解答，請點選頂部「<strong>個案決策思考題</strong>」分頁進行研讀。
+            </p>
+          </div>
+        </section>
+
+      </div>
+    </div>
+
   </main>
 
   <!-- Footer -->
@@ -1521,7 +1862,7 @@
 
     // Tab switching logic
     function switchTab(tabId) {
-      const tabs = ['timeline', 'ecosystem', 'events', 'insights', 'dilemma'];
+      const tabs = ['timeline', 'ecosystem', 'events', 'insights', 'dilemma', 'fulltext'];
       tabs.forEach(t => {
         const el = document.getElementById('tab-' + t);
         const btn = document.getElementById('btn-' + t);
