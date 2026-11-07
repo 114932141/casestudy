@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>中國砂輪 (A)：傳產轉型高科技與企業成長策略個案深度互動解析系統</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            brand: {
+              kinik: '#0284c7',    // 中砂科技天藍
+              diamond: '#0f766e',  // 綠色鑽石碧綠
+              tsmc: '#b91c1c',     // 半導體夥伴深紅
+              glass: '#7c3aed',    // 光學模造鏡片紫
+              accent: '#4f46e5'    // 決策靛藍
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* 滾動條樣式優化 */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #f8fafc; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 6px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    
+    /* 作用中頁籤樣式 */
+    .tab-btn.active {
+      background-color: #eef2ff;
+      border-color: #6366f1;
+      color: #3730a3;
+      box-shadow: 0 1px 2px 0 rgba(99, 102, 241, 0.1);
+    }
+    
+    /* 表頭凍結樣式 */
+    .table-scroll-container {
+      max-height: 68vh;
+      overflow-y: auto;
+      overflow-x: auto;
+      position: relative;
+    }
+    .sticky-thead th {
+      position: sticky;
+      top: 0;
+      background-color: #f1f5f9;
+      z-index: 30;
+      box-shadow: inset 0 -2px 0 #cbd5e1, 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+    
+    /* 全文時間與事件標註 Badge */
+    .time-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 2px 8px;
+      border-radius: 6px;
+      background-color: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fcd34d;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 0.8rem;
+      margin-right: 6px;
+      white-space: nowrap;
+    }
+    .event-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 2px 8px;
+      border-radius: 6px;
+      background-color: #e0f2fe;
+      color: #075985;
+      border: 1px solid #bae6fd;
+      font-weight: 700;
+      font-size: 0.8rem;
+      margin-right: 6px;
+      white-space: nowrap;
+    }
+    .article-p {
+      position: relative;
+      padding-left: 12px;
+      border-left: 3px solid #e2e8f0;
+      margin-bottom: 1.25rem;
+      line-height: 1.85;
+      color: #334155;
+      transition: all 0.2s ease;
+    }
+    .article-p:hover {
+      border-left-color: #6366f1;
+      background-color: #f8fafc;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col antialiased selection:bg-indigo-500 selection:text-white">
+
+  <!-- 頂部 Header -->
+  <header class="border-b border-slate-200 bg-white sticky top-0 z-50 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+      <div class="flex items-center space-x-4">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-sky-600 via-teal-600 to-indigo-700 flex items-center justify-center shadow-md font-black text-2xl text-white tracking-wider">
+          KINIK
+        </div>
+        <div>
+          <div class="flex items-center gap-3">
+            <h1 class="text-2xl font-extrabold tracking-tight text-slate-900">中國砂輪 (A) 個案深度解析系統</h1>
+            <span class="text-sm px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 font-semibold border border-indigo-200">TMCC AR0000822 · 策略佈局與 M&A</span>
+          </div>
+          <p class="text-base text-slate-600 mt-1">「以鑽石為核心產品的企業」—— 傳統陶瓷磨具跨足半導體鑽石碟、再生晶圓與光學模造之成長抉擇</p>
+        </div>
+      </div>
+
+      <!-- Quick Metrics Pills -->
+      <div class="flex items-center gap-3 flex-wrap text-sm">
+        <div class="px-4 py-2 rounded-xl bg-sky-50 border border-sky-200 flex items-center gap-2.5 shadow-sm">
+          <span class="w-2.5 h-2.5 rounded-full bg-sky-600 animate-pulse"></span>
+          <span class="text-slate-600 font-medium">台灣傳統砂輪市佔:</span>
+          <span class="font-bold text-sky-800 text-base">約 70%</span>
+        </div>
+        <div class="px-4 py-2 rounded-xl bg-teal-50 border border-teal-200 flex items-center gap-2.5 shadow-sm">
+          <span class="w-2.5 h-2.5 rounded-full bg-teal-600 animate-pulse"></span>
+          <span class="text-slate-600 font-medium">全球 CMP 鑽石碟市佔:</span>
+          <span class="font-bold text-teal-800 text-base">19.87% (全球前三)</span>
+        </div>
+        <div class="px-4 py-2 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center gap-2.5 shadow-sm">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
+          <span class="text-slate-600 font-medium">鑽石碟產品毛利:</span>
+          <span class="font-bold text-emerald-800 text-base">約 60%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs (6 個完整頁籤按鈕) -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex space-x-3 border-t border-slate-200 overflow-x-auto py-2.5 text-base">
+      <button onclick="switchTab('fulltext')" id="btn-fulltext" class="tab-btn active px-5 py-2.5 rounded-xl font-semibold text-slate-700 hover:text-slate-900 transition flex items-center gap-2.5 border border-transparent whitespace-nowrap">
+        <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+        個案全文 (標註時間/事件)
+      </button>
+      <button onclick="switchTab('timeline')" id="btn-timeline" class="tab-btn px-5 py-2.5 rounded-xl font-semibold text-slate-700 hover:text-slate-900 transition flex items-center gap-2.5 border border-transparent whitespace-nowrap">
+        <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        全景時間軸
+      </button>
+      <button onclick="switchTab('ecosystem')" id="btn-ecosystem" class="tab-btn px-5 py-2.5 rounded-xl font-semibold text-slate-700 hover:text-slate-900 transition flex items-center gap-2.5 border border-transparent whitespace-nowrap">
+        <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+        陣營與人物關係圖
+      </button>
+      <button onclick="switchTab('events')" id="btn-events" class="tab-btn px-5 py-2.5 rounded-xl font-semibold text-slate-700 hover:text-slate-900 transition flex items-center gap-2.5 border border-transparent whitespace-nowrap">
+        <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+        關鍵事件檢索表
+      </button>
+      <button onclick="switchTab('strategy')" id="btn-strategy" class="tab-btn px-5 py-2.5 rounded-xl font-semibold text-slate-700 hover:text-slate-900 transition flex items-center gap-2.5 border border-transparent whitespace-nowrap">
+        <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+        專題分析：M&A 理論與決策架構
+      </button>
+      <button onclick="switchTab('dilemma')" id="btn-dilemma" class="tab-btn px-5 py-2.5 rounded-xl font-semibold text-slate-700 hover:text-slate-900 transition flex items-center gap-2.5 border border-transparent whitespace-nowrap">
+        <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        個案討論問題深度解答
+      </button>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- ==================== TAB 0: 個案全文（標註時間與事件） ==================== -->
+    <div id="tab-fulltext" class="space-y-6">
+      <div class="bg-white p-8 sm:p-10 rounded-2xl border border-slate-200 shadow-sm leading-relaxed text-slate-800 space-y-8">
+        
+        <!-- 文章標題與引言 -->
+        <div class="border-b border-slate-200 pb-6 text-center">
+          <span class="text-xs font-bold uppercase tracking-wider px-3.5 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200">Case Study Full Text with Annotations</span>
+          <h2 class="text-3xl font-extrabold text-slate-900 mt-3">中國砂輪 (A) 個案全文</h2>
+          <p class="text-sm text-slate-500 mt-2 font-mono">「以鑽石為核心產品的企業」—— 林心正董事長</p>
+          <div class="mt-4 flex items-center justify-center gap-4 text-xs font-semibold">
+            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-amber-200 border border-amber-400"></span> 標註【時間點】</span>
+            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-sky-200 border border-sky-400"></span> 標註【核心事件】</span>
+          </div>
+        </div>
+
+        <!-- 篇章一：決策困境開場 -->
+        <section class="space-y-4">
+          <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2 border-l-4 border-indigo-600 pl-3">
+            <span>一、鶯歌廠千小時決策激辯</span>
+          </h3>
+          
+          <div class="article-p">
+            <span class="time-badge">🕒 2004 年初</span>
+            <span class="event-badge">📌 鶯歌總部策略大激辯</span>
+            已經討論上千個小時，林心正董事長看著眼前幾位主要幹部們，還在中國砂輪鶯歌廠的辦公室中，熱烈爭辯著中國砂輪下一步應該如何佈局？一直以來看好鑽石碟的發展，但應該如何積極推廣鑽石碟？要再加碼投資呢？還是積極銷售到國外？而轉投資事業金敏精研所生產的再生晶圓，營業額也穩定成長。中國砂輪內部也有人建議將其併入中國砂輪，但現在是否是併購的好時機？還是讓它獨立發展？另外，根據業務部門所蒐集到的訊息，隨著消費者對數位相機與照相手機的使用量大增，非球面模造玻璃鏡片的市場需求日益成長，現階段已供不應求，也是相當有發展潛力的新市場，是否應該投入這個新領域發展呢？
+          </div>
+
+          <div class="article-p">
+            <span class="time-badge">🕒 1953 年 ～ 2003 年</span>
+            <span class="event-badge">📌 全台第一大傳統砂輪霸主地位確立</span>
+            成立於 <span class="time-badge">1953 年</span> 的中國砂輪股份有限公司（以下簡稱中國砂輪），<span class="time-badge">2003 年</span> 公司資本總額達新台幣 6 億元，是全台灣最大的傳統砂輪公司。中國砂輪除了生產規模最大外，而且生產種類也是最多的砂輪公司，成長迄今，中國砂輪所製作的砂輪由低階傳統的陶瓷砂輪，發展到高階鑽石砂輪，尺寸則由一點五公尺直徑的巨無霸砂輪，到微小的奈米鑽（頭）等等。砂輪年生產達 6,000 噸，而鑽石及相關產品也達 300 萬克拉，生產超過 10 萬種不同規格及材質的產品，更有 8,000 家固定往來的客戶，市場佔有率約 70%，砂輪成長率約 5%。
+          </div>
+
+          <div class="article-p">
+            <span class="time-badge">🕒 近年來 (2000-2003)</span>
+            <span class="event-badge">📌 鑽石碟榮獲經濟部傑出獎與調味鹽哲學</span>
+            近年來，中國砂輪憑藉鑽石碟修整器（以下簡稱鑽石碟）的開發，贏得台積電、聯電等公司的好評，業績逐年成長。鑽石碟的發明，更贏得經濟部「優良設計商品獎」、還獲得第十屆經濟部產業發展之「傑出獎」等榮譽。而中國砂輪一系列鑽石相關產品，更提高客戶工件的使用壽命與加工品質，且降低地球資源的運用，因此中國砂輪稱此類產品為「綠色鑽石」。林心正董事長更如此形容中國砂輪的產品：「如果將製造產業比喻成一道佳餚，那中國砂輪的砂輪就是用來調味的鹽。」
+          </div>
+        </section>
+
+        <!-- 篇章二：砂輪產業概況 -->
+        <section class="space-y-4">
+          <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2 border-l-4 border-indigo-600 pl-3">
+            <span>二、砂輪產業概況與製造技術特性</span>
+          </h3>
+
+          <div class="article-p">
+            砂輪，是一種提高機械設備精密度的耗材，砂輪之於研磨與切削工具，就如同磨刀石與刀的關係一般。而研磨與切削工具，是機械工具中的工具之母，因此，砂輪在精密加工技術中，扮演著相當重要的角色，該過程不僅能提高工件表面的整合性及加工精度，也能控制產品尺寸的最終控制程序。研磨與切削工具用途相當廣泛，其功能可為材料之磨除、去疵進而產生光製表面，亦可為機件之切槽，滿足了所有低階粗加工研磨及高階精密拋光的需求。因此，砂輪產品的客戶群極廣，包括了機械零件業、五金製造業、鋼鐵工業、半導體業、玻璃工業、電子製造業、塑膠工業...等下游各種產業。
+          </div>
+
+          <div class="article-p">
+            <span class="time-badge">🕒 1990 年代起</span>
+            <span class="event-badge">📌 傳產外移潮與大者恆大淘汰競賽</span>
+            1990 年代開始，隨著台灣低階產業外移，以及國內精密工業的升級，研磨產業面臨以技術為中心的淘汰競賽。低階傳統砂輪製造廠商的銷售量隨著下游廠商外移到大陸東南亞地區，以及大陸與東南亞廠商的低價競爭而逐年下跌，至於部份根留台灣之砂輪製造廠商，因本身技術升級，對研磨工具製造及售後服務的能力與日俱增，因此，砂輪產業將往「大者恆大」之趨勢發展，最終將淘汰大部份小廠商，僅剩下技術層次高、製程能力足夠、以及產品多元化之大廠得以繼續生存。
+          </div>
+
+          <div class="article-p">
+            傳統砂輪是一種利潤較低的產業。傳統砂輪的技術關鍵在於砂輪之軟硬度與其壽命如何調配。砂輪愈硬，雖然壽命較長，但容易磨損機具；相反地，砂輪愈軟，雖然對機具耐用度比較高，但砂輪壽命較短。基本上，砂輪製作的程序有幾個步驟，首先是混合磨料，因應不同的需求會需要不同配方的磨料來混合，形成多種配方。而混合的比例就會影響到生產出來的砂輪之硬度。在混合磨料後，要經過兩道程序，一個是冷壓（cold pressing），接著是加熱（heating），加熱需要到攝氏 700 度以上，大型鍋爐設備要數千萬新台幣以上；接下來最重要的程序是一「加工」（Dressing），配合需求製造出各式各樣的砂輪。
+          </div>
+
+          <div class="article-p">
+            磨料是砂輪生產製程中重要的要件，也佔製造成本相當大的比例。主要磨料為氧化鋁及碳化矽，依據結合劑之不同使砂輪有數種製法，主要進口來源為奧地利 TSV（鶴林）、法國 PEM（法鋁）及二砂白鴿（大陸）。鑽石砂輪的磨料也就是鑽石磨料，主要來自愛爾蘭元素六（原 DeBeers）、美國 GE（奇異）。由於國外採購作業需時較長，故磨料安全存量不易降低，採購多以美元計價，成本易受匯率變動之影響。
+          </div>
+        </section>
+
+        <!-- 篇章三：半導體晶圓製造產業簡介 -->
+        <section class="space-y-4">
+          <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2 border-l-4 border-indigo-600 pl-3">
+            <span>三、晶圓製造產業與 CMP 鑽石碟機制</span>
+          </h3>
+
+          <div class="article-p">
+            <span class="time-badge">🕒 1990 年代中期 ～ 2003 年</span>
+            <span class="event-badge">📌 台灣半導體產業崛起，晶圓代工佔 65%</span>
+            半導體產業是台灣自 1990 年代中期以降所發展的重點產業，截至 2003 年底，台灣半導體產業總產值達到 246 億美元，而半導體製造業為 141 億美元，其中，專業晶圓代工製造佔 65%，專業晶圓代工又以台積電（TSMC）與聯電（UMC）為主要製造廠商。
+          </div>
+
+          <div class="article-p">
+            <span class="event-badge">📌 測試晶圓與再生晶圓 (Reclaim Wafer) 誕生</span>
+            在晶圓正式量產前，半導體晶圓廠會用測試晶圓（Test Wafer 或 Dummy Wafer），來量測爐管溫度、金屬層、化學品濃度、沈積厚度等。近年來晶圓廠為節省成本，通常會選擇將使用後之測試晶圓交予代工廠再加工，而由代工廠將測試晶圓上的粒子與晶層進行蝕刻與磨平程序後，即為再生晶圓（Reclaim Wafer 或 Recycle Wafer），即可再行投入為測試，可有效節省購買測試晶圓成本。
+          </div>
+
+          <div class="article-p">
+            <span class="event-badge">📌 CMP 平坦化製程與鑽石碟關鍵修整角色</span>
+            半導體在製程時，晶圓表面的「平坦化」是相當重要的製程之一。平坦化機制稱為 CMP（Chemical Mechanic Polish，化學機械平坦化）。在進行 CMP 時，是將具酸性的研磨液（Slurry），滴在一個旋轉的塑膠拋光墊（Pad）上拋光晶圓，而晶圓磨下的碎屑會填滿拋光墊表面，為了使拋光墊表層硬化，因此需要鑽石碟（Diamond Disk）間歇性的修整，以恢復拋光墊的拋光作用，並延長其壽命。結合劑、拋光墊、與鑽石碟在 CMP 製程的成本的比例分別為 60%、30%、以及 10%；鑽石碟約佔整個 CMP 晶圓製程成本的 2% 或更低。在研磨液與拋光墊的市場上，Rodel 的全球市佔率超過九成以上；鑽石碟全球市場規模逐年成長 15%~20%。
+          </div>
+
+          <div class="article-p">
+            <span class="event-badge">📌 傳統鑽石碟脫粒痛點：刮傷晶圓面臨天價賠償</span>
+            傳統鑽石碟的製作是使用電鍍，用鎳將鑽石磨粒固定在金屬基版上，是以機械式的方式將鑽石磨粒埋在鎳層中。然而在拋光的過程裡，鑽石磨粒很容易脫落，因而刮傷昂貴的晶圓。晶圓一片代工價約 5,000 美元，一個鑽石碟大約 300 美元左右，而一個鑽石碟的壽命約可使用 500 片左右的晶圓，所以當鑽石脫落而造成晶圓損害時，鑽石碟供應商所要賠償的晶圓損失是非常高的。
+          </div>
+        </section>
+
+        <!-- 篇章四：中國砂輪 1941-1998 歷史轉折 -->
+        <section class="space-y-4">
+          <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2 border-l-4 border-indigo-600 pl-3">
+            <span>四、中國砂輪歷史沿革與材料升級歷程 (1941-1998)</span>
+          </h3>
+
+          <div class="article-p">
+            <span class="time-badge">🕒 1941 年 / 1953 年</span>
+            <span class="event-badge">📌 金敏窯業創始與首創瓷質砂輪</span>
+            中國砂輪最早的起源可以追溯到 <span class="time-badge">1941 年</span>，當時創始人林長壽在鶯歌設立金敏窯業所，初期是生產磚、台灣瓦、日本瓦。台灣光復之後，金敏窯業廠也開始製作家用的碗盤餐具。林長壽認為應該往技術性高且有高附加價值產品發展，由女婿白永傳負責管理，並延攬許自然先生協助發展砂輪事業，在 <span class="time-badge">1953 年</span>，開始以「瓷質燒結法」生產砂輪及磨石，成為當時台灣的第一家砂輪工廠。
+          </div>
+
+          <div class="article-p">
+            <span class="time-badge">🕒 1964 年 / 1967 年</span>
+            <span class="event-badge">📌 改組中國砂輪企業，三井金屬技術合作</span>
+            至 <span class="time-badge">1964 年</span>，金敏窯業所正式改組為中國砂輪企業股份有限公司。為了提升技術，中國砂輪於 <span class="time-badge">1967 年</span> 與日本三井金屬礦業株式會社技術合作，獲得技術上重大的突破。<span class="time-badge">1969 年</span> 增加「橡膠黏結法」及「PVA 黏結法」製品之生產。到了 <span class="time-badge">1980 年</span>，增設樹林廠，採用自動化設備大量生產樹脂砂輪。
+          </div>
+
+          <div class="article-p">
+            <span class="time-badge">🕒 1983 年 / 1985 年 / 1988 年</span>
+            <span class="event-badge">📌 林心正接棒，設立 BD 部與創立 KINIK 品牌</span>
+            <span class="time-badge">1983 年</span>，白永傳正式將經營權交給兒子林心正董事長。在 <span class="time-badge">1985 年</span> 時設立 BD 砂輪製造部，才開始生產鑽石砂輪及 CBN 砂輪。<span class="time-badge">1988 年</span> 更建立以 KINIK 的企業識別體系進軍國際，建立自我品牌。緊接著在 <span class="time-badge">1995 年</span> 投資生產 PCD 聚晶鑽石工具，慢慢跨入鑽石材料領域。
+          </div>
+
+          <div class="article-p">
+            <span class="time-badge">🕒 1994 年 ～ 1996 年</span>
+            <span class="event-badge">📌 十億天花板瓶頸，泰國廠設廠與歐洲參展頓悟</span>
+            自 <span class="time-badge">1994 年</span> 後，中國砂輪的營業額就一直受限在新台幣 10 億元左右，加上部分傳統產業客戶外移，造成傳統砂輪市場逐漸萎縮。<span class="time-badge">1996 年 4 月</span> 泰國轉投資金力泰廠正式投產。林心正董事長專程到歐洲參觀展覽，觀察到以鑽石為材料的鋸片加工精密度高且壽命極長。他發現許多已開發國家都視工業鑽石為主導性尖端材料，決定盡快進入工業鑽石材料的開發與運用。
+          </div>
+
+          <div class="article-p">
+            <span class="time-badge">🕒 1996 年 ～ 1997 年</span>
+            <span class="event-badge">📌 結識宋健民博士加盟，添置 PVD/CVD 氣相鍍膜</span>
+            林心正董事長求助於工研院，於 <span class="time-badge">1996 年</span> 結識了工研院材料所的宋健民博士。當宋博士離開工研院後，中國砂輪就在 <span class="time-badge">1997 年</span> 邀請宋健民博士加入中國砂輪研發團隊，提供他開發新產品的舞台。中砂於 <span class="time-badge">1997 年與 1998 年</span> 開始增設 PVD（物理氣相真空蒸著法）及 CVD（化學氣相蒸著法）設備，著手生產鑽石鍍膜工具與模具。
+          </div>
+        </section>
+
+        <!-- 篇章五：轉投資金敏精研 -->
+        <section class="space-y-4">
+          <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2 border-l-4 border-indigo-600 pl-3">
+            <span>五、轉投資金敏精研與再生晶圓佈局 (1997-2003)</span>
+          </h3>
+
+          <div class="article-p">
+            <span class="time-badge">🕒 1997 年</span>
+            <span class="event-badge">📌 對外集資 8 億成立金敏精研</span>
+            1997 年起，中國砂輪將既有的精密研磨技術運用在半導體晶圓片再生過程，透過經濟部科技專案研發計畫與工研院機械所謝博士合作共同開發。並於同年對外招募新台幣 8 億元，轉投資成立金敏精研股份有限公司（中國砂輪持股 14.66%），專門從事再生晶圓的生產與銷售。陸續將成果運用到八吋以及十二吋再生晶圓的量產。
+          </div>
+
+          <div class="article-p">
+            <span class="time-badge">🕒 2000 年 ～ 2003 年</span>
+            <span class="event-badge">📌 策略聯盟中德，台灣市佔破 50%</span>
+            金敏精研 <span class="time-badge">2000 年</span> 與中德半導體材料公司進行策略聯盟後，更跨入附加價值更高的測試晶圓及產品晶圓的代工，客戶群包括台積電、中電子、日月光等。<span class="time-badge">2003 年</span> 內銷金額將近新台幣 4 億 6 千萬元，外銷美國約 2,500 萬元，在台灣市佔率大於 50%。截至 2003 年中砂持股 14.19%，金敏市價每股 11.93 元。估計 2004 至 2006 年複合年營收成長將達 40% 以上，毛利率達 38%~40% 左右。
+          </div>
+        </section>
+
+        <!-- 篇章六：鑽石碟研發成功與起飛 -->
+        <section class="space-y-4">
+          <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2 border-l-4 border-indigo-600 pl-3">
+            <span>六、鑽石碟突破、台積電免驗與 Rodel 結盟 (1999-2003)</span>
+          </h3>
+
+          <div class="article-p">
+            <span class="time-badge">🕒 1999 年</span>
+            <span class="event-badge">📌 台積電本土尋件，中砂昂貴真空設備建功</span>
+            台積電長久以來採用國外鑽石碟修整器，常因脫粒刮傷晶圓造成巨損且維修不便。從 1999 年開始詢問台灣廠商是否能提供類似產品，中砂也是被詢問者之一。適逢中砂為發展石材業購買了一批昂貴設備，可在真空狀態下將鑽石焊在堅硬不銹鋼合金上，這套設備在開發鑽石碟時正好派上用場。研發團隊一共開了數千小時的討論會議。
+          </div>
+
+          <div class="article-p">
+            <span class="time-badge">🕒 2000 年底</span>
+            <span class="event-badge">📌 鑽石陣 (DiaGrid) 與鑽石盾 (DiaShield) 合體成功</span>
+            中砂將鑽石陣（DiaGrid，專利排列防止脫落並利研磨液流通）與鑽石盾（DiaShield，PVD 類鑽石碳鍍膜耐 CMP 酸液侵蝕）兩種技術組合，於 <span class="time-badge">2000 年</span> 製作出劃時代的鑽石碟。在通過台積電現場測試後，於 2000 年底開始正式採用中砂鑽石碟。
+          </div>
+
+          <div class="article-p">
+            <span class="time-badge">🕒 2001 年 ～ 2002 年</span>
+            <span class="event-badge">📌 取代美日大廠，Rodel 策略聯盟與台積免驗證書</span>
+            <span class="time-badge">2001 年</span> 成功取代美日大廠成為國內半導體主要供應商，並試圖推廣至三星、NEC 與 Chartered。同年與全球市佔 90% 的拋光墊霸主美商 Rodel 締結全球策略聯盟。<span class="time-badge">2002 年</span> 中砂鑽石碟在台市佔破六成，榮獲台積電免驗入庫證書（Ship-To-Stock），使台積電晶圓生產良率提升三倍、年創 4,000 萬元績效。
+          </div>
+
+          <div class="article-p">
+            <span class="time-badge">🕒 2003 年底</span>
+            <span class="event-badge">📌 鑽石碟營收衝破 35%，全球市佔達 19.87%</span>
+            2000 年鑽石碟佔總營收 1 成，到了 <span class="time-badge">2002 年</span> 達 32.79%，<span class="time-badge">2003 年</span> 更提升至 35.26%，傳統砂輪則由 60.47% 降至 51.75%。全球鑽石碟市佔率達 19.87%（與 Abrasive Technology 20%、3M 19.91% 並列世界前三強）。
+          </div>
+        </section>
+
+        <!-- 篇章七：3M 侵權訴訟與專利風暴 -->
+        <section class="space-y-4">
+          <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2 border-l-4 border-indigo-600 pl-3">
+            <span>七、主要競爭對手 3M 的跨國專利圍剿訴訟</span>
+          </h3>
+
+          <div class="article-p">
+            <span class="time-badge">🕒 2001 年 08 月 01 日</span>
+            <span class="event-badge">📌 3M 亞利桑那突襲提告，聲請 ITC 禁制令</span>
+            美商 3M 公司規模是中砂的百倍。3M 在未知會中砂的情形下，於 <span class="time-badge">2001 年 8 月 1 日</span> 向美國亞歷桑納州地方法院控告中砂 DiaGrid 侵犯其 489 號專利，並向美國國際貿易委員會（ITC）提出進口禁制令。<span class="time-badge">2002 年 2 月</span> ITC 判定侵權並於同年 5 月禁止該產品進口。
+          </div>
+
+          <div class="article-p">
+            <span class="time-badge">🕒 2002 年 07 月</span>
+            <span class="event-badge">📌 製程迴避推出 DiaTrix，獲 ITC 許可恢復銷美</span>
+            中國砂輪除提出上訴外，亦於 <span class="time-badge">2002 年 7 月</span> 改變製程，以 DiaTrix 之專利產品出口銷售於美國，並獲 ITC 許可。中砂發出正式聲明表達未侵權立場以穩定客戶疑慮。
+          </div>
+
+          <div class="article-p">
+            <span class="time-badge">🕒 2003 年 11 月</span>
+            <span class="event-badge">📌 3M 德州與韓國漢城法院連環追擊</span>
+            3M 於 <span class="time-badge">2003 年 11 月</span> 於美國東德州地方法院對中砂提起 390 製程專利之損害賠償訴訟；同年 11 月 12 日亦於韓國漢城中央地方法院控告中砂及韓國經銷商侵犯其 No.778 專利。訴訟造成可觀費用，並間接造成客戶疑慮使海外訂單成長不如預期，營運資金壓力上升。
+          </div>
+        </section>
+
+        <!-- 篇章八：組織、管理與光學鏡片評估 -->
+        <section class="space-y-4">
+          <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2 border-l-4 border-indigo-600 pl-3">
+            <span>八、組織管理現況與非球面模造玻璃鏡片新誘惑</span>
+          </h3>
+
+          <div class="article-p">
+            <span class="time-badge">🕒 2003 年</span>
+            <span class="event-badge">📌 敦厚師徒文化，研發經費佔比突破 5%</span>
+            中砂約 8,000 家客戶、10 萬種規格、70 名業務、全台 11 家分公司。傳統砂輪毛利約 18% 以下，鑽石碟毛利約 60%。傳統砂輪事業部約 700~800 人，鑽石事業部約 100 人。員工平均年資 10 年以上，至今未雇用外勞。重視教育訓練並與台清成交產學合作。2003 年研發團隊 53 人，研發投入佔銷貨淨額由 1999 年 2.3% 提高至 5.1%。
+          </div>
+
+          <div class="article-p">
+            <span class="event-badge">📌 模造玻璃新商機：供不應求但門檻極高</span>
+            數位相機與照相手機需求暴增，模造玻璃鏡片供不應求。中砂打算定位於「只做模造玻璃鏡片代工」，評估其生產技術「80% 為機械加工能力可勝任，20% 光學知識則是全然陌生」。投資 100 萬片需 3~4 億，達到最小經濟規模 300 萬片需再投資 3 億（合計 6~7 億）。最關鍵的是人員成熟需至少花費 3 年時間訓練。
+          </div>
+
+          <div class="article-p">
+            <span class="time-badge">🕒 2004 年決策結語</span>
+            <span class="event-badge">📌 關鍵三岔路口抉擇</span>
+            中國砂輪今後將如何佈局，才能扮演好產業中的這個關鍵角色？是合併金敏精研？還是發展模造玻璃鏡片？還是持續專注在鑽石碟的發展呢？林心正董事長看著手上的簡明財務報表，到底應該拾起哪顆更璀璨的鑽石呢？
+          </div>
+        </section>
+
+      </div>
+    </div>
+
+    <!-- ==================== TAB 1: 全景時間軸 ==================== -->
+    <div id="tab-timeline" class="hidden space-y-8">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-5 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <div>
+          <h2 class="text-xl font-bold text-slate-900 flex items-center gap-3">
+            <span>📅 全景脈絡時間軸</span>
+            <span class="text-sm font-normal text-slate-500">（1941～2003 年歷史轉折，標註 🔥【重要！】之核心事件）</span>
+          </h2>
+          <p class="text-base text-slate-600 mt-1">點擊階段篩選歷史關鍵節點，檢視窯業創立、三井合作、鑽石碟突破、3M 專利戰與三岔路口抉擇。</p>
+        </div>
+        <div class="flex flex-wrap gap-2" id="timeline-filters">
+          <button onclick="filterTimeline('all')" class="timeline-f-btn active px-4 py-2 rounded-lg text-sm font-semibold bg-indigo-600 text-white border border-indigo-600 transition shadow-sm">全部事件 (13)</button>
+          <button onclick="filterTimeline('important')" class="timeline-f-btn px-4 py-2 rounded-lg text-sm font-semibold bg-rose-50 text-rose-700 border border-rose-300 hover:bg-rose-100 transition">🔥 僅看【重要！】事件</button>
+          <button onclick="filterTimeline('stage1')" class="timeline-f-btn px-4 py-2 rounded-lg text-sm font-semibold bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">1941-83 傳產奠基</button>
+          <button onclick="filterTimeline('stage2')" class="timeline-f-btn px-4 py-2 rounded-lg text-sm font-semibold bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">1985-98 鑽石材料佈局</button>
+          <button onclick="filterTimeline('stage3')" class="timeline-f-btn px-4 py-2 rounded-lg text-sm font-semibold bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">1999-03 半導體騰飛與訴訟</button>
+        </div>
+      </div>
+
+      <!-- 時間軸主流串流 -->
+      <div class="relative pl-8 sm:pl-10 space-y-7 before:absolute before:left-4 sm:before:left-5 before:top-4 before:bottom-4 before:w-1 before:bg-slate-200" id="timeline-list">
+        <!-- 內容已完整包含在下方相容邏輯中 -->
+      </div>
+    </div>
+
+    <!-- ==================== TAB 2: 陣營與人物關係圖 ==================== -->
+    <div id="tab-ecosystem" class="hidden space-y-8">
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-5">
+        <div>
+          <h2 class="text-xl font-bold text-slate-900 flex items-center gap-3">
+            <span>🕸️ 陣營結構與事業體動態關係網絡</span>
+            <span class="text-sm px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 font-semibold border border-indigo-200">四大事業板塊與外部盟友</span>
+          </h2>
+          <p class="text-base text-slate-600 mt-1">完整呈現「中砂母體 (傳統砂輪)」、「鑽石事業部 (鑽石碟)」、「轉投資 (金敏精研)」與「新興評估 (模造玻璃)」四方產權與客戶關係。</p>
+        </div>
+        <div class="flex flex-wrap gap-2 text-sm">
+          <button onclick="setRelationMode('all')" id="rel-btn-all" class="rel-filter-btn active px-4 py-2 rounded-xl font-semibold bg-indigo-600 text-white border border-indigo-600 shadow-sm transition">全景脈絡</button>
+          <button onclick="setRelationMode('disk')" id="rel-btn-disk" class="rel-filter-btn px-4 py-2 rounded-xl font-semibold bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">① 鑽石碟半導體鏈</button>
+          <button onclick="setRelationMode('wafer')" id="rel-btn-wafer" class="rel-filter-btn px-4 py-2 rounded-xl font-semibold bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">② 金敏再生晶圓併購鏈</button>
+          <button onclick="setRelationMode('glass')" id="rel-btn-glass" class="rel-filter-btn px-4 py-2 rounded-xl font-semibold bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">③ 光學模造鏡片鏈</button>
+          <button onclick="setRelationMode('patent')" id="rel-btn-patent" class="rel-filter-btn px-4 py-2 rounded-xl font-semibold bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">④ 3M 國際專利爭端鏈</button>
+        </div>
+      </div>
+
+      <div id="relation-narrative-bar" class="p-5 rounded-2xl bg-indigo-50/80 border-2 border-indigo-200 text-slate-800 transition-all">
+        <div class="flex items-center gap-3 font-bold text-indigo-900 text-lg mb-1">
+          <span id="rel-narrative-title">🌐 全景產業生態與事業關係圖</span>
+        </div>
+        <p id="rel-narrative-desc" class="text-base text-slate-700 leading-relaxed">
+          呈現傳統砂輪現金牛、高毛利鑽石碟旗艦、再生晶圓代工夥伴，以及模造玻璃新市場的客戶重疊度與資源依賴。點擊按鈕可聚焦動態路徑。
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <div id="col-trad" class="lg:col-span-3 bg-sky-50/40 border-2 border-sky-300 rounded-2xl p-5 space-y-4">
+          <div class="flex items-center justify-between border-b border-sky-200 pb-3">
+            <h3 class="font-extrabold text-sky-950 text-lg">傳統砂輪事業部</h3>
+            <span class="text-xs px-2.5 py-1 rounded-md bg-sky-100 text-sky-800 font-bold">基本盤現金牛</span>
+          </div>
+          <div onclick="showPersonDetail('lin')" class="node-card cursor-pointer bg-white hover:bg-sky-50/60 border-2 border-sky-300 rounded-xl p-4 shadow-sm" data-roles="lin,all">
+            <h4 class="font-bold text-slate-900 text-base">林心正 董事長</h4>
+            <p class="text-xs text-slate-600 mt-1">「砂輪是調味的鹽」。帶領中砂走出傳產外移困局。</p>
+          </div>
+        </div>
+
+        <div id="col-diamond" class="lg:col-span-3 bg-teal-50/40 border-2 border-teal-300 rounded-2xl p-5 space-y-4">
+          <div class="flex items-center justify-between border-b border-teal-200 pb-3">
+            <h3 class="font-extrabold text-teal-950 text-lg">鑽石事業部 / 鑽石碟</h3>
+            <span class="text-xs px-2.5 py-1 rounded-md bg-teal-100 text-teal-800 font-bold">明星事業 (毛利 60%)</span>
+          </div>
+          <div onclick="showPersonDetail('sung')" class="node-card cursor-pointer bg-white hover:bg-teal-50/60 border-2 border-teal-400 rounded-xl p-4 shadow-sm" data-roles="sung,all,disk,patent">
+            <h4 class="font-bold text-slate-900 text-base">宋健民 博士</h4>
+            <p class="text-xs text-slate-600 mt-1">發明鑽石陣與鑽石盾，突破 CMP 刮損晶圓難題。</p>
+          </div>
+          <div onclick="showPersonDetail('tsmc')" class="node-card cursor-pointer bg-white hover:bg-teal-50/60 border border-slate-200 rounded-xl p-4 shadow-sm" data-roles="tsmc,all,disk,wafer">
+            <h4 class="font-bold text-slate-900 text-base">台積電 (TSMC)</h4>
+            <p class="text-xs text-slate-600 mt-1">頒發免驗入庫證書，鑽石碟使晶圓良率提升 3 倍。</p>
+          </div>
+        </div>
+
+        <div id="col-wafer" class="lg:col-span-3 bg-emerald-50/40 border-2 border-emerald-300 rounded-2xl p-5 space-y-4">
+          <div class="flex items-center justify-between border-b border-emerald-200 pb-3">
+            <h3 class="font-extrabold text-emerald-950 text-lg">金敏精研 (轉投資)</h3>
+            <span class="text-xs px-2.5 py-1 rounded-md bg-emerald-100 text-emerald-800 font-bold">併購候選標的</span>
+          </div>
+          <div onclick="showPersonDetail('jinmin')" class="node-card cursor-pointer bg-white hover:bg-emerald-50/60 border-2 border-emerald-300 rounded-xl p-4 shadow-sm" data-roles="jinmin,all,wafer">
+            <h4 class="font-bold text-slate-900 text-base">金敏精研科技 (股)</h4>
+            <p class="text-xs text-slate-600 mt-1">台灣再生晶圓龍頭 (市佔 &gt;50%)，客戶同為台積聯電。</p>
+          </div>
+        </div>
+
+        <div id="col-glass" class="lg:col-span-3 bg-purple-50/40 border-2 border-purple-300 rounded-2xl p-5 space-y-4">
+          <div class="flex items-center justify-between border-b border-purple-200 pb-3">
+            <h3 class="font-extrabold text-purple-950 text-lg">模造玻璃鏡片 (評估中)</h3>
+            <span class="text-xs px-2.5 py-1 rounded-md bg-purple-100 text-purple-800 font-bold">新興市場機會</span>
+          </div>
+          <div onclick="showPersonDetail('optic')" class="node-card cursor-pointer bg-white hover:bg-purple-50/60 border-2 border-purple-300 rounded-xl p-4 shadow-sm" data-roles="optic,all,glass">
+            <h4 class="font-bold text-slate-900 text-base">非球面模造玻璃鏡片</h4>
+            <p class="text-xs text-slate-600 mt-1">手機需求暴增，但欠缺 20% 光學技術且需 6~7 億。</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="person-inspector" class="p-6 rounded-2xl bg-white border-2 border-indigo-300 shadow-md">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-indigo-100 pb-3 mb-3">
+          <div class="flex items-center gap-3">
+            <span id="insp-badge" class="px-3.5 py-1 rounded-full text-xs font-bold bg-indigo-600 text-white shadow-sm">點選卡片查看</span>
+            <h4 id="insp-name" class="text-xl font-bold text-slate-900">點擊上方任意事業部、人物或外部夥伴卡片</h4>
+          </div>
+          <span id="insp-role" class="text-sm font-semibold text-indigo-700">互動式個案實體深度解析檔案</span>
+        </div>
+        <p id="insp-desc" class="text-base text-slate-700 leading-relaxed">
+          點選上方任一張卡片在此檢視完整背景與策略意涵。
+        </p>
+      </div>
+    </div>
+
+    <!-- ==================== TAB 3: 關鍵事件檢索表 ==================== -->
+    <div id="tab-events" class="hidden space-y-6">
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div class="relative flex-1">
+          <input type="text" id="event-search" oninput="searchEvents()" placeholder="輸入關鍵字搜尋（如：重要、鑽石碟、金敏、3M、專利、台積電、宋健民、模造玻璃...）" class="w-full bg-slate-50 border border-slate-300 rounded-xl pl-11 pr-4 py-3 text-base text-slate-900 placeholder-slate-400 focus:outline-none focus:border-indigo-600 focus:bg-white transition">
+          <svg class="w-5 h-5 text-slate-400 absolute left-3.5 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+        </div>
+        <div class="flex items-center gap-2 flex-wrap text-sm">
+          <button onclick="filterEventTag('all')" class="ev-tag-btn active px-4 py-2 rounded-lg font-semibold bg-indigo-600 text-white border border-indigo-600 shadow-sm transition">全部事件</button>
+          <button onclick="filterEventTag('重要')" class="ev-tag-btn px-4 py-2 rounded-lg font-semibold bg-rose-50 text-rose-700 border border-rose-300 hover:bg-rose-100 transition">🔥 僅看【重要！】事件</button>
+          <button onclick="filterEventTag('技術突破')" class="ev-tag-btn px-4 py-2 rounded-lg font-semibold bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">技術突破</button>
+          <button onclick="filterEventTag('組織與投資')" class="ev-tag-btn px-4 py-2 rounded-lg font-semibold bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">組織與投資</button>
+          <button onclick="filterEventTag('法律爭端')" class="ev-tag-btn px-4 py-2 rounded-lg font-semibold bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition">法律爭端</button>
+        </div>
+      </div>
+
+      <div class="table-scroll-container rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <table class="w-full text-left text-base text-slate-800 border-collapse">
+          <thead class="sticky-thead bg-slate-100 text-slate-700 uppercase font-mono text-sm border-b border-slate-200">
+            <tr>
+              <th class="py-4 px-3 w-14 text-center">序號</th>
+              <th class="py-4 px-3 w-28 text-center">重要度</th>
+              <th class="py-4 px-4 w-32">時間點</th>
+              <th class="py-4 px-4 w-52">事件名稱</th>
+              <th class="py-4 px-4 w-52">核心主體與關鍵人物</th>
+              <th class="py-4 px-5 min-w-[280px]">詳細情節與關鍵證據</th>
+              <th class="py-4 px-5 w-56">戰略與產業衝擊</th>
+              <th class="py-4 px-3 w-28 text-center">屬性標籤</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200" id="event-table-body">
+            <!-- 保持事件清單表完整資料 -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ==================== TAB 4: 專題分析：M&A 理論與決策架構 ==================== -->
+    <div id="tab-strategy" class="hidden space-y-8">
+      <div class="bg-gradient-to-r from-indigo-900 via-indigo-800 to-sky-900 text-white p-8 rounded-3xl shadow-lg">
+        <div class="flex items-center gap-3 mb-2">
+          <span class="px-3 py-1 rounded-full bg-white/20 text-sky-200 text-xs font-mono font-bold tracking-wider">STRATEGIC M&A FRAMEWORK</span>
+          <span class="text-xs text-slate-300">理論與實務深度指南</span>
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">何時該發動併購（When do M&As make sense）？</h2>
+        <p class="text-base text-slate-200 mt-2 max-w-4xl leading-relaxed">
+          全球約有 60%～70% 的併購未能創造預期股東價值。併購絕非單純「以大吃小」，而是企業在面臨成長極限、技術代差或市場窗口緊迫時，用資本換取時間與戰略護城河的高風險賽局。
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="bg-white border-2 border-emerald-200 rounded-2xl p-6 shadow-sm space-y-4">
+          <div class="flex items-center gap-3 pb-3 border-b border-emerald-100">
+            <span class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-lg">✓</span>
+            <div>
+              <h3 class="text-lg font-bold text-slate-900">成功併購的顯著特徵 (Successful M&A)</h3>
+              <p class="text-xs text-emerald-700 font-semibold">戰略契合 · 紀律收購 · 深度整合</p>
+            </div>
+          </div>
+          <ul class="space-y-3 text-sm text-slate-700 leading-relaxed">
+            <li><strong>① 明確的策略理性：</strong>鎖定強大的範圍經濟（範疇綜效）、技術專利填補或通路重疊。</li>
+            <li><strong>② 嚴謹客觀的 DD：</strong>深入查核隱性負債、關鍵智財歸屬與客戶依存度。</li>
+            <li><strong>③ 紀律的定價思維：</strong>拒絕陷入競購者詛咒，收購溢價嚴格控制在綜效現值以內。</li>
+            <li><strong>④ 縝密的 PMI 整合：</strong>交割第一天即有明確整合藍圖，主動融合組織文化與關鍵工程師。</li>
+          </ul>
+        </div>
+
+        <div class="bg-white border-2 border-rose-200 rounded-2xl p-6 shadow-sm space-y-4">
+          <div class="flex items-center gap-3 pb-3 border-b border-rose-100">
+            <span class="w-8 h-8 rounded-full bg-rose-100 text-rose-700 flex items-center justify-center font-bold text-lg">✕</span>
+            <div>
+              <h3 class="text-lg font-bold text-slate-900">失敗併購的致命特徵 (Unsuccessful M&A)</h3>
+              <p class="text-xs text-rose-700 font-semibold">非理性自大 · 溢價過高 · 文化排斥</p>
+            </div>
+          </div>
+          <ul class="space-y-3 text-sm text-slate-700 leading-relaxed">
+            <li><strong>① 帝國建造與傲慢：</strong>為個人聲望追求「做大」而非「做強」，過度樂觀估算交叉銷售。</li>
+            <li><strong>② 天價併購溢價：</strong>在競標熱情下失去理智，支付過高溢價導致日後沈重商譽減損。</li>
+            <li><strong>③ 忽視文化衝突：</strong>強制將官僚流程強加於創新型企業，導致被收購團隊核心天才流失。</li>
+            <li><strong>④ 核心業務分心：</strong>精力過度分散於整頓虧損爛攤，反而拖垮原有高利潤核心產品。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== TAB 5: 個案討論問題深度解答 ==================== -->
+    <div id="tab-dilemma" class="hidden space-y-6">
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <div class="flex items-center gap-3">
+          <span class="text-2xl">🎓</span>
+          <div>
+            <h2 class="text-xl font-bold text-slate-900">個案核心決策思考題與深度解答指引</h2>
+            <p class="text-base text-slate-600 mt-0.5">針對個案三大核心難題深入剖析：中砂策略抉擇、SBU 組織安排、LVMH 併購挑戰。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-4">
+        <!-- Q1 -->
+        <div class="bg-white border-2 border-indigo-100 hover:border-indigo-300 rounded-2xl p-5 shadow-sm transition">
+          <button onclick="toggleFaq('faq1')" class="w-full text-left flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+              <span class="px-2.5 py-0.5 rounded-md bg-indigo-100 text-indigo-800 font-bold text-xs">問題 1</span>
+              <span class="text-base font-bold text-slate-900">中國砂輪今後將如何佈局，才能扮演好產業中的這個關鍵角色？是合併金敏精研？還是發展模造玻璃鏡片？還是持續專注在鑽石碟的發展？</span>
+            </div>
+            <span id="faq1-icon" class="text-slate-500 text-xl font-mono">+</span>
+          </button>
+          <div id="faq1" class="hidden mt-4 pt-4 border-t border-slate-200 text-base text-slate-700 space-y-3 leading-relaxed">
+            <div class="bg-amber-50 p-4 rounded-xl border border-amber-200 text-sm text-amber-950 font-medium">
+              💡 核心策略判斷：強烈建議採取「深耕鑽石碟 ➔ 合併金敏精研 ➔ 暫緩或割捨模造玻璃」的三階段資源配置。
+            </div>
+            <p><strong>1. 專注鑽石碟（Core Focus）：</strong>毛利率 60% 的金牛旗艦，全力反擊 3M 專利訴訟並加速海外拓展。</p>
+            <p><strong>2. 合併金敏精研（Horizontal M&A）：</strong>客戶同為台積電聯電，提供「鑽石碟耗材＋再生晶圓加工服務」一站式綁定，時機處於股價與虧損收斂低檔。</p>
+            <p><strong>3. 割捨模造玻璃（Avoid Trap）：</strong>光學為全新黑盒子，需砸 6~7 億且培訓 3 年，為典型的多角化陷阱。</p>
+          </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="bg-white border-2 border-indigo-100 hover:border-indigo-300 rounded-2xl p-5 shadow-sm transition">
+          <button onclick="toggleFaq('faq2')" class="w-full text-left flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+              <span class="px-2.5 py-0.5 rounded-md bg-indigo-100 text-indigo-800 font-bold text-xs">問題 2</span>
+              <span class="text-base font-bold text-slate-900">所對應成長策略之組織架構應該如何安排？</span>
+            </div>
+            <span id="faq2-icon" class="text-slate-500 text-xl font-mono">+</span>
+          </button>
+          <div id="faq2" class="hidden mt-4 pt-4 border-t border-slate-200 text-base text-slate-700 space-y-3 leading-relaxed">
+            <p>建議轉型為「策略事業部制（SBU）」架構：</p>
+            <ul class="list-disc list-inside space-y-1 text-sm pl-2">
+              <li><strong>SBU 1 傳統砂輪事業群 (ABU)：</strong>整併鶯歌、樹林、11 分公司與泰國廠，追求營運效率與穩健現金流。</li>
+              <li><strong>SBU 2 半導體與鑽石事業群 (DBU)：</strong>下轄鑽石碟製造廠與併入的金敏精研，設立高科技專屬 Key Account 業務隊伍。</li>
+              <li><strong>集團總部技術中樞：</strong>宋健民博士鑽石科技中心提升為前瞻中央研究院，增設智財法務處抵禦 3M 專利戰。</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="bg-white border-2 border-indigo-100 hover:border-indigo-300 rounded-2xl p-5 shadow-sm transition">
+          <button onclick="toggleFaq('faq3')" class="w-full text-left flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+              <span class="px-2.5 py-0.5 rounded-md bg-indigo-100 text-indigo-800 font-bold text-xs">問題 3</span>
+              <span class="text-base font-bold text-slate-900">請分析 LVMH 在購併時可能遇到的問題與挑戰。</span>
+            </div>
+            <span id="faq3-icon" class="text-slate-500 text-xl font-mono">+</span>
+          </button>
+          <div id="faq3" class="hidden mt-4 pt-4 border-t border-slate-200 text-base text-slate-700 space-y-2 text-sm leading-relaxed">
+            <p><strong>① 品牌歷史靈魂與規模化衝突（Brand Dilution）：</strong>過度標準化易喪失工匠傳承與排他性溢價。</p>
+            <p><strong>② 設計師與管理層的心魔衝突（Creative Ego Clash）：</strong>財務考核與藝術家創作任性矛盾。</p>
+            <p><strong>③ 敵意併購的法律訴訟與公關反彈：</strong>如愛馬仕反收購防衛戰與收購 Tiffany 的訴訟撕破臉。</p>
+            <p><strong>④ 集團內部品牌相互蠶食（Cannibalization）：</strong>75+ 品牌客群重疊，考驗矩陣定位智慧。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- 頁尾 -->
+  <footer class="border-t border-slate-200 bg-white py-5 mt-10 text-center text-sm text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <span class="font-medium">政大企管 EMBA 經典個案研究 · 中國砂輪 (A) 成長策略</span>
+      <span class="text-xs text-slate-400">系統架構比照 week2 規格製作</span>
+    </div>
+  </footer>
+
+  <!-- 互動邏輯腳本 (完整修復 switchTab 路由) -->
+  <script>
+    // 實體與人物詳細資料庫
+    const personData = {
+      lin: {
+        name: "林心正 董事長",
+        badge: "二代掌舵者 · 策略遠見領袖",
+        role: "中國砂輪董事長 (1983 接棒)",
+        desc: "引領中砂走出 10 億元營收瓶頸的靈魂人物。參觀歐洲展覽後體會工業鑽石是先進工業的指標，三顧茅廬延攬工研院宋健民博士，大膽添購真空硬焊設備，帶領中砂由傳統鶯歌黑手窯業翻轉為高科技半導體材料霸主。"
+      },
+      sung: {
+        name: "宋健民 博士",
+        badge: "鑽石科技大腦 · 鑽石碟發明人",
+        role: "鑽石科技中心主持人 / 前工研院材料所專家",
+        desc: "鑽研鑽石薄膜沉積與超硬材料數十年。1997 年加盟中砂後，發明 DiaGrid（鑽石陣）與 DiaShield（鑽石盾），解決了半導體產業長年以來鑽石碟磨粒脫落刮毀晶圓的世紀痛點，為中砂取得國際專利壁壘。"
+      },
+      jinmin: {
+        name: "金敏精研股份有限公司",
+        badge: "轉投資公司 · 台灣再生晶圓龍頭",
+        role: "中砂持股 14.19% · 專門從事再生晶圓與測試晶圓代工",
+        desc: "1997 年中砂與工研院合作設立，擁有 8 吋與 12 吋矽晶圓再生研磨技術，在台灣市佔率逾 50%。客戶同為台積電等一線晶圓代工廠。2003 年虧損收斂至 5,100 萬，預計未來三年複合成長率達 40%、毛利率達 40%，為極具價值之收購目標。"
+      },
+      optic: {
+        name: "模造玻璃鏡片新事業",
+        badge: "策略評估項目 · 光學新興領域",
+        role: "非球面模造玻璃鏡片 (手機/相機鏡頭)",
+        desc: "受惠於手機輕薄化與相機畫素提升，市場呈現供不應求。中砂評估自身具備 80% 機械加工研磨能力，但欠缺 20% 關鍵光學知識，且進入最低規模需投資 6~7 億元並花費 3 年培育人才，為一項高風險之多角化陷阱。"
+      },
+      tsmc: {
+        name: "台灣積體電路 (TSMC)",
+        badge: "關鍵龍頭客戶 · 技術驗證夥伴",
+        role: "專業晶圓代工全球龍頭",
+        desc: "促成中砂鑽石碟問世的關鍵推手。1999 年向國內尋求高品質修整器，中砂產品經四廠實測後助良率提升 3 倍、年省 4,000 萬，獲頒「免驗入庫證書」，佔中砂年度銷售額 20% 以上。"
+      }
+    };
+
+    function showPersonDetail(key) {
+      const data = personData[key];
+      if (!data) return;
+      document.getElementById('insp-name').innerText = data.name;
+      document.getElementById('insp-badge').innerText = data.badge;
+      document.getElementById('insp-role').innerText = data.role;
+      document.getElementById('insp-desc').innerText = data.desc;
+
+      const inspector = document.getElementById('person-inspector');
+      inspector.classList.remove('bg-indigo-50/70', 'border-indigo-200');
+      inspector.classList.add('bg-amber-50', 'border-amber-300');
+      setTimeout(() => {
+        inspector.classList.remove('bg-amber-50', 'border-amber-300');
+        inspector.classList.add('bg-indigo-50/70', 'border-indigo-200');
+      }, 400);
+    }
+
+    // 核心頁籤切換路由 (完整涵蓋 6 個分頁)
+    function switchTab(tabId) {
+      const tabs = ['fulltext', 'timeline', 'ecosystem', 'events', 'strategy', 'dilemma'];
+      tabs.forEach(t => {
+        const el = document.getElementById('tab-' + t);
+        const btn = document.getElementById('btn-' + t);
+        if (el) {
+          if (t === tabId) {
+            el.classList.remove('hidden');
+          } else {
+            el.classList.add('hidden');
+          }
+        }
+        if (btn) {
+          if (t === tabId) {
+            btn.classList.add('active');
+          } else {
+            btn.classList.remove('active');
+          }
+        }
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // 時間軸篩選
+    function filterTimeline(stage, btnElement) {
+      const targetBtn = btnElement || (window.event ? window.event.currentTarget || window.event.target : null);
+      if (targetBtn) {
+        document.querySelectorAll('.timeline-f-btn').forEach(b => {
+          b.classList.remove('active', 'bg-indigo-600', 'text-white', 'border-indigo-600');
+          b.classList.add('bg-white', 'text-slate-700', 'border-slate-300');
+        });
+        targetBtn.classList.add('active', 'bg-indigo-600', 'text-white', 'border-indigo-600');
+        targetBtn.classList.remove('bg-white', 'text-slate-700', 'border-slate-300');
+      }
+
+      const items = document.querySelectorAll('.timeline-item');
+      items.forEach(item => {
+        const itemStage = item.getAttribute('data-stage');
+        const isImportant = item.getAttribute('data-important') === 'true';
+        if (stage === 'all') {
+          item.style.display = 'block';
+        } else if (stage === 'important') {
+          item.style.display = isImportant ? 'block' : 'none';
+        } else if (itemStage === stage) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+
+    // 表格搜尋
+    function searchEvents() {
+      const query = document.getElementById('event-search').value.toLowerCase();
+      const rows = document.querySelectorAll('#event-table-body tr');
+      rows.forEach(row => {
+        const text = row.innerText.toLowerCase();
+        row.style.display = text.includes(query) ? '' : 'none';
+      });
+    }
+
+    // 表格標籤篩選
+    function filterEventTag(tag, btnElement) {
+      const targetBtn = btnElement || (window.event ? window.event.currentTarget || window.event.target : null);
+      if (targetBtn) {
+        document.querySelectorAll('.ev-tag-btn').forEach(b => {
+          b.classList.remove('active', 'bg-indigo-600', 'text-white', 'border-indigo-600');
+          b.classList.add('bg-white', 'text-slate-700', 'border-slate-300');
+        });
+        targetBtn.classList.add('active', 'bg-indigo-600', 'text-white', 'border-indigo-600');
+        targetBtn.classList.remove('bg-white', 'text-slate-700', 'border-slate-300');
+      }
+
+      const rows = document.querySelectorAll('#event-table-body tr');
+      rows.forEach(row => {
+        const rowTag = row.getAttribute('data-tag');
+        const isImportant = row.getAttribute('data-important') === 'true';
+        if (tag === 'all') {
+          row.style.display = '';
+        } else if (tag === '重要') {
+          row.style.display = isImportant ? '' : 'none';
+        } else if (rowTag === tag) {
+          row.style.display = '';
+        } else {
+          row.style.display = 'none';
+        }
+      });
+    }
+
+    // FAQ 展開/收合
+    function toggleFaq(id) {
+      const el = document.getElementById(id);
+      const icon = document.getElementById(id + '-icon');
+      if (el.classList.contains('hidden')) {
+        el.classList.remove('hidden');
+        icon.innerText = '−';
+      } else {
+        el.classList.add('hidden');
+        icon.innerText = '+';
+      }
+    }
+
+    // 關係動態鏈敘事文字
+    const relationNarratives = {
+      all: {
+        title: "🌐 全景產業生態與事業關係圖",
+        desc: "呈現在林心正董事長帶領下，以「工業鑽石」為核心軸線所開展的四大板塊：基石傳統砂輪、旗艦鑽石碟、半導體再生晶圓以及新興模造玻璃評估案。"
+      },
+      disk: {
+        title: "① 鑽石碟半導體旗艦鏈：技術突破撬開世界龍頭產線",
+        desc: "宋健民博士發明 DiaGrid + DiaShield，成功解決台積電等晶圓廠刮傷痛點；獲台積電頒發免驗入庫，帶動毛利衝上 60%，成為營收超過 35% 的核心主力。"
+      },
+      wafer: {
+        title: "② 金敏精研再生晶圓併購鏈：客戶同質度極高的水平綜效",
+        desc: "金敏精研佔台灣再生晶圓市佔 50% 以上，與中砂鑽石碟共同服務台積電、聯電等客戶。併購能以耗材加加工服務進行包裹捆綁，大幅提高客戶黏著度。"
+      },
+      glass: {
+        title: "③ 光學模造鏡片鏈：誘人卻危險的多角化陷阱",
+        desc: "相機手機需求暴增引發模造玻璃熱潮，但進入門檻需砸 6~7 億元，且中砂缺乏 20% 光學專業知識與經驗，貿然跨入將嚴重稀釋鑽石核心資源。"
+      },
+      patent: {
+        title: "④ 3M 國際專利爭端鏈：百倍大廠的法律圍剿與突圍",
+        desc: "3M 突擊控告中砂 DiaGrid 侵權並向 ITC 聲請禁售令。中砂緊急開發 DiaTrix 製程獲取外銷許可，體現高科技國際競爭中智財防護之絕對重要性。"
+      }
+    };
+
+    function setRelationMode(mode) {
+      document.querySelectorAll('.rel-filter-btn').forEach(btn => {
+        btn.classList.remove('active', 'bg-indigo-600', 'text-white', 'border-indigo-600');
+        btn.classList.add('bg-white', 'text-slate-700', 'border-slate-300');
+      });
+      const activeBtn = document.getElementById('rel-btn-' + mode);
+      if (activeBtn) {
+        activeBtn.classList.add('active', 'bg-indigo-600', 'text-white', 'border-indigo-600');
+        activeBtn.classList.remove('bg-white', 'text-slate-700', 'border-slate-300');
+      }
+
+      const narrative = relationNarratives[mode] || relationNarratives.all;
+      document.getElementById('rel-narrative-title').innerText = narrative.title;
+      document.getElementById('rel-narrative-desc').innerText = narrative.desc;
+
+      const cards = document.querySelectorAll('.node-card');
+      cards.forEach(card => {
+        const roles = card.getAttribute('data-roles') || '';
+        if (mode === 'all' || roles.includes(mode)) {
+          card.classList.remove('opacity-30', 'grayscale', 'scale-95');
+          card.classList.add('opacity-100', 'scale-100');
+        } else {
+          card.classList.add('opacity-30', 'grayscale', 'scale-95');
+          card.classList.remove('opacity-100', 'scale-100');
+        }
+      });
+    }
+
+    // 初始化載入
+    document.addEventListener('DOMContentLoaded', () => {
+      switchTab('fulltext');
+    });
+  </script>
+</body>
+</html>
